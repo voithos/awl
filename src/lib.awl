@@ -1,0 +1,96 @@
+(global {nil} {})
+
+; Simpler function defintiions
+(global {fun} (\ {f b} {
+    global (head f) (\ (tail f) b)}))
+
+; List unpacking and packing
+(fun {unpack f l} {
+    eval (join (list f) l)})
+
+(fun {pack f & xs} {f xs})
+
+(global {curry} unpack)
+(global {uncurry} pack)
+
+; Ordered evaluation
+(fun {do & l} {
+    if (== l nil)
+        {nil}
+        {last l}})
+
+; Scoping
+(fun {let b} {
+    ((\ {_} b) ())})
+
+; Composition
+(fun {comp f g x} {f (g x)})
+
+; Function manipulation
+(fun {flip f a b} {f b a})
+
+; List extraction
+(fun {fst l} {eval (head l)})
+(fun {snd l} {eval (head (tail l))})
+(fun {trd l} {eval (head (tail (tail l)))})
+
+; List functions
+; (fun {len l} {
+    ; if (== l nil)
+        ; {0}
+        ; {+ 1 (len (tail l))}})
+
+(fun {nth n l} {
+     if (== n 0)
+        {fst l}
+        {nth (- n 1) (tail l)}})
+
+(fun {last l} {nth (- (len l) 1) l})
+
+(fun {take n l} {
+     if (== n 0)
+        {nil}
+        {join (head l) (take (- n 1) (tail l))}})
+
+(fun {drop n l} {
+     if (== n 0)
+        {l}
+        {drop (- n 1) (tail l)}})
+
+(fun {split n l} {list (take n l) (drop n l)})
+
+(fun {elem x l} {
+     if (== l nil)
+        {false}
+        {if (== x (fst l)) {true} {elem x (tail l)}}})
+
+; Functional
+(fun {map f l} {
+     if (== l nil)
+        {nil}
+        {join (list (f (fst l))) (map f (tail l))}})
+
+(fun {filter f l} {
+     if (== l nil)
+        {nil}
+        {join (if (f (fst l)) {head l} {nil}) (filter f (tail l))}})
+
+(fun {reduce f acc l} {
+     if (== l nil)
+        {acc}
+        {reduce f (f acc (fst l)) (tail l)}})
+
+(fun {sum l} {reduce + 0 l})
+(fun {product l} {reduce * 1 l})
+
+(fun {select & cs} {
+     if (== cs nil)
+        {error "No selection found"}
+        {if (fst (fst cs)) {snd (fst cs)} {unpack select (tail cs)}}})
+
+(global {else} true)
+
+(fun {case x & cs} {
+     if (== cs nil)
+        {error "No case found"}
+        {if (== x (fst (fst cs))) {snd (fst cs)} {unpack case (join (list x) (tail cs))}}})
