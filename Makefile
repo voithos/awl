@@ -3,8 +3,10 @@ CFLAGS = -std=c99 -Wall
 LDFLAGS = -ledit -lm
 
 TARGET = awl
-SOURCES = $(wildcard src/*.c)
-OBJECTS = $(addprefix obj/, $(notdir $(SOURCES:.c=.o)))
+SRCDIR = src
+OBJDIR = obj
+SOURCES = $(wildcard $(SRCDIR)/*.c)
+OBJECTS = $(addprefix $(OBJDIR)/, $(notdir $(SOURCES:.c=.o)))
 
 all: $(TARGET)
 
@@ -14,10 +16,15 @@ debug: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-obj/%.o: src/%.c
+$(OBJECTS): | $(OBJDIR)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
 
 clean:
-	rm -f $(TARGET) obj/*.o
+	rm -f $(TARGET) $(OBJDIR)/*.o
