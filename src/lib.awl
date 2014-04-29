@@ -94,3 +94,8 @@
      if (== cs nil)
         {error "No case found"}
         {if (== x (fst (fst cs))) {snd (fst cs)} {unpack case (join (list x) (tail cs))}}})
+
+(fun {range s e} {
+     if (>= s e)
+        {nil}
+        {cons s (range (+ s 1) e)}})
