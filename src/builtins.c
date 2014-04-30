@@ -336,7 +336,7 @@ lval* builtin_lambda(lenv* e, lval* a) {
 
     for (int i = 0; i < a->cell[0]->count; i++) {
         LASSERT(a, (a->cell[0]->cell[i]->type == LVAL_SYM),
-                "function '\\' cannot define non-symbol at position %i", i);
+                "function 'fn' cannot define non-symbol at position %i", i);
     }
 
     lval* formals = lval_pop(a, 0);
@@ -431,11 +431,11 @@ void lenv_add_builtins(lenv* e) {
     lenv_add_builtin(e, "cons", builtin_cons);
     lenv_add_builtin(e, "len", builtin_len);
     lenv_add_builtin(e, "init", builtin_init);
-    lenv_add_builtin(e, "if", builtin_if);
 
+    lenv_add_builtin(e, "if", builtin_if);
     lenv_add_builtin(e, "def", builtin_def);
     lenv_add_builtin(e, "global", builtin_global);
-    lenv_add_builtin(e, "\\", builtin_lambda);
+    lenv_add_builtin(e, "fn", builtin_lambda);
 
     lenv_add_builtin(e, "load", builtin_load);
     lenv_add_builtin(e, "print", builtin_print);

@@ -1,101 +1,101 @@
 (global {nil} {})
 
 ; Simpler function defintiions
-(global {fun} (\ {f b} {
-    global (head f) (\ (tail f) b)}))
+(global {func} (fn {f b} {
+    global (head f) (fn (tail f) b)}))
 
 ; List unpacking and packing
-(fun {unpack f l} {
-    eval (join (list f) l)})
+(func {unpack f l} {
+    eval (cons f l)})
 
-(fun {pack f & xs} {f xs})
+(func {pack f & xs} {f xs})
 
 (global {curry} unpack)
 (global {uncurry} pack)
 
 ; Ordered evaluation
-(fun {do & l} {
+(func {do & l} {
     if (== l nil)
         {nil}
         {last l}})
 
 ; Scoping
-(fun {let b} {
-    ((\ {_} b) ())})
+(func {let b} {
+    ((fn {_} b) ())})
 
 ; Composition
-(fun {comp f g x} {f (g x)})
+(func {comp f g x} {f (g x)})
 
 ; Function manipulation
-(fun {flip f a b} {f b a})
+(func {flip f a b} {f b a})
 
 ; List extraction
-(fun {fst l} {eval (head l)})
-(fun {snd l} {eval (head (tail l))})
-(fun {trd l} {eval (head (tail (tail l)))})
+(func {fst l} {eval (head l)})
+(func {snd l} {eval (head (tail l))})
+(func {trd l} {eval (head (tail (tail l)))})
 
 ; List functions
-; (fun {len l} {
+; (func {len l} {
     ; if (== l nil)
         ; {0}
         ; {+ 1 (len (tail l))}})
 
-(fun {nth n l} {
+(func {nth n l} {
      if (== n 0)
         {fst l}
         {nth (- n 1) (tail l)}})
 
-(fun {last l} {nth (- (len l) 1) l})
+(func {last l} {nth (- (len l) 1) l})
 
-(fun {take n l} {
+(func {take n l} {
      if (== n 0)
         {nil}
         {join (head l) (take (- n 1) (tail l))}})
 
-(fun {drop n l} {
+(func {drop n l} {
      if (== n 0)
         {l}
         {drop (- n 1) (tail l)}})
 
-(fun {split n l} {list (take n l) (drop n l)})
+(func {split n l} {list (take n l) (drop n l)})
 
-(fun {elem x l} {
+(func {elem x l} {
      if (== l nil)
         {false}
         {if (== x (fst l)) {true} {elem x (tail l)}}})
 
 ; Functional
-(fun {map f l} {
+(func {map f l} {
      if (== l nil)
         {nil}
         {join (list (f (fst l))) (map f (tail l))}})
 
-(fun {filter f l} {
+(func {filter f l} {
      if (== l nil)
         {nil}
         {join (if (f (fst l)) {head l} {nil}) (filter f (tail l))}})
 
-(fun {reduce f acc l} {
+(func {reduce f acc l} {
      if (== l nil)
         {acc}
         {reduce f (f acc (fst l)) (tail l)}})
 
-(fun {sum l} {reduce + 0 l})
-(fun {product l} {reduce * 1 l})
+(func {sum l} {reduce + 0 l})
+(func {product l} {reduce * 1 l})
 
-(fun {select & cs} {
+(func {select & cs} {
      if (== cs nil)
         {error "No selection found"}
         {if (fst (fst cs)) {snd (fst cs)} {unpack select (tail cs)}}})
 
 (global {else} true)
 
-(fun {case x & cs} {
+(func {case x & cs} {
      if (== cs nil)
         {error "No case found"}
         {if (== x (fst (fst cs))) {snd (fst cs)} {unpack case (join (list x) (tail cs))}}})
 
-(fun {range s e} {
+(func {range s e} {
      if (>= s e)
         {nil}
         {cons s (range (+ s 1) e)}})
