@@ -16,7 +16,7 @@ void setup_parser() {
         "                                                                   \
         number  : /-?[0-9]+/ ;                                              \
         bool    : \"true\" | \"false\" ;                                    \
-        string  : /\"(\\\\.|[^\"])*\"/ ;                                    \
+        string  : /\"(\\\\.|[^\"])*\"/ | /'(\\\\.|[^'])*'/ ;                \
         comment : /;[^\\r\\n]*/ ;                                           \
         symbol  : /[a-zA-Z0-9_+\\-*\\/\\\\=<>!&]+/ ;                        \
         sexpr   : '(' <expr>* ')' ;                                         \
