@@ -29,7 +29,7 @@ typedef enum {
 char* ltype_name(awlval_type_t t);
 
 /* function pointer */
-typedef awlval*(*lbuiltin)(awlenv*, awlval*);
+typedef awlval*(*awlbuiltin)(awlenv*, awlval*);
 
 struct awlval {
     awlval_type_t type;
@@ -46,7 +46,7 @@ struct awlval {
     };
 
     /* function types */
-    lbuiltin builtin;
+    awlbuiltin builtin;
     awlenv* env;
     awlval* formals;
     awlval* body;
@@ -67,7 +67,7 @@ awlval* awlval_num(long x);
 awlval* awlval_sym(char* s);
 awlval* awlval_str(char* s);
 awlval* awlval_bool(bool b);
-awlval* awlval_fun(lbuiltin func);
+awlval* awlval_fun(awlbuiltin func);
 awlval* awlval_lambda(awlval* formals, awlval* body);
 awlval* awlval_sexpr(void);
 awlval* awlval_qexpr(void);
@@ -91,6 +91,6 @@ void awlenv_put(awlenv* e, awlval* k, awlval* v, bool locked);
 void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked);
 awlenv* awlenv_copy(awlenv* e);
 
-void awlenv_add_builtin(awlenv* e, char* name, lbuiltin func);
+void awlenv_add_builtin(awlenv* e, char* name, awlbuiltin func);
 
 #endif

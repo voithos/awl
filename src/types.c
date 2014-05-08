@@ -63,7 +63,7 @@ awlval* awlval_bool(bool b) {
     return v;
 }
 
-awlval* awlval_fun(lbuiltin builtin) {
+awlval* awlval_fun(awlbuiltin builtin) {
     awlval* v = malloc(sizeof(awlval));
     v->type = LVAL_FUN;
     v->builtin = builtin;
@@ -368,7 +368,7 @@ awlenv* awlenv_copy(awlenv* e) {
     return n;
 }
 
-void awlenv_add_builtin(awlenv* e, char* name, lbuiltin builtin) {
+void awlenv_add_builtin(awlenv* e, char* name, awlbuiltin builtin) {
     awlval* k = awlval_sym(name);
     awlval* v = awlval_fun(builtin);
     awlenv_put(e, k, v, true);
