@@ -13,6 +13,6 @@
 #include "repl.h"
 
 /* system functions */
-void run_scripts(lenv* e, int argc, char** argv);
+void run_scripts(awlenv* e, int argc, char** argv);
 
 #endif

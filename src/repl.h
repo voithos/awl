@@ -9,6 +9,6 @@
 #include "parser.h"
 #include "eval.h"
 
-void run_repl(lenv* e);
+void run_repl(awlenv* e);
 
 #endif

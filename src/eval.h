@@ -5,8 +5,8 @@
 #include "builtins.h"
 
 /* eval functions */
-lval* lval_eval(lenv* e, lval* v);
-lval* lval_eval_sexpr(lenv* e, lval* v);
-lval* lval_call(lenv* e, lval* f, lval* a);
+awlval* awlval_eval(awlenv* e, awlval* v);
+awlval* awlval_eval_sexpr(awlenv* e, awlval* v);
+awlval* awlval_call(awlenv* e, awlval* f, awlval* a);
 
 #endif

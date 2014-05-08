@@ -12,9 +12,9 @@
 #include "assert.h"
 
 /* printing functions */
-void lval_println(lval* v);
-void lval_print(lval* v);
-void lval_expr_print(lval* v, char open, char close);
-void lval_print_str(lval* v);
+void awlval_println(awlval* v);
+void awlval_print(awlval* v);
+void awlval_expr_print(awlval* v, char open, char close);
+void awlval_print_str(awlval* v);
 
 #endif

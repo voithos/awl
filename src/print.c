@@ -1,11 +1,11 @@
 #include "print.h"
 
-void lval_println(lval* v) {
-    lval_print(v);
+void awlval_println(awlval* v) {
+    awlval_print(v);
     putchar('\n');
 }
 
-void lval_print(lval* v) {
+void awlval_print(awlval* v) {
     switch (v->type) {
         case LVAL_ERR:
             printf("Error: %s", v->err);
@@ -20,7 +20,7 @@ void lval_print(lval* v) {
             break;
 
         case LVAL_STR:
-            lval_print_str(v);
+            awlval_print_str(v);
             break;
 
         case LVAL_BOOL:
@@ -36,27 +36,27 @@ void lval_print(lval* v) {
                 printf("<builtin>");
             } else {
                 printf("(\\ ");
-                lval_print(v->formals);
+                awlval_print(v->formals);
                 putchar(' ');
-                lval_print(v->body);
+                awlval_print(v->body);
                 putchar(')');
             }
             break;
 
         case LVAL_SEXPR:
-            lval_expr_print(v, '(', ')');
+            awlval_expr_print(v, '(', ')');
             break;
 
         case LVAL_QEXPR:
-            lval_expr_print(v, '{', '}');
+            awlval_expr_print(v, '{', '}');
             break;
     }
 }
 
-void lval_expr_print(lval* v, char open, char close) {
+void awlval_expr_print(awlval* v, char open, char close) {
     putchar(open);
     for (int i = 0; i < v->count; i++) {
-        lval_print(v->cell[i]);
+        awlval_print(v->cell[i]);
 
         if (i != (v->count - 1)) {
             putchar(' ');
@@ -65,7 +65,7 @@ void lval_expr_print(lval* v, char open, char close) {
     putchar(close);
 }
 
-void lval_print_str(lval* v) {
+void awlval_print_str(awlval* v) {
     char* escaped = malloc(strlen(v->str) + 1);
     strcpy(escaped, v->str);
 

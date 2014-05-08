@@ -14,49 +14,49 @@
 #include "print.h"
 
 /* language builtins */
-lval* builtin_num_op(lenv* e, lval* a, char* op);
-lval* builtin_add(lenv* e, lval* a);
-lval* builtin_sub(lenv* e, lval* a);
-lval* builtin_mul(lenv* e, lval* a);
-lval* builtin_div(lenv* e, lval* a);
+awlval* builtin_num_op(awlenv* e, awlval* a, char* op);
+awlval* builtin_add(awlenv* e, awlval* a);
+awlval* builtin_sub(awlenv* e, awlval* a);
+awlval* builtin_mul(awlenv* e, awlval* a);
+awlval* builtin_div(awlenv* e, awlval* a);
 
-lval* builtin_ord_op(lenv* e, lval* a, char* op);
-lval* builtin_gt(lenv* e, lval* a);
-lval* builtin_gte(lenv* e, lval* a);
-lval* builtin_lt(lenv* e, lval* a);
-lval* builtin_lte(lenv* e, lval* a);
+awlval* builtin_ord_op(awlenv* e, awlval* a, char* op);
+awlval* builtin_gt(awlenv* e, awlval* a);
+awlval* builtin_gte(awlenv* e, awlval* a);
+awlval* builtin_lt(awlenv* e, awlval* a);
+awlval* builtin_lte(awlenv* e, awlval* a);
 
-lval* builtin_logic_op(lenv* e, lval* a, char* op);
-lval* builtin_eq(lenv* e, lval* a);
-lval* builtin_neq(lenv* e, lval* a);
+awlval* builtin_logic_op(awlenv* e, awlval* a, char* op);
+awlval* builtin_eq(awlenv* e, awlval* a);
+awlval* builtin_neq(awlenv* e, awlval* a);
 
-lval* builtin_bool_op(lenv* e, lval* a, char* op);
-lval* builtin_and(lenv* e, lval* a);
-lval* builtin_or(lenv* e, lval* a);
-lval* builtin_not(lenv* e, lval* a);
+awlval* builtin_bool_op(awlenv* e, awlval* a, char* op);
+awlval* builtin_and(awlenv* e, awlval* a);
+awlval* builtin_or(awlenv* e, awlval* a);
+awlval* builtin_not(awlenv* e, awlval* a);
 
-lval* builtin_head(lenv* e, lval* a);
-lval* builtin_tail(lenv* e, lval* a);
-lval* builtin_list(lenv* e, lval* a);
-lval* builtin_eval(lenv* e, lval* a);
-lval* builtin_join(lenv* e, lval* a);
-lval* builtin_cons(lenv* e, lval* a);
-lval* builtin_len(lenv* e, lval* a);
-lval* builtin_init(lenv* e, lval* a);
-lval* builtin_if(lenv* e, lval* a);
+awlval* builtin_head(awlenv* e, awlval* a);
+awlval* builtin_tail(awlenv* e, awlval* a);
+awlval* builtin_list(awlenv* e, awlval* a);
+awlval* builtin_eval(awlenv* e, awlval* a);
+awlval* builtin_join(awlenv* e, awlval* a);
+awlval* builtin_cons(awlenv* e, awlval* a);
+awlval* builtin_len(awlenv* e, awlval* a);
+awlval* builtin_init(awlenv* e, awlval* a);
+awlval* builtin_if(awlenv* e, awlval* a);
 
-lval* builtin_var(lenv* e, lval* a, bool global);
-lval* builtin_def(lenv* e, lval* a);
-lval* builtin_global(lenv* e, lval* a);
+awlval* builtin_var(awlenv* e, awlval* a, bool global);
+awlval* builtin_def(awlenv* e, awlval* a);
+awlval* builtin_global(awlenv* e, awlval* a);
 
-lval* builtin_lambda(lenv* e, lval* a);
+awlval* builtin_lambda(awlenv* e, awlval* a);
 
-lval* builtin_load(lenv* e, lval* a);
-lval* builtin_print(lenv* e, lval* a);
-lval* builtin_println(lenv* e, lval* a);
-lval* builtin_error(lenv* e, lval* a);
-lval* builtin_exit(lenv* e, lval* a);
+awlval* builtin_load(awlenv* e, awlval* a);
+awlval* builtin_print(awlenv* e, awlval* a);
+awlval* builtin_println(awlenv* e, awlval* a);
+awlval* builtin_error(awlenv* e, awlval* a);
+awlval* builtin_exit(awlenv* e, awlval* a);
 
-void lenv_add_builtins(lenv* e);
+void awlenv_add_builtins(awlenv* e);
 
 #endif

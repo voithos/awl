@@ -23,13 +23,13 @@ mpc_parser_t* Awl;
 void setup_parser();
 void teardown_parser();
 
-bool lval_parse(char* input, lval** v, char** err);
-bool lval_parse_file(char* file, lval** v, char** err);
+bool awlval_parse(char* input, awlval** v, char** err);
+bool awlval_parse_file(char* file, awlval** v, char** err);
 
 /* parsing functions */
-lval* lval_read(mpc_ast_t* t);
-lval* lval_read_num(mpc_ast_t* t);
-lval* lval_read_bool(mpc_ast_t* t);
-lval* lval_read_string(mpc_ast_t* t);
+awlval* awlval_read(mpc_ast_t* t);
+awlval* awlval_read_num(mpc_ast_t* t);
+awlval* awlval_read_bool(mpc_ast_t* t);
+awlval* awlval_read_string(mpc_ast_t* t);
 
 #endif

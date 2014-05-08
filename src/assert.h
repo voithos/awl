@@ -3,8 +3,8 @@
 
 #define LASSERT(args, cond, fmt, ...) \
     if (!(cond)) { \
-        lval* err = lval_err(fmt, ##__VA_ARGS__); \
-        lval_del(args); \
+        awlval* err = awlval_err(fmt, ##__VA_ARGS__); \
+        awlval_del(args); \
         return err; \
     }
 
@@ -21,7 +21,7 @@
     LASSERT(args, (args->count >= min), \
             "function '%s' takes %i or more arguments; %i given", fname, min, args->count);
 
-#define LASSERT_NONEMPTY(args, lval, fname) \
-    LASSERT(args, (lval->count != 0), "function '%s' passed {}", fname);
+#define LASSERT_NONEMPTY(args, awlval, fname) \
+    LASSERT(args, (awlval->count != 0), "function '%s' passed {}", fname);
 
 #endif

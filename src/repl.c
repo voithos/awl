@@ -1,6 +1,6 @@
 #include "repl.h"
 
-void run_repl(lenv* e) {
+void run_repl(awlenv* e) {
     puts("awl v0.0.3");
     puts("Ctrl+D to exit\n");
 
@@ -12,12 +12,12 @@ void run_repl(lenv* e) {
         }
         add_history(input);
 
-        lval* v;
+        awlval* v;
         char* err;
-        if (lval_parse(input, &v, &err)) {
-            lval* x = lval_eval(e, v);
-            lval_println(x);
-            lval_del(x);
+        if (awlval_parse(input, &v, &err)) {
+            awlval* x = awlval_eval(e, v);
+            awlval_println(x);
+            awlval_del(x);
         } else {
             printf("%s", err);
             free(err);
