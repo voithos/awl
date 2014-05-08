@@ -1,6 +1,8 @@
+UNAME := $(shell uname)
+
 CC = cc
-CFLAGS = -std=c99 -Wall 
-LDFLAGS = -ledit -lm
+CFLAGS = -std=c99 -Wall
+LDFLAGS = -lm
 
 BINARY = awl
 
@@ -10,7 +12,10 @@ BINDIR = bin
 TESTDIR = test
 
 TARGET = $(BINDIR)/$(BINARY)
-CODE = $(wildcard $(SRCDIR)/*.c)
+CODE := $(wildcard $(SRCDIR)/*.c)
+ifneq ($(UNAME), Linux)
+    CODE := $(filter-out $(SRCDIR)/linenoise.c, $(CODE))
+endif
 OBJECTS = $(addprefix $(OBJDIR)/, $(notdir $(CODE:.c=.o)))
 
 TESTTARGET = $(BINDIR)/run-tests

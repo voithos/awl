@@ -1,8 +1,18 @@
 #ifndef AWL_REPL_H
 #define AWL_REPL_H
 
-#include <editline/readline.h>
-#include <editline/history.h>
+#ifdef _WIN32
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#else
+
+#include "linenoise.h"
+
+#endif
+
 
 #include "types.h"
 #include "assert.h"

@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 #include "assert.h"
 
@@ -37,13 +38,15 @@ struct awlval {
     awlval** cell;
 
     /* basic types */
-    union {
+    // TODO: Certain compilers don't support anonymous
+    // nested unions - figure out what the C standard mandates
+    // union {
         char* err;
         long num;
         char* sym;
         char* str;
         bool bln;
-    };
+    // };
 
     /* function types */
     awlbuiltin builtin;
