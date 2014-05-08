@@ -2,29 +2,56 @@ CC = cc
 CFLAGS = -std=c99 -Wall 
 LDFLAGS = -ledit -lm
 
-TARGET = awl
+BINARY = awl
+
 SRCDIR = src
 OBJDIR = obj
-SOURCES = $(wildcard $(SRCDIR)/*.c)
-OBJECTS = $(addprefix $(OBJDIR)/, $(notdir $(SOURCES:.c=.o)))
+BINDIR = bin
+TESTDIR = test
+
+TARGET = $(BINDIR)/$(BINARY)
+CODE = $(wildcard $(SRCDIR)/*.c)
+OBJECTS = $(addprefix $(OBJDIR)/, $(notdir $(CODE:.c=.o)))
+
+TESTTARGET = $(BINDIR)/run-tests
+TESTCODE = $(wildcard $(TESTDIR)/*.c)
+TESTOBJECTS = $(addprefix $(OBJDIR)/$(TESTDIR)/, $(notdir $(TESTCODE:.c=.o)))
+
 
 all: $(TARGET)
 
 debug: CFLAGS += -g
 debug: $(TARGET)
 
-$(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+test: $(TESTTARGET)
+	$(TESTTARGET)
 
-$(OBJECTS): | $(OBJDIR)
+$(BINDIR):
+	mkdir -p $(BINDIR)
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
+$(OBJDIR)/$(TESTDIR):
+	mkdir -p $(OBJDIR)/$(TESTDIR)
+
+$(OBJECTS): | $(OBJDIR)
+
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS) | $(BINDIR)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+$(TESTOBJECTS): | $(OBJDIR)/$(TESTDIR)
+
+$(OBJDIR)/$(TESTDIR)/%.o: $(TESTDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TESTTARGET): $(TESTOBJECTS) | $(BINDIR)
+	$(CC) $(LDFLAGS) $(TESTOBJECTS) -o $@
 
 .PHONY: clean
 
 clean:
-	rm -f $(TARGET) $(OBJDIR)/*.o
+	rm -f $(TARGET) $(OBJDIR)/*.o $(OBJDIR)/$(TESTDIR)/*.o $(BINDIR)/*
