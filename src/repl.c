@@ -1,5 +1,13 @@
 #include "repl.h"
 
+awlval* eval_repl(awlenv* e, awlval* v) {
+    if (v->count != 1) {
+        awlval_del(v);
+        return awlval_err("too many expressions in REPL; only one is allowed");
+    }
+    return awlval_eval(e, awlval_take(v, 0));
+}
+
 void run_repl(awlenv* e) {
     puts("awl v0.0.3");
     puts("Ctrl+D to exit\n");
@@ -15,7 +23,7 @@ void run_repl(awlenv* e) {
         awlval* v;
         char* err;
         if (awlval_parse(input, &v, &err)) {
-            awlval* x = awlval_eval(e, v);
+            awlval* x = eval_repl(e, v);
             awlval_println(x);
             awlval_del(x);
         } else {

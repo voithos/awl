@@ -9,6 +9,7 @@
 #include "parser.h"
 #include "eval.h"
 
+awlval* eval_repl(awlenv* e, awlval* v);
 void run_repl(awlenv* e);
 
 #endif

@@ -12,7 +12,15 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
     return v;
 }
 
-awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
+awlval* awlval_eval_arg(awlenv* e, awlval* v, int arg) {
+    v->cell[arg] = awlval_eval(e, v->cell[arg]);
+    if (v->cell[arg]->type == LVAL_ERR) {
+        return awlval_take(v, arg);
+    }
+    return v;
+}
+
+awlval* awlval_eval_args(awlenv* e, awlval* v) {
     for (int i = 0; i < v->count; i++) {
         v->cell[i] = awlval_eval(e, v->cell[i]);
     }
@@ -22,12 +30,13 @@ awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
             return awlval_take(v, i);
         }
     }
+    return v;
+}
 
+awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
     if (v->count == 0) { return v; }
 
-    if (v->count == 1) { return awlval_take(v, 0); }
-
-    awlval* f = awlval_pop(v, 0);
+    awlval* f = awlval_eval(e, awlval_pop(v, 0));
     if (f->type != LVAL_FUN) {
         awlval* err = awlval_err("cannot evaluate %s; incorrect type for arg 0; got %s, expected %s",
                 ltype_name(LVAL_SEXPR), ltype_name(f->type), ltype_name(LVAL_FUN));
@@ -70,7 +79,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
             break;
         }
 
-        awlval* val = awlval_pop(a, 0);
+        awlval* val = awlval_eval(e, awlval_pop(a, 0));
 
         awlenv_put(f->env, sym, val, false);
         awlval_del(sym);
@@ -95,7 +104,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
 
     if (f->formals->count == 0) {
         f->env->parent = e;
-        return builtin_eval(f->env, awlval_add(awlval_sexpr(), awlval_copy(f->body)));
+        return awlval_eval(f->env, awlval_copy(f->body));
     } else {
         return awlval_copy(f);
     }

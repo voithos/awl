@@ -35,7 +35,7 @@ void awlval_print(awlval* v) {
             if (v->builtin) {
                 printf("<builtin>");
             } else {
-                printf("(\\ ");
+                printf("(fn ");
                 awlval_print(v->formals);
                 putchar(' ');
                 awlval_print(v->body);

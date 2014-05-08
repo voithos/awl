@@ -1,6 +1,8 @@
 #include "builtins.h"
 
 awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
+    EVAL_ARGS(e, a);
+
     for (int i = 0; i < a->count; i++) {
         LASSERT_TYPE(a, i, LVAL_NUM, op);
     }
@@ -52,6 +54,7 @@ awlval* builtin_div(awlenv* e, awlval* a) {
 
 awlval* builtin_ord_op(awlenv* e, awlval* a, char* op) {
     LASSERT_ARGCOUNT(a, 2, op);
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_NUM, op);
     LASSERT_TYPE(a, 1, LVAL_NUM, op);
 
@@ -98,6 +101,7 @@ awlval* builtin_lte(awlenv* e, awlval* a) {
 
 awlval* builtin_logic_op(awlenv* e, awlval* a, char* op) {
     LASSERT_ARGCOUNT(a, 2, op);
+    EVAL_ARGS(e, a);
 
     bool eq = awlval_eq(a->cell[0], a->cell[1]);
     bool res;
@@ -122,6 +126,9 @@ awlval* builtin_neq(awlenv* e, awlval* a) {
 awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
     if (strcmp(op, "not") == 0) {
         LASSERT_ARGCOUNT(a, 1, op);
+        EVAL_SINGLE_ARG(e, a, 0);
+        LASSERT_TYPE(a, 0, LVAL_BOOL, op);
+
         awlval* x = awlval_take(a, 0);
         x->bln = !x->bln;
         return x;
@@ -132,11 +139,7 @@ awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
     awlval* x = awlval_pop(a, 0);
     awlval* y = awlval_take(a, 0);
 
-    if (x->type == LVAL_QEXPR) {
-        x->type = LVAL_SEXPR;
-        x = awlval_eval(e, x);
-    }
-
+    x = awlval_eval(e, x);
     if (x->type != LVAL_BOOL) {
         awlval* err = awlval_err(
                 "function '%s' passed incorrect type for arg %i; got %s, expected %s",
@@ -151,11 +154,7 @@ awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
         return x;
     }
 
-    if (y->type == LVAL_QEXPR) {
-        y->type = LVAL_SEXPR;
-        y = awlval_eval(e, y);
-    }
-
+    y = awlval_eval(e, y);
     if (y->type != LVAL_BOOL) {
         awlval* err = awlval_err(
                 "function '%s' passed incorrect type for arg %i; got %s, expected %s",
@@ -190,6 +189,7 @@ awlval* builtin_not(awlenv* e, awlval* a) {
 
 awlval* builtin_head(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "head");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_QEXPR, "head");
     LASSERT_NONEMPTY(a, a->cell[0], "head");
 
@@ -202,6 +202,7 @@ awlval* builtin_head(awlenv* e, awlval* a) {
 
 awlval* builtin_tail(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "tail");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_QEXPR, "tail");
     LASSERT_NONEMPTY(a, a->cell[0], "tail");
 
@@ -211,12 +212,15 @@ awlval* builtin_tail(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_list(awlenv* e, awlval* a) {
+    EVAL_ARGS(e, a);
+
     a->type = LVAL_QEXPR;
     return a;
 }
 
 awlval* builtin_eval(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "eval");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_QEXPR, "eval");
 
     awlval* x = awlval_take(a, 0);
@@ -225,6 +229,8 @@ awlval* builtin_eval(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_join(awlenv* e, awlval* a) {
+    EVAL_ARGS(e, a);
+
     for (int i = 0; i < a->count; i++) {
         LASSERT_TYPE(a, i, LVAL_QEXPR, "join");
     }
@@ -240,6 +246,7 @@ awlval* builtin_join(awlenv* e, awlval* a) {
 
 awlval* builtin_cons(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 2, "cons");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 1, LVAL_QEXPR, "cons");
 
     awlval* v = awlval_pop(a, 0);
@@ -250,6 +257,7 @@ awlval* builtin_cons(awlenv* e, awlval* a) {
 
 awlval* builtin_len(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "len");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_QEXPR, "len");
 
     awlval* x = awlval_num(a->cell[0]->count);
@@ -259,6 +267,7 @@ awlval* builtin_len(awlenv* e, awlval* a) {
 
 awlval* builtin_init(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "init");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_QEXPR, "init");
     LASSERT_NONEMPTY(a, a->cell[0], "init");
 
@@ -269,12 +278,9 @@ awlval* builtin_init(awlenv* e, awlval* a) {
 
 awlval* builtin_if(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 3, "if");
-    LASSERT_TYPE(a, 0, LVAL_BOOL, "if");
-    LASSERT_TYPE(a, 1, LVAL_QEXPR, "if");
-    LASSERT_TYPE(a, 2, LVAL_QEXPR, "if");
 
-    a->cell[1]->type = LVAL_SEXPR;
-    a->cell[2]->type = LVAL_SEXPR;
+    EVAL_SINGLE_ARG(e, a, 0);
+    LASSERT_TYPE(a, 0, LVAL_BOOL, "if");
 
     awlval* x;
     if (a->cell[0]->bln) {
@@ -288,8 +294,10 @@ awlval* builtin_if(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_var(awlenv* e, awlval* a, bool global) {
-    LASSERT_MINARGCOUNT(a, 2, "def");
-    LASSERT_TYPE(a, 0, LVAL_QEXPR, "def");
+    char* op = global ? "global" : "def";
+
+    LASSERT_MINARGCOUNT(a, 2, op);
+    LASSERT_TYPE(a, 0, LVAL_SEXPR, op);
 
     awlval* syms = a->cell[0];
     for (int i = 0; i < syms->count; i++) {
@@ -308,6 +316,11 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     LASSERT(a, (syms->count == a->count - 1),
             "function 'def' given non-matching number of symbols and values; %i symbols, %i values",
             syms->count, a->count - 1);
+
+    // Evaluate value arguments (but not the symbols)
+    for (int i = 1; i < a->count; i++) {
+        EVAL_SINGLE_ARG(e, a, i);
+    }
 
     for (int i = 0; i < syms->count; i++) {
         if (global) {
@@ -330,9 +343,7 @@ awlval* builtin_global(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_lambda(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 2, "\\");
-    LASSERT_TYPE(a, 0, LVAL_QEXPR, "\\");
-    LASSERT_TYPE(a, 1, LVAL_QEXPR, "\\");
+    LASSERT_ARGCOUNT(a, 2, "fn");
 
     for (int i = 0; i < a->cell[0]->count; i++) {
         LASSERT(a, (a->cell[0]->cell[i]->type == LVAL_SYM),
@@ -340,13 +351,13 @@ awlval* builtin_lambda(awlenv* e, awlval* a) {
     }
 
     awlval* formals = awlval_pop(a, 0);
-    awlval* body = awlval_pop(a, 0);
-    awlval_del(a);
+    awlval* body = awlval_take(a, 0);
     return awlval_lambda(formals, body);
 }
 
 awlval* builtin_load(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "load");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_STR, "load");
 
     awlval* v;
@@ -392,6 +403,7 @@ awlval* builtin_println(awlenv* e, awlval* a) {
 
 awlval* builtin_error(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "error");
+    EVAL_ARGS(e, a);
     LASSERT_TYPE(a, 0, LVAL_STR, "error");
 
     awlval* err = awlval_err(a->cell[0]->str);
