@@ -36,7 +36,9 @@ awlval* awlval_eval_args(awlenv* e, awlval* v) {
 awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
     if (v->count == 0) { return v; }
 
-    awlval* f = awlval_eval(e, awlval_pop(v, 0));
+    EVAL_SINGLE_ARG(e, v, 0);
+    awlval* f = awlval_pop(v, 0);
+
     if (f->type != LVAL_FUN) {
         awlval* err = awlval_err("cannot evaluate %s; incorrect type for arg 0; got %s, expected %s",
                 ltype_name(LVAL_SEXPR), ltype_name(f->type), ltype_name(LVAL_FUN));
