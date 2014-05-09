@@ -17,14 +17,14 @@ typedef struct awlenv awlenv;
 
 /* awlval types */
 typedef enum {
-    LVAL_ERR,
-    LVAL_NUM,
-    LVAL_SYM,
-    LVAL_STR,
-    LVAL_BOOL,
-    LVAL_FUN,
-    LVAL_SEXPR,
-    LVAL_QEXPR
+    AWLVAL_ERR,
+    AWLVAL_NUM,
+    AWLVAL_SYM,
+    AWLVAL_STR,
+    AWLVAL_BOOL,
+    AWLVAL_FUN,
+    AWLVAL_SEXPR,
+    AWLVAL_QEXPR
 } awlval_type_t;
 
 char* ltype_name(awlval_type_t t);

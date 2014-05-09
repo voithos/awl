@@ -7,23 +7,23 @@ void awlval_println(awlval* v) {
 
 void awlval_print(awlval* v) {
     switch (v->type) {
-        case LVAL_ERR:
+        case AWLVAL_ERR:
             printf("Error: %s", v->err);
             break;
 
-        case LVAL_NUM:
+        case AWLVAL_NUM:
             printf("%li", v->num);
             break;
 
-        case LVAL_SYM:
+        case AWLVAL_SYM:
             printf("%s", v->sym);
             break;
 
-        case LVAL_STR:
+        case AWLVAL_STR:
             awlval_print_str(v);
             break;
 
-        case LVAL_BOOL:
+        case AWLVAL_BOOL:
             if (v->bln) {
                 printf("true");
             } else {
@@ -31,7 +31,7 @@ void awlval_print(awlval* v) {
             }
             break;
 
-        case LVAL_FUN:
+        case AWLVAL_FUN:
             if (v->builtin) {
                 printf("<builtin>");
             } else {
@@ -43,11 +43,11 @@ void awlval_print(awlval* v) {
             }
             break;
 
-        case LVAL_SEXPR:
+        case AWLVAL_SEXPR:
             awlval_expr_print(v, '(', ')');
             break;
 
-        case LVAL_QEXPR:
+        case AWLVAL_QEXPR:
             awlval_expr_print(v, '{', '}');
             break;
     }

@@ -5,7 +5,7 @@ void run_scripts(awlenv* e, int argc, char** argv) {
         awlval* args = awlval_add(awlval_sexpr(), awlval_str(argv[i]));
         awlval* x = builtin_load(e, args);
 
-        if (x->type == LVAL_ERR) {
+        if (x->type == AWLVAL_ERR) {
             awlval_println(x);
         }
         awlval_del(x);

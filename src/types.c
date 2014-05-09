@@ -2,21 +2,21 @@
 
 char* ltype_name(awlval_type_t t) {
     switch (t) {
-        case LVAL_ERR: return "Error";
-        case LVAL_NUM: return "Number";
-        case LVAL_FUN: return "Function";
-        case LVAL_SYM: return "Symbol";
-        case LVAL_STR: return "String";
-        case LVAL_BOOL: return "Boolean";
-        case LVAL_SEXPR: return "S-Expression";
-        case LVAL_QEXPR: return "Q-Expression";
+        case AWLVAL_ERR: return "Error";
+        case AWLVAL_NUM: return "Number";
+        case AWLVAL_FUN: return "Function";
+        case AWLVAL_SYM: return "Symbol";
+        case AWLVAL_STR: return "String";
+        case AWLVAL_BOOL: return "Boolean";
+        case AWLVAL_SEXPR: return "S-Expression";
+        case AWLVAL_QEXPR: return "Q-Expression";
         default: return "Unknown";
     }
 }
 
 awlval* awlval_err(char* fmt, ...) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_ERR;
+    v->type = AWLVAL_ERR;
 
     va_list va;
     va_start(va, fmt);
@@ -35,14 +35,14 @@ awlval* awlval_err(char* fmt, ...) {
 
 awlval* awlval_num(long x) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_NUM;
+    v->type = AWLVAL_NUM;
     v->num = x;
     return v;
 }
 
 awlval* awlval_sym(char* s) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_SYM;
+    v->type = AWLVAL_SYM;
     v->sym = malloc(strlen(s) + 1);
     strcpy(v->sym, s);
     return v;
@@ -50,7 +50,7 @@ awlval* awlval_sym(char* s) {
 
 awlval* awlval_str(char* s) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_STR;
+    v->type = AWLVAL_STR;
     v->str = malloc(strlen(s) + 1);
     strcpy(v->str, s);
     return v;
@@ -58,21 +58,21 @@ awlval* awlval_str(char* s) {
 
 awlval* awlval_bool(bool b) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_BOOL;
+    v->type = AWLVAL_BOOL;
     v->bln = b;
     return v;
 }
 
 awlval* awlval_fun(awlbuiltin builtin) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_FUN;
+    v->type = AWLVAL_FUN;
     v->builtin = builtin;
     return v;
 }
 
 awlval* awlval_lambda(awlval* formals, awlval* body) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_FUN;
+    v->type = AWLVAL_FUN;
     v->builtin = NULL;
     v->env = awlenv_new();
     v->formals = formals;
@@ -82,7 +82,7 @@ awlval* awlval_lambda(awlval* formals, awlval* body) {
 
 awlval* awlval_sexpr(void) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_SEXPR;
+    v->type = AWLVAL_SEXPR;
     v->count = 0;
     v->cell = NULL;
     return v;
@@ -90,7 +90,7 @@ awlval* awlval_sexpr(void) {
 
 awlval* awlval_qexpr(void) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = LVAL_QEXPR;
+    v->type = AWLVAL_QEXPR;
     v->count = 0;
     v->cell = NULL;
     return v;
@@ -98,10 +98,10 @@ awlval* awlval_qexpr(void) {
 
 void awlval_del(awlval* v) {
     switch (v->type) {
-        case LVAL_NUM:
+        case AWLVAL_NUM:
             break;
 
-        case LVAL_FUN:
+        case AWLVAL_FUN:
             if (!v->builtin) {
                 awlenv_del(v->env);
                 awlval_del(v->formals);
@@ -109,23 +109,23 @@ void awlval_del(awlval* v) {
             }
             break;
 
-        case LVAL_ERR:
+        case AWLVAL_ERR:
             free(v->err);
             break;
 
-        case LVAL_SYM:
+        case AWLVAL_SYM:
             free(v->sym);
             break;
 
-        case LVAL_STR:
+        case AWLVAL_STR:
             free(v->str);
             break;
 
-        case LVAL_BOOL:
+        case AWLVAL_BOOL:
             break;
 
-        case LVAL_SEXPR:
-        case LVAL_QEXPR:
+        case AWLVAL_SEXPR:
+        case AWLVAL_QEXPR:
             for (int i = 0; i < v->count; i++) {
                 awlval_del(v->cell[i]);
             }
@@ -183,7 +183,7 @@ awlval* awlval_copy(awlval* v) {
     x->type = v->type;
 
     switch (v->type) {
-        case LVAL_FUN:
+        case AWLVAL_FUN:
             if (v->builtin) {
                 x->builtin = v->builtin;
             } else {
@@ -194,31 +194,31 @@ awlval* awlval_copy(awlval* v) {
             }
             break;
 
-        case LVAL_NUM:
+        case AWLVAL_NUM:
             x->num = v->num;
             break;
 
-        case LVAL_ERR:
+        case AWLVAL_ERR:
             x->err = malloc(strlen(v->err) + 1);
             strcpy(x->err, v->err);
             break;
 
-        case LVAL_SYM:
+        case AWLVAL_SYM:
             x->sym = malloc(strlen(v->sym) + 1);
             strcpy(x->sym, v->sym);
             break;
 
-        case LVAL_STR:
+        case AWLVAL_STR:
             x->str = malloc(strlen(v->str) + 1);
             strcpy(x->str, v->str);
             break;
 
-        case LVAL_BOOL:
+        case AWLVAL_BOOL:
             x->bln = v->bln;
             break;
 
-        case LVAL_SEXPR:
-        case LVAL_QEXPR:
+        case AWLVAL_SEXPR:
+        case AWLVAL_QEXPR:
             x->count = v->count;
             x->cell = malloc(sizeof(awlval*) * x->count);
             for (int i = 0; i < x->count; i++) {
@@ -236,7 +236,7 @@ bool awlval_eq(awlval* x, awlval* y) {
     }
 
     switch (x->type) {
-        case LVAL_FUN:
+        case AWLVAL_FUN:
             if (x->builtin || y->builtin) {
                 return x->builtin == y->builtin;
             } else {
@@ -244,28 +244,28 @@ bool awlval_eq(awlval* x, awlval* y) {
             }
             break;
 
-        case LVAL_NUM:
+        case AWLVAL_NUM:
             return x->num == y->num;
             break;
 
-        case LVAL_ERR:
+        case AWLVAL_ERR:
             return strcmp(x->err, y->err) == 0;
             break;
 
-        case LVAL_SYM:
+        case AWLVAL_SYM:
             return strcmp(x->sym, y->sym) == 0;
             break;
 
-        case LVAL_STR:
+        case AWLVAL_STR:
             return strcmp(x->str, y->str) == 0;
             break;
 
-        case LVAL_BOOL:
+        case AWLVAL_BOOL:
             return x->bln == y->bln;
             break;
 
-        case LVAL_SEXPR:
-        case LVAL_QEXPR:
+        case AWLVAL_SEXPR:
+        case AWLVAL_QEXPR:
             if (x->count != y->count) {
                 return false;
             }

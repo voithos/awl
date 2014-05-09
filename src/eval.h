@@ -3,14 +3,14 @@
 
 #define EVAL_ARGS(env, args) { \
     args = awlval_eval_args(env, args); \
-    if (args->type == LVAL_ERR) { \
+    if (args->type == AWLVAL_ERR) { \
         return args; \
     } \
 }
 
 #define EVAL_SINGLE_ARG(env, args, i) { \
     args = awlval_eval_arg(env, args, i); \
-    if (args->type == LVAL_ERR) { \
+    if (args->type == AWLVAL_ERR) { \
         return args; \
     } \
 }

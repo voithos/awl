@@ -1,12 +1,12 @@
 #include "eval.h"
 
 awlval* awlval_eval(awlenv* e, awlval* v) {
-    if (v->type == LVAL_SYM) {
+    if (v->type == AWLVAL_SYM) {
         awlval* x = awlenv_get(e, v);
         awlval_del(v);
         return x;
     }
-    if (v->type == LVAL_SEXPR) {
+    if (v->type == AWLVAL_SEXPR) {
         return awlval_eval_sexpr(e, v);
     }
     return v;
@@ -14,7 +14,7 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
 
 awlval* awlval_eval_arg(awlenv* e, awlval* v, int arg) {
     v->cell[arg] = awlval_eval(e, v->cell[arg]);
-    if (v->cell[arg]->type == LVAL_ERR) {
+    if (v->cell[arg]->type == AWLVAL_ERR) {
         return awlval_take(v, arg);
     }
     return v;
@@ -26,7 +26,7 @@ awlval* awlval_eval_args(awlenv* e, awlval* v) {
     }
 
     for (int i = 0; i < v->count; i++) {
-        if (v->cell[i]->type == LVAL_ERR) {
+        if (v->cell[i]->type == AWLVAL_ERR) {
             return awlval_take(v, i);
         }
     }
@@ -39,9 +39,9 @@ awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
     EVAL_SINGLE_ARG(e, v, 0);
     awlval* f = awlval_pop(v, 0);
 
-    if (f->type != LVAL_FUN) {
+    if (f->type != AWLVAL_FUN) {
         awlval* err = awlval_err("cannot evaluate %s; incorrect type for arg 0; got %s, expected %s",
-                ltype_name(LVAL_SEXPR), ltype_name(f->type), ltype_name(LVAL_FUN));
+                ltype_name(AWLVAL_SEXPR), ltype_name(f->type), ltype_name(AWLVAL_FUN));
         awlval_del(v);
         awlval_del(f);
         return err;
