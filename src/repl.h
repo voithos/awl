@@ -1,10 +1,11 @@
 #ifndef AWL_REPL_H
 #define AWL_REPL_H
 
+#include <stdlib.h>
+
 #ifdef _WIN32
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #else
