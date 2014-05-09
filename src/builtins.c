@@ -194,10 +194,7 @@ awlval* builtin_head(awlenv* e, awlval* a) {
     LASSERT_NONEMPTY(a, a->cell[0], "head");
 
     awlval* v = awlval_take(a, 0);
-    while (v->count > 1) {
-        awlval_del(awlval_pop(v, 1));
-    }
-    return v;
+    return awlval_eval(e, awlval_take(v, 0));
 }
 
 awlval* builtin_tail(awlenv* e, awlval* a) {
