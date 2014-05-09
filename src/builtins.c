@@ -293,6 +293,20 @@ awlval* builtin_if(awlenv* e, awlval* a) {
 awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     char* op = global ? "global" : "def";
 
+    // Special case when there is a single symbol to be defined
+    if (a->cell[0]->type == AWLVAL_SYM) {
+        LASSERT_ARGCOUNT(a, 2, op);
+        EVAL_SINGLE_ARG(e, a, 1);
+
+        if (global) {
+            awlenv_put_global(e, a->cell[0], a->cell[1], false);
+        } else {
+            awlenv_put(e, a->cell[0], a->cell[1], false);
+        }
+        awlval_del(a);
+        return awlval_sexpr();
+    }
+
     LASSERT_MINARGCOUNT(a, 2, op);
     LASSERT_TYPE(a, 0, AWLVAL_SEXPR, op);
 
