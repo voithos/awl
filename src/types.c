@@ -1,9 +1,10 @@
 #include "types.h"
 
-char* ltype_name(awlval_type_t t) {
+char* awlval_type_name(awlval_type_t t) {
     switch (t) {
         case AWLVAL_ERR: return "Error";
-        case AWLVAL_NUM: return "Number";
+        case AWLVAL_INT: return "Integer";
+        case AWLVAL_FLOAT: return "Float";
         case AWLVAL_FUN: return "Function";
         case AWLVAL_SYM: return "Symbol";
         case AWLVAL_STR: return "String";
@@ -35,8 +36,15 @@ awlval* awlval_err(char* fmt, ...) {
 
 awlval* awlval_num(long x) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = AWLVAL_NUM;
-    v->num = x;
+    v->type = AWLVAL_INT;
+    v->lng = x;
+    return v;
+}
+
+awlval* awlval_float(double x) {
+    awlval* v = malloc(sizeof(awlval));
+    v->type = AWLVAL_FLOAT;
+    v->dbl = x;
     return v;
 }
 
@@ -98,7 +106,10 @@ awlval* awlval_qexpr(void) {
 
 void awlval_del(awlval* v) {
     switch (v->type) {
-        case AWLVAL_NUM:
+        case AWLVAL_INT:
+            break;
+
+        case AWLVAL_FLOAT:
             break;
 
         case AWLVAL_FUN:
@@ -194,8 +205,12 @@ awlval* awlval_copy(awlval* v) {
             }
             break;
 
-        case AWLVAL_NUM:
-            x->num = v->num;
+        case AWLVAL_INT:
+            x->lng = v->lng;
+            break;
+
+        case AWLVAL_FLOAT:
+            x->dbl = v->dbl;
             break;
 
         case AWLVAL_ERR:
@@ -244,8 +259,12 @@ bool awlval_eq(awlval* x, awlval* y) {
             }
             break;
 
-        case AWLVAL_NUM:
-            return x->num == y->num;
+        case AWLVAL_INT:
+            return x->lng == y->lng;
+            break;
+
+        case AWLVAL_FLOAT:
+            return x->dbl == y->dbl;
             break;
 
         case AWLVAL_ERR:

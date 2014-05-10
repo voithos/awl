@@ -1,10 +1,17 @@
 ## Language features
 - macros! will allow more hygienic builtins
+- conversion functions between built in types
+- more arithmetic operators
+    - modulo / %
+    - truncating division (div) ?
 - string manipulation functions
+    - overload len for strings
+    - substring (slice?)
+    - index-of
 - precision decimal (and fraction) types
 - complex number type
 - bignum integers
-- special case syntax for int32 and floats (for speed)
+- special case syntax for int32 and floats (for speed)?
 - modules
 - closures
 - user defined types

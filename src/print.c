@@ -11,8 +11,12 @@ void awlval_print(awlval* v) {
             printf("Error: %s", v->err);
             break;
 
-        case AWLVAL_NUM:
-            printf("%li", v->num);
+        case AWLVAL_INT:
+            printf("%li", v->lng);
+            break;
+
+        case AWLVAL_FLOAT:
+            printf("%f", v->dbl);
             break;
 
         case AWLVAL_SYM:

@@ -17,8 +17,11 @@ typedef struct awlenv awlenv;
 
 /* awlval types */
 typedef enum {
+    /* The order of numeric types is important */
+    AWLVAL_INT,
+    AWLVAL_FLOAT,
+
     AWLVAL_ERR,
-    AWLVAL_NUM,
     AWLVAL_SYM,
     AWLVAL_STR,
     AWLVAL_BOOL,
@@ -27,7 +30,9 @@ typedef enum {
     AWLVAL_QEXPR
 } awlval_type_t;
 
-char* ltype_name(awlval_type_t t);
+#define ISNUMERIC(t) t == AWLVAL_INT || t == AWLVAL_FLOAT
+
+char* awlval_type_name(awlval_type_t t);
 
 /* function pointer */
 typedef awlval*(*awlbuiltin)(awlenv*, awlval*);
@@ -38,15 +43,16 @@ struct awlval {
     awlval** cell;
 
     /* basic types */
-    // TODO: Certain compilers don't support anonymous
-    // nested unions - figure out what the C standard mandates
-    // union {
+    /* TODO: Certain compilers don't support anonymous
+       nested unions - figure out what the C standard mandates
+       union { */
         char* err;
-        long num;
+        long lng;
+        double dbl;
         char* sym;
         char* str;
         bool bln;
-    // };
+    /* }; */
 
     /* function types */
     awlbuiltin builtin;
@@ -67,6 +73,7 @@ struct awlenv {
 /* awlval instantiation functions */
 awlval* awlval_err(char* fmt, ...);
 awlval* awlval_num(long x);
+awlval* awlval_float(double x);
 awlval* awlval_sym(char* s);
 awlval* awlval_str(char* s);
 awlval* awlval_bool(bool b);

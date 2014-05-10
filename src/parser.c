@@ -2,6 +2,8 @@
 #include "parser.h"
 
 void setup_parser() {
+    Integer = mpc_new("integer");
+    FPoint = mpc_new("fpoint");
     Number = mpc_new("number");
     Bool = mpc_new("bool");
     String = mpc_new("string");
@@ -14,7 +16,9 @@ void setup_parser() {
 
     mpca_lang(MPCA_LANG_DEFAULT,
         "                                                                   \
-        number  : /-?[0-9]+/ ;                                              \
+        integer : /[+-]?[0-9]+/ ;                                           \
+        fpoint  : /[+-]?[0-9]+\\.[0-9]*/ | /[+-]?[0-9]*\\.[0-9]+/ ;         \
+        number  : <fpoint> | <integer> ;                                    \
         bool    : \"true\" | \"false\" ;                                    \
         string  : /\"(\\\\.|[^\"])*\"/ | /'(\\\\.|[^'])*'/ ;                \
         comment : /;[^\\r\\n]*/ ;                                           \
@@ -25,11 +29,11 @@ void setup_parser() {
                   <comment> | <sexpr> | <qexpr> ;                           \
         awl     : /^/ <expr>* /$/ ;                                         \
         ",
-        Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, Expr, Awl);
+        Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, Expr, Awl);
 }
 
 void teardown_parser() {
-    mpc_cleanup(9, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, Expr, Awl);
+    mpc_cleanup(10, Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, Expr, Awl);
 }
 
 bool awlval_parse(char* input, awlval** v, char** err) {
@@ -59,8 +63,11 @@ bool awlval_parse_file(char* file, awlval** v, char** err) {
 }
 
 awlval* awlval_read(mpc_ast_t* t) {
-    if (strstr(t->tag, "number")) {
-        return awlval_read_num(t);
+    if (strstr(t->tag, "integer")) {
+        return awlval_read_int(t);
+    }
+    if (strstr(t->tag, "fpoint")) {
+        return awlval_read_float(t);
     }
     if (strstr(t->tag, "bool")) {
         return awlval_read_bool(t);
@@ -97,10 +104,15 @@ awlval* awlval_read(mpc_ast_t* t) {
     return x;
 }
 
-awlval* awlval_read_num(mpc_ast_t* t) {
+awlval* awlval_read_int(mpc_ast_t* t) {
     errno = 0;
     long x = strtol(t->contents, NULL, 10);
     return errno != ERANGE ? awlval_num(x) : awlval_err("invalid number: %s", t->contents);
+}
+
+awlval* awlval_read_float(mpc_ast_t* t) {
+    double x = strtod(t->contents, NULL);
+    return errno != ERANGE ? awlval_float(x) : awlval_err("invalid float: %s", t->contents);
 }
 
 awlval* awlval_read_bool(mpc_ast_t* t) {
@@ -122,4 +134,3 @@ awlval* awlval_read_string(mpc_ast_t* t) {
     free(unescaped);
     return str;
 }
-

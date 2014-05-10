@@ -1,32 +1,108 @@
 #include "builtins.h"
 
+#define UNARY_OP(a, op) { \
+    switch (a->type) { \
+        case AWLVAL_INT: \
+            a->lng = op a->lng; \
+            break; \
+        case AWLVAL_FLOAT: \
+            a->dbl = op a->dbl; \
+            break; \
+        default: break; \
+    } \
+}
+
+#define BINARY_OP(a, b, op) { \
+    switch (a->type) { \
+        case AWLVAL_INT: \
+            switch (b->type) { \
+                case AWLVAL_INT: \
+                    a->lng = a->lng op b->lng; \
+                    break; \
+                case AWLVAL_FLOAT: \
+                    a->type = AWLVAL_FLOAT; \
+                    a->dbl = a->lng op b->dbl; \
+                    break; \
+                default: break; \
+            } \
+            break; \
+        case AWLVAL_FLOAT: \
+            switch (b->type) { \
+                case AWLVAL_INT: \
+                    a->dbl = a->dbl op b->lng; \
+                    break; \
+                case AWLVAL_FLOAT: \
+                    a->dbl = a->dbl op b->dbl; \
+                    break; \
+                default: break; \
+            } \
+            break; \
+        default: break; \
+    } \
+}
+
+#define BINARY_OP_RES(res, a, b, op) { \
+    switch (a->type) { \
+        case AWLVAL_INT: \
+            switch (b->type) { \
+                case AWLVAL_INT: \
+                    res = a->lng op b->lng; \
+                    break; \
+                case AWLVAL_FLOAT: \
+                    res = a->lng op b->dbl; \
+                    break; \
+                default: break; \
+            } \
+            break; \
+        case AWLVAL_FLOAT: \
+            switch (b->type) { \
+                case AWLVAL_INT: \
+                    res = a->dbl op b->lng; \
+                    break; \
+                case AWLVAL_FLOAT: \
+                    res = a->dbl op b->dbl; \
+                    break; \
+                default: break; \
+            } \
+            break; \
+        default: break; \
+    } \
+}
+
 awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
     EVAL_ARGS(e, a);
 
     for (int i = 0; i < a->count; i++) {
-        LASSERT_TYPE(a, i, AWLVAL_NUM, op);
+        LASSERT_ISNUMERIC(a, i, op);
     }
 
     awlval* x = awlval_pop(a, 0);
     if ((strcmp(op, "-") == 0) && a->count == 0) {
-        x->num = -x->num;
+        UNARY_OP(x, -);
     }
 
     while (a->count > 0) {
         awlval* y = awlval_pop(a, 0);
 
-        if (strcmp(op, "+") == 0) { x->num += y->num; }
-        if (strcmp(op, "-") == 0) { x->num -= y->num; }
-        if (strcmp(op, "*") == 0) { x->num *= y->num; }
+        if (strcmp(op, "+") == 0) { BINARY_OP(x, y, +); }
+        if (strcmp(op, "-") == 0) { BINARY_OP(x, y, -); }
+        if (strcmp(op, "*") == 0) { BINARY_OP(x, y, *); }
         if (strcmp(op, "/") == 0) {
-            if (y->num == 0) {
-                awlval* err = awlval_err("division by zero; %i / 0", x->num);
+            /* Handle division by zero */
+            if ((y->type == AWLVAL_INT && y->lng == 0) ||
+                (y->type == AWLVAL_FLOAT && y->dbl == 0)) {
+                awlval* err = awlval_err("division by zero; %i / 0", x->lng);
                 awlval_del(x);
                 awlval_del(y);
                 x = err;
                 break;
             }
-            x->num /= y->num;
+            /* Handle fractional integer division */
+            else if (x->type == AWLVAL_INT && y->type == AWLVAL_INT && x->lng % y->lng != 0) {
+                x->type = AWLVAL_FLOAT;
+                x->dbl = (double)x->lng;
+            }
+            BINARY_OP(x, y, /);
         }
 
         awlval_del(y);
@@ -55,24 +131,24 @@ awlval* builtin_div(awlenv* e, awlval* a) {
 awlval* builtin_ord_op(awlenv* e, awlval* a, char* op) {
     LASSERT_ARGCOUNT(a, 2, op);
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_NUM, op);
-    LASSERT_TYPE(a, 1, AWLVAL_NUM, op);
+    LASSERT_ISNUMERIC(a, 0, op);
+    LASSERT_ISNUMERIC(a, 1, op);
 
     awlval* x = awlval_pop(a, 0);
     awlval* y = awlval_pop(a, 0);
 
     bool res;
     if (strcmp(op, ">") == 0) {
-        res = x->num > y->num;
+        BINARY_OP_RES(res, x, y, >);
     }
     if (strcmp(op, "<") == 0) {
-        res = x->num < y->num;
+        BINARY_OP_RES(res, x, y, <);
     }
     if (strcmp(op, ">=") == 0) {
-        res = x->num >= y->num;
+        BINARY_OP_RES(res, x, y, >=);
     }
     if (strcmp(op, "<=") == 0) {
-        res = x->num <= y->num;
+        BINARY_OP_RES(res, x, y, <=);
     }
 
     awlval_del(y);
@@ -143,7 +219,7 @@ awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
     if (x->type != AWLVAL_BOOL) {
         awlval* err = awlval_err(
                 "function '%s' passed incorrect type for arg %i; got %s, expected %s",
-                op, 0, ltype_name(x->type), ltype_name(AWLVAL_BOOL));
+                op, 0, awlval_type_name(x->type), awlval_type_name(AWLVAL_BOOL));
         awlval_del(x);
         awlval_del(y);
         return err;
@@ -158,7 +234,7 @@ awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
     if (y->type != AWLVAL_BOOL) {
         awlval* err = awlval_err(
                 "function '%s' passed incorrect type for arg %i; got %s, expected %s",
-                op, 1, ltype_name(y->type), ltype_name(AWLVAL_BOOL));
+                op, 1, awlval_type_name(y->type), awlval_type_name(AWLVAL_BOOL));
         awlval_del(x);
         awlval_del(y);
         return err;
@@ -293,7 +369,7 @@ awlval* builtin_if(awlenv* e, awlval* a) {
 awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     char* op = global ? "global" : "def";
 
-    // Special case when there is a single symbol to be defined
+    /* Special case when there is a single symbol to be defined */
     if (a->cell[0]->type == AWLVAL_SYM) {
         LASSERT_ARGCOUNT(a, 2, op);
         EVAL_SINGLE_ARG(e, a, 1);
@@ -328,7 +404,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
             "function 'def' given non-matching number of symbols and values; %i symbols, %i values",
             syms->count, a->count - 1);
 
-    // Evaluate value arguments (but not the symbols)
+    /* Evaluate value arguments (but not the symbols) */
     for (int i = 1; i < a->count; i++) {
         EVAL_SINGLE_ARG(e, a, i);
     }

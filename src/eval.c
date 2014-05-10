@@ -41,7 +41,7 @@ awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
 
     if (f->type != AWLVAL_FUN) {
         awlval* err = awlval_err("cannot evaluate %s; incorrect type for arg 0; got %s, expected %s",
-                ltype_name(AWLVAL_SEXPR), ltype_name(f->type), ltype_name(AWLVAL_FUN));
+                awlval_type_name(AWLVAL_SEXPR), awlval_type_name(f->type), awlval_type_name(AWLVAL_FUN));
         awlval_del(v);
         awlval_del(f);
         return err;

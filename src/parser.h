@@ -10,6 +10,8 @@
 #include "types.h"
 #include "assert.h"
 
+mpc_parser_t* Integer;
+mpc_parser_t* FPoint;
 mpc_parser_t* Number;
 mpc_parser_t* Bool;
 mpc_parser_t* String;
@@ -28,7 +30,8 @@ bool awlval_parse_file(char* file, awlval** v, char** err);
 
 /* parsing functions */
 awlval* awlval_read(mpc_ast_t* t);
-awlval* awlval_read_num(mpc_ast_t* t);
+awlval* awlval_read_int(mpc_ast_t* t);
+awlval* awlval_read_float(mpc_ast_t* t);
 awlval* awlval_read_bool(mpc_ast_t* t);
 awlval* awlval_read_string(mpc_ast_t* t);
 

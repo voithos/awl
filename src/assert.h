@@ -11,7 +11,12 @@
 #define LASSERT_TYPE(args, i, expected, fname) \
     LASSERT(args, (args->cell[i]->type == expected), \
             "function '%s' passed incorrect type for arg %i; got %s, expected %s", \
-            fname, i, ltype_name(args->cell[i]->type), ltype_name(expected));
+            fname, i, awlval_type_name(args->cell[i]->type), awlval_type_name(expected));
+
+#define LASSERT_ISNUMERIC(args, i, fname) \
+    LASSERT(args, (ISNUMERIC(args->cell[i]->type)), \
+            "function '%s' passed incorrect type for arg %i; got %s, expected numeric type", \
+            fname, i, awlval_type_name(args->cell[i]->type));
 
 #define LASSERT_ARGCOUNT(args, expected, fname) \
     LASSERT(args, (args->count == expected), \
