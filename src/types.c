@@ -1,5 +1,10 @@
 #include "types.h"
 
+#define AWLENV_INITIAL_SIZE 16
+#define AWLENV_PROBE_INTERVAL 1
+#define AWLENV_LOAD_FACTOR 0.75
+#define AWLENV_GROWTH_FACTOR 2
+
 char* awlval_type_name(awlval_type_t t) {
     switch (t) {
         case AWLVAL_ERR: return "Error";
@@ -302,17 +307,20 @@ bool awlval_eq(awlval* x, awlval* y) {
 awlenv* awlenv_new(void) {
     awlenv* e = malloc(sizeof(awlenv));
     e->parent = NULL;
+    e->size = AWLENV_INITIAL_SIZE;
     e->count = 0;
-    e->syms = NULL;
-    e->vals = NULL;
-    e->locked = NULL;
+    e->syms = calloc(AWLENV_INITIAL_SIZE, sizeof(char*));
+    e->vals = malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
+    e->locked = malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
     return e;
 }
 
 void awlenv_del(awlenv* e) {
-    for (int i = 0; i < e->count; i++) {
-        free(e->syms[i]);
-        awlval_del(e->vals[i]);
+    for (int i = 0; i < e->size; i++) {
+        if (e->syms[i]) {
+            free(e->syms[i]);
+            awlval_del(e->vals[i]);
+        }
     }
     free(e->syms);
     free(e->vals);
@@ -320,32 +328,46 @@ void awlenv_del(awlenv* e) {
     free(e);
 }
 
-int awlenv_index(awlenv* e, awlval* k) {
-    for (int i = 0; i < e->count; i++) {
-        if (strcmp(e->syms[i], k->sym) == 0) {
-            return i;
-        }
+static unsigned int awlenv_hash(const char* str) {
+    /* djb2 hash */
+    unsigned int hash = 5381;
+    for (int i = 0; str[i]; i++) {
+        /* XOR has * 33 with current char val */
+        hash = ((hash << 5) + hash) ^ str[i];
     }
-    return -1;
+    return hash;
 }
 
-awlval* awlenv_get(awlenv* e, awlval* k) {
-    int i = awlenv_index(e, k);
-    if (i != -1) {
+static int awlenv_findslot(awlenv* e, char* k) {
+    unsigned int i = awlenv_hash(k) % e->size;
+    unsigned int probe = 1;
+    while (e->syms[i] && strcmp(e->syms[i], k) != 0) {
+        i = (i + probe) % e->size;
+        probe += AWLENV_PROBE_INTERVAL;
+    }
+    return i;
+}
+
+static awlval* awlenv_lookup(awlenv* e, char* k) {
+    int i = awlenv_findslot(e, k);
+    if (e->syms[i]) {
         return awlval_copy(e->vals[i]);
     }
 
     /* check parent if no symbol found */
     if (e->parent) {
-        return awlenv_get(e->parent, k);
+        return awlenv_lookup(e->parent, k);
     } else {
-        return awlval_err("unbound symbol '%s'", k->sym);
+        return awlval_err("unbound symbol '%s'", k);
     }
 }
 
-void awlenv_put(awlenv* e, awlval* k, awlval* v, bool locked) {
-    int i = awlenv_index(e, k);
-    if (i != -1) {
+/* forward declaration */
+static void awlenv_resize(awlenv* e);
+
+static void awlenv_set(awlenv* e, char* k, awlval* v, bool locked) {
+    int i = awlenv_findslot(e, k);
+    if (e->syms[i]) {
         awlval_del(e->vals[i]);
         e->vals[i] = awlval_copy(v);
         return;
@@ -353,36 +375,73 @@ void awlenv_put(awlenv* e, awlval* k, awlval* v, bool locked) {
 
     /* no existing entry found */
     e->count++;
-    e->syms = realloc(e->syms, sizeof(char*) * e->count);
-    e->vals = realloc(e->vals, sizeof(awlval*) * e->count);
-    e->locked = realloc(e->locked, sizeof(bool) * e->count);
+    /* resize if needed */
+    if (e->count / (float)e->size >= AWLENV_LOAD_FACTOR) {
+        awlenv_resize(e);
+        i = awlenv_findslot(e, k);
+    }
+    e->syms[i] = malloc(strlen(k) + 1);
+    strcpy(e->syms[i], k);
+    e->vals[i] = awlval_copy(v);
+    e->locked[i] = locked;
+}
 
-    e->syms[e->count - 1] = malloc(strlen(k->sym) + 1);
-    strcpy(e->syms[e->count - 1], k->sym);
-    e->vals[e->count - 1] = awlval_copy(v);
-    e->locked[e->count - 1] = locked;
+static void awlenv_resize(awlenv* e) {
+    int oldsize = e->size;
+    e->size = e->size * AWLENV_GROWTH_FACTOR;
+
+    char** syms = e->syms;
+    awlval** vals = e->vals;
+    bool* locked = e->locked;
+
+    e->syms = calloc(e->size, sizeof(char*));
+    e->vals = malloc(sizeof(awlval*) * e->size);
+    e->locked = malloc(sizeof(bool) * e->size);
+
+    for (int i = 0; i < oldsize; i++) {
+        if (syms[i]) {
+            awlenv_set(e, syms[i], vals[i], locked[i]);
+            free(syms[i]);
+            awlval_del(vals[i]);
+        }
+    }
+    free(syms);
+    free(vals);
+    free(locked);
+}
+
+int awlenv_index(awlenv* e, awlval* k) {
+    return awlenv_findslot(e, k->sym);
+}
+
+awlval* awlenv_get(awlenv* e, awlval* k) {
+    return awlenv_lookup(e, k->sym);
+}
+
+void awlenv_put(awlenv* e, awlval* k, awlval* v, bool locked) {
+    awlenv_set(e, k->sym, v, locked);
 }
 
 void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked) {
     while (e->parent) {
         e = e->parent;
     }
-    awlenv_put(e, k, v, locked);
+    awlenv_set(e, k->sym, v, locked);
 }
 
 awlenv* awlenv_copy(awlenv* e) {
     awlenv* n = malloc(sizeof(awlenv));
     n->parent = e->parent;
+    n->size = e->size;
     n->count = e->count;
-    n->syms = malloc(sizeof(char*) * e->count);
-    n->vals = malloc(sizeof(awlval*) * e->count);
-    n->locked = malloc(sizeof(bool) * e->count);
+    n->syms = malloc(sizeof(char*) * e->size);
+    n->vals = malloc(sizeof(awlval*) * e->size);
+    n->locked = malloc(sizeof(bool) * e->size);
 
-    for (int i = 0; i < e->count; i++) {
-        n->syms[i] = malloc(strlen(e->syms[i]) + 1);
-        strcpy(n->syms[i], e->syms[i]);
-        n->vals[i] = awlval_copy(e->vals[i]);
-        n->locked[i] = e->locked[i];
+    for (int i = 0; i < e->size; i++) {
+        if (e->syms[i]) {
+            awlenv_set(n, e->syms[i], e->vals[i], e->locked[i]);
+        }
     }
     return n;
 }

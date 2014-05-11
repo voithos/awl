@@ -64,6 +64,7 @@ struct awlval {
 struct awlenv {
     awlenv* parent;
 
+    int size;
     int count;
     char** syms;
     awlval** vals;

@@ -15,7 +15,6 @@
 - modules
 - closures
 - user defined types
-- lenv hash table
 - memory pool allocation
 - tail call optimization
 - tests
