@@ -472,6 +472,7 @@ awlval* builtin_load(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_print(awlenv* e, awlval* a) {
+    EVAL_ARGS(e, a);
     for (int i = 0; i < a->count; i++) {
         if (i != 0) {
             putchar(' ');
