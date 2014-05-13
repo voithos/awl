@@ -79,7 +79,7 @@ awlval* awlval_sym(char* s);
 awlval* awlval_str(char* s);
 awlval* awlval_bool(bool b);
 awlval* awlval_fun(awlbuiltin func);
-awlval* awlval_lambda(awlval* formals, awlval* body);
+awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_sexpr(void);
 awlval* awlval_qexpr(void);
 

@@ -439,7 +439,7 @@ awlval* builtin_lambda(awlenv* e, awlval* a) {
 
     awlval* formals = awlval_pop(a, 0);
     awlval* body = awlval_take(a, 0);
-    return awlval_lambda(formals, body);
+    return awlval_lambda(e, formals, body);
 }
 
 awlval* builtin_load(awlenv* e, awlval* a) {

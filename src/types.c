@@ -83,11 +83,12 @@ awlval* awlval_fun(awlbuiltin builtin) {
     return v;
 }
 
-awlval* awlval_lambda(awlval* formals, awlval* body) {
+awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_FUN;
     v->builtin = NULL;
     v->env = awlenv_new();
+    v->env->parent = awlenv_copy(closure);
     v->formals = formals;
     v->body = body;
     return v;

@@ -13,11 +13,11 @@
 - bignum integers
 - special case syntax for int32 and floats (for speed)?
 - modules
-- closures
 - user defined types
 - memory pool allocation
 - tail call optimization
 - tests
+- closures that only add free variables?
 
 ## Interpreter features
 - coloring, completion, etc

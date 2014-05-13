@@ -105,7 +105,6 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
     awlval_del(a);
 
     if (f->formals->count == 0) {
-        f->env->parent = e;
         return awlval_eval(f->env, awlval_copy(f->body));
     } else {
         return awlval_copy(f);
