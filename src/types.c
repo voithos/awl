@@ -309,7 +309,10 @@ awlenv* awlenv_new(void) {
     e->parent = NULL;
     e->size = AWLENV_INITIAL_SIZE;
     e->count = 0;
-    e->syms = calloc(AWLENV_INITIAL_SIZE, sizeof(char*));
+    e->syms = malloc(sizeof(char*) * AWLENV_INITIAL_SIZE);
+    for (int i = 0; i < AWLENV_INITIAL_SIZE; i++) {
+        e->syms[i] = NULL;
+    }
     e->vals = malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
     e->locked = malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
     return e;
@@ -394,7 +397,10 @@ static void awlenv_resize(awlenv* e) {
     awlval** vals = e->vals;
     bool* locked = e->locked;
 
-    e->syms = calloc(e->size, sizeof(char*));
+    e->syms = malloc(sizeof(char*) * e->size);
+    for (int i = 0; i < e->size; i++) {
+        e->syms[i] = NULL;
+    }
     e->vals = malloc(sizeof(awlval*) * e->size);
     e->locked = malloc(sizeof(bool) * e->size);
 
@@ -435,6 +441,9 @@ awlenv* awlenv_copy(awlenv* e) {
     n->size = e->size;
     n->count = e->count;
     n->syms = malloc(sizeof(char*) * e->size);
+    for (int i = 0; i < e->size; i++) {
+        n->syms[i] = NULL;
+    }
     n->vals = malloc(sizeof(awlval*) * e->size);
     n->locked = malloc(sizeof(bool) * e->size);
 
