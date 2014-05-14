@@ -1,5 +1,8 @@
 #include "eval.h"
 
+#include <string.h>
+#include "builtins.h"
+
 awlval* awlval_eval(awlenv* e, awlval* v) {
     if (v->type == AWLVAL_SYM) {
         awlval* x = awlenv_get(e, v);

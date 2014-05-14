@@ -1,15 +1,7 @@
 #ifndef AWL_PRINT_H
 #define AWL_PRINT_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <stdbool.h>
-
-#include "mpc.h"
-
 #include "types.h"
-#include "assert.h"
 
 /* printing functions */
 void awlval_println(awlval* v);

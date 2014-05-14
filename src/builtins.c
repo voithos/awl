@@ -1,5 +1,15 @@
 #include "builtins.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
+
+#include "assert.h"
+#include "eval.h"
+#include "parser.h"
+#include "print.h"
+
 #define UNARY_OP(a, op) { \
     switch (a->type) { \
         case AWLVAL_INT: \

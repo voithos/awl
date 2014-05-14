@@ -1,6 +1,16 @@
 #include "repl.h"
 
+#include <stdlib.h>
+
+#include "assert.h"
+#include "parser.h"
+#include "print.h"
+#include "eval.h"
+
 #ifdef _WIN32
+
+#include <stdio.h>
+#include <string.h>
 
 #define REPL_MAX_INPUT 2048
 static char buffer[REPL_MAX_INPUT];
@@ -20,6 +30,8 @@ void add_history(char* unused) {
 }
 
 #else
+
+#include "linenoise.h"
 
 char* get_input(char* prompt) {
     return linenoise(prompt);

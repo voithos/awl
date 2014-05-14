@@ -1,17 +1,8 @@
 #ifndef AWL_BUILTINS_H
 #define AWL_BUILTINS_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
-#include <signal.h>
-#include <string.h>
-
 #include "types.h"
-#include "assert.h"
-#include "eval.h"
-#include "parser.h"
-#include "print.h"
 
 /* language builtins */
 awlval* builtin_num_op(awlenv* e, awlval* a, char* op);

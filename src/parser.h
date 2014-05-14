@@ -1,14 +1,10 @@
 #ifndef AWL_PARSER_H
 #define AWL_PARSER_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 #include "mpc.h"
-
 #include "types.h"
-#include "assert.h"
 
 mpc_parser_t* Integer;
 mpc_parser_t* FPoint;

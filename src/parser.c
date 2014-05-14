@@ -1,5 +1,9 @@
-#include "mpc.h"
 #include "parser.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "assert.h"
 
 void setup_parser() {
     Integer = mpc_new("integer");

@@ -1,14 +1,7 @@
 #ifndef AWL_TYPES_H
 #define AWL_TYPES_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <string.h>
 #include <stdbool.h>
-#include <stdarg.h>
-
-#include "assert.h"
 
 struct awlval;
 struct awlenv;

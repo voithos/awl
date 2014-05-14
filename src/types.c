@@ -1,5 +1,14 @@
 #include "types.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdarg.h>
+
+#include "assert.h"
+
 #define AWLENV_INITIAL_SIZE 16
 #define AWLENV_PROBE_INTERVAL 1
 #define AWLENV_LOAD_FACTOR 0.75

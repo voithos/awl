@@ -1,5 +1,17 @@
 #include "awl.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <stdbool.h>
+
+#include "assert.h"
+#include "builtins.h"
+#include "parser.h"
+#include "print.h"
+#include "repl.h"
+
+
 void run_scripts(awlenv* e, int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
         awlval* args = awlval_add(awlval_sexpr(), awlval_str(argv[i]));

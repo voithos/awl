@@ -1,5 +1,13 @@
 #include "print.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <stdbool.h>
+
+#include "mpc.h"
+#include "assert.h"
+
 void awlval_println(awlval* v) {
     awlval_print(v);
     putchar('\n');
