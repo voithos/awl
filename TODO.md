@@ -4,6 +4,8 @@
 - more arithmetic operators
     - modulo / %
     - truncating division (div) ?
+- make floating point modulo act more like integral modulo
+    (by taking the sign of the divisor, instead of dividend)
 - string manipulation functions
     - overload len for strings
     - substring (slice?)
@@ -14,6 +16,7 @@
 - special case syntax for int32 and floats (for speed)?
 - modules
 - user defined types
+- pattern matching on user defined types?
 - memory pool allocation
 - tail call optimization
 - tests

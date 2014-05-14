@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
+#include <math.h>
 
 #include "assert.h"
 #include "eval.h"
@@ -79,6 +80,40 @@
     } \
 }
 
+#define BINARY_OP_FUNC(a, b, func) { \
+    switch (a->type) { \
+        case AWLVAL_INT: \
+            switch (b->type) { \
+                case AWLVAL_INT: \
+                    a->lng = func (a->lng, b->lng); \
+                    break; \
+                case AWLVAL_FLOAT: \
+                    a->type = AWLVAL_FLOAT; \
+                    a->dbl = func (a->lng, b->dbl); \
+                    break; \
+                default: break; \
+            } \
+            break; \
+        case AWLVAL_FLOAT: \
+            switch (b->type) { \
+                case AWLVAL_INT: \
+                    a->dbl = func (a->dbl, b->lng); \
+                    break; \
+                case AWLVAL_FLOAT: \
+                    a->dbl = func (a->dbl, b->dbl); \
+                    break; \
+                default: break; \
+            } \
+            break; \
+        default: break; \
+    } \
+}
+
+long modulo(long x, long y) {
+    /* Modulo operator, with sign of the divisor */
+    return x < 0 ? ((x % y) + y) % y : x % y;
+}
+
 awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
     EVAL_ARGS(e, a);
 
@@ -97,22 +132,33 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
         if (strcmp(op, "+") == 0) { BINARY_OP(x, y, +); }
         if (strcmp(op, "-") == 0) { BINARY_OP(x, y, -); }
         if (strcmp(op, "*") == 0) { BINARY_OP(x, y, *); }
-        if (strcmp(op, "/") == 0) {
-            /* Handle division by zero */
+        if (strcmp(op, "/") == 0 || strcmp(op, "%") == 0) {
+            /* Handle division or modulo by zero */
             if ((y->type == AWLVAL_INT && y->lng == 0) ||
                 (y->type == AWLVAL_FLOAT && y->dbl == 0)) {
-                awlval* err = awlval_err("division by zero; %i / 0", x->lng);
+                awlval* err = awlval_err("division by zero; %i %s 0", x->lng, op);
                 awlval_del(x);
                 awlval_del(y);
                 x = err;
                 break;
             }
-            /* Handle fractional integer division */
-            else if (x->type == AWLVAL_INT && y->type == AWLVAL_INT && x->lng % y->lng != 0) {
-                x->type = AWLVAL_FLOAT;
-                x->dbl = (double)x->lng;
+
+            if (strcmp(op, "/") == 0) {
+                /* Handle fractional integer division */
+                if (x->type == AWLVAL_INT && y->type == AWLVAL_INT && x->lng % y->lng != 0) {
+                    x->type = AWLVAL_FLOAT;
+                    x->dbl = (double)x->lng;
+                }
+
+                BINARY_OP(x, y, /);
+            } else {
+                /* Handle modulo */
+                if (x->type == AWLVAL_FLOAT || y->type == AWLVAL_FLOAT) {
+                    BINARY_OP_FUNC(x, y, fmod);
+                } else {
+                    x->lng = modulo(x->lng, y->lng);
+                }
             }
-            BINARY_OP(x, y, /);
         }
 
         awlval_del(y);
@@ -136,6 +182,10 @@ awlval* builtin_mul(awlenv* e, awlval* a) {
 
 awlval* builtin_div(awlenv* e, awlval* a) {
     return builtin_num_op(e, a, "/");
+}
+
+awlval* builtin_mod(awlenv* e, awlval* a) {
+    return builtin_num_op(e, a, "%");
 }
 
 awlval* builtin_ord_op(awlenv* e, awlval* a, char* op) {
@@ -520,6 +570,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "-", builtin_sub);
     awlenv_add_builtin(e, "*", builtin_mul);
     awlenv_add_builtin(e, "/", builtin_div);
+    awlenv_add_builtin(e, "%", builtin_mod);
 
     awlenv_add_builtin(e, ">", builtin_gt);
     awlenv_add_builtin(e, ">=", builtin_gte);
