@@ -97,7 +97,7 @@ awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     v->type = AWLVAL_FUN;
     v->builtin = NULL;
     v->env = awlenv_new();
-    v->env->parent = awlenv_copy(closure);
+    v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
     v->formals = formals;
     v->body = body;
     return v;
@@ -325,6 +325,7 @@ awlenv* awlenv_new(void) {
     }
     e->vals = malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
     e->locked = malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
+    e->top_level = false;
     return e;
 }
 

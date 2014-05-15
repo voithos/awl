@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
     setup_parser();
 
     awlenv* e = awlenv_new();
+    e->top_level = true;
     awlenv_add_builtins(e);
 
     /* if the only argument is the interpreter name, run repl */

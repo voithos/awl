@@ -62,6 +62,7 @@ struct awlenv {
     char** syms;
     awlval** vals;
     bool* locked;
+    bool top_level;
 };
 
 /* awlval instantiation functions */
