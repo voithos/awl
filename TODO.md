@@ -3,6 +3,7 @@
 - conversion functions between built in types
 - more arithmetic operators
     - truncating division (div) ?
+    - exponentiation
 - string manipulation functions
     - overload len for strings
     - substring (slice?)
@@ -15,7 +16,6 @@
 - user defined types
 - pattern matching on user defined types?
 - memory pool allocation
-- tail call optimization
 - tests
 - closures that only add free variables?
 

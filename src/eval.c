@@ -1,18 +1,31 @@
 #include "eval.h"
 
+#include <stdio.h>
 #include <string.h>
 #include "builtins.h"
 
 awlval* awlval_eval(awlenv* e, awlval* v) {
-    if (v->type == AWLVAL_SYM) {
-        awlval* x = awlenv_get(e, v);
-        awlval_del(v);
-        return x;
+    while (true) {
+        if (v->type == AWLVAL_SYM) {
+            awlval* x = awlenv_get(e, v);
+            awlval_del(v);
+            return x;
+        } else if (v->type == AWLVAL_SEXPR) {
+            awlval* x = awlval_eval_sexpr(e, v);
+
+            /* recursively evaluate results */
+            if (x->type == AWLVAL_SYM || x->type == AWLVAL_SEXPR) {
+                v = x;
+            } else if (x->type == AWLVAL_FUN && x->formals->count == 0) {
+                e = x->env;
+                v = awlval_copy(x->body);
+            } else {
+                return x;
+            }
+        } else {
+            return v;
+        }
     }
-    if (v->type == AWLVAL_SEXPR) {
-        return awlval_eval_sexpr(e, v);
-    }
-    return v;
 }
 
 awlval* awlval_eval_arg(awlenv* e, awlval* v, int arg) {
@@ -56,6 +69,9 @@ awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
 }
 
 awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
+    /* calls a function if builtin, else fills in the corresponding
+     * parameters, and lets awlval_eval perform tail call optimization
+     */
     if (f->builtin) {
         return f->builtin(e, a);
     }
@@ -107,10 +123,6 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
 
     awlval_del(a);
 
-    if (f->formals->count == 0) {
-        return awlval_eval(f->env, awlval_copy(f->body));
-    } else {
-        return awlval_copy(f);
-    }
+    return awlval_copy(f);
 }
 

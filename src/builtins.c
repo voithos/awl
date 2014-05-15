@@ -335,7 +335,7 @@ awlval* builtin_head(awlenv* e, awlval* a) {
     LASSERT_NONEMPTY(a, a->cell[0], "head");
 
     awlval* v = awlval_take(a, 0);
-    return awlval_eval(e, awlval_take(v, 0));
+    return awlval_take(v, 0);
 }
 
 awlval* builtin_tail(awlenv* e, awlval* a) {
@@ -421,10 +421,12 @@ awlval* builtin_if(awlenv* e, awlval* a) {
     LASSERT_TYPE(a, 0, AWLVAL_BOOL, "if");
 
     awlval* x;
+    /* does not eval result; sends it back to awlval_eval for
+     * potential tail call optimization */
     if (a->cell[0]->bln) {
-        x = awlval_eval(e, awlval_pop(a, 1));
+        x = awlval_pop(a, 1);
     } else {
-        x = awlval_eval(e, awlval_pop(a, 2));
+        x = awlval_pop(a, 2);
     }
 
     awlval_del(a);
@@ -445,7 +447,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
             awlenv_put(e, a->cell[0], a->cell[1], false);
         }
         awlval_del(a);
-        return awlval_sexpr();
+        return awlval_qexpr();
     }
 
     LASSERT_MINARGCOUNT(a, 2, op);
@@ -483,7 +485,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     }
 
     awlval_del(a);
-    return awlval_sexpr();
+    return awlval_qexpr();
 }
 
 awlval* builtin_def(awlenv* e, awlval* a) {
@@ -526,9 +528,9 @@ awlval* builtin_load(awlenv* e, awlval* a) {
         awlval_del(v);
         awlval_del(a);
 
-        return awlval_sexpr();
+        return awlval_qexpr();
     } else {
-        awlval* errval = awlval_err("Could not load %s", err);
+        awlval* errval = awlval_err("could not load %s", err);
         free(err);
         awlval_del(a);
 
@@ -545,7 +547,7 @@ awlval* builtin_print(awlenv* e, awlval* a) {
         awlval_print(a->cell[i]);
     }
     awlval_del(a);
-    return awlval_sexpr();
+    return awlval_qexpr();
 }
 
 awlval* builtin_println(awlenv* e, awlval* a) {
@@ -567,7 +569,7 @@ awlval* builtin_error(awlenv* e, awlval* a) {
 awlval* builtin_exit(awlenv* e, awlval* a) {
     awlval_del(a);
     raise(SIGINT);
-    return awlval_sexpr();
+    return awlval_qexpr();
 }
 
 void awlenv_add_builtins(awlenv* e) {
