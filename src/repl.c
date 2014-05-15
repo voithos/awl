@@ -45,6 +45,9 @@ void add_history(char* input) {
 
 
 awlval* eval_repl(awlenv* e, awlval* v) {
+    if (v->count == 0) {
+        return v;
+    }
     if (v->count != 1) {
         awlval_del(v);
         return awlval_err("too many expressions in REPL; only one is allowed");
