@@ -110,8 +110,13 @@
 }
 
 long modulo(long x, long y) {
-    /* Modulo operator, with sign of the divisor */
-    return x < 0 ? ((x % y) + y) % y : x % y;
+    /* Modulo operator, always positive */
+    return labs(x) % labs(y);
+}
+
+double fmodulo(double x, double y) {
+    /* Modulo operator, always positive */
+    return fmod(fabs(x), fabs(y));
 }
 
 awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
@@ -154,7 +159,7 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
             } else {
                 /* Handle modulo */
                 if (x->type == AWLVAL_FLOAT || y->type == AWLVAL_FLOAT) {
-                    BINARY_OP_FUNC(x, y, fmod);
+                    BINARY_OP_FUNC(x, y, fmodulo);
                 } else {
                     x->lng = modulo(x->lng, y->lng);
                 }
