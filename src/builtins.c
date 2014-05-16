@@ -456,7 +456,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     awlval* syms = a->cell[0];
     for (int i = 0; i < syms->count; i++) {
         LASSERT(a, (syms->cell[i]->type == AWLVAL_SYM),
-                "function 'def' cannot define non-symbol at position %i", i);
+                "function '%s' cannot define non-symbol at position %i", op, i);
     }
 
     for (int i = 0; i < syms->count; i++) {
@@ -468,8 +468,8 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     }
 
     LASSERT(a, (syms->count == a->count - 1),
-            "function 'def' given non-matching number of symbols and values; %i symbols, %i values",
-            syms->count, a->count - 1);
+            "function '%s' given non-matching number of symbols and values; %i symbols, %i values",
+            op, syms->count, a->count - 1);
 
     /* Evaluate value arguments (but not the symbols) */
     for (int i = 1; i < a->count; i++) {
