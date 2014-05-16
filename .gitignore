@@ -2,3 +2,4 @@ bin/
 obj/
 tags
 awl
+*.hist

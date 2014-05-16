@@ -8,6 +8,8 @@
 #include "print.h"
 #include "eval.h"
 
+#define HIST_FILE "awl.hist"
+
 #ifdef _WIN32
 
 #include <stdio.h>
@@ -27,6 +29,9 @@ char* get_input(char* prompt) {
     return copy;
 }
 
+void load_history() {
+}
+
 void add_history(char* unused) {
 }
 
@@ -38,8 +43,13 @@ char* get_input(char* prompt) {
     return linenoise(prompt);
 }
 
+void load_history() {
+    linenoiseHistoryLoad(HIST_FILE);
+}
+
 void add_history(char* input) {
     linenoiseHistoryAdd(input);
+    linenoiseHistorySave(HIST_FILE);
 }
 
 #endif
@@ -59,6 +69,8 @@ awlval* eval_repl(awlenv* e, awlval* v) {
 void run_repl(awlenv* e) {
     puts("awl " AWL_VERSION);
     puts("Ctrl+D to exit\n");
+
+    load_history();
 
     while (true) {
         char* input = get_input("awl> ");
