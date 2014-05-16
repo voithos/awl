@@ -20,7 +20,7 @@ OBJECTS = $(addprefix $(OBJDIR)/, $(notdir $(CODE:.c=.o)))
 
 TESTTARGET = $(BINDIR)/run-tests
 TESTCODE = $(wildcard $(TESTDIR)/*.c)
-TESTOBJECTS = $(addprefix $(OBJDIR)/$(TESTDIR)/, $(notdir $(TESTCODE:.c=.o)))
+TESTOBJECTS = $(addprefix $(OBJDIR)/$(TESTDIR)/, $(notdir $(TESTCODE:.c=.o))) $(filter-out $(OBJDIR)/awl.o, $(OBJECTS))
 
 
 all: $(TARGET)
@@ -53,6 +53,7 @@ $(TESTOBJECTS): | $(OBJDIR)/$(TESTDIR)
 $(OBJDIR)/$(TESTDIR)/%.o: $(TESTDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(TESTTARGET): CFLAGS += -g
 $(TESTTARGET): $(TESTOBJECTS) | $(BINDIR)
 	$(CC) $(LDFLAGS) $(TESTOBJECTS) -o $@
 

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "builtins.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -326,6 +327,13 @@ awlenv* awlenv_new(void) {
     e->vals = malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
     e->locked = malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
     e->top_level = false;
+    return e;
+}
+
+awlenv* awlenv_new_top_level(void) {
+    awlenv* e = awlenv_new();
+    e->top_level = true;
+    awlenv_add_builtins(e);
     return e;
 }
 

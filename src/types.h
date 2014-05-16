@@ -89,6 +89,7 @@ bool awlval_eq(awlval* x, awlval* y);
 
 /* awlenv functions */
 awlenv* awlenv_new(void);
+awlenv* awlenv_new_top_level(void);
 void awlenv_del(awlenv* e);
 int awlenv_index(awlenv* e, awlval* k);
 awlval* awlenv_get(awlenv* e, awlval* k);

@@ -27,9 +27,7 @@ void run_scripts(awlenv* e, int argc, char** argv) {
 int main(int argc, char** argv) {
     setup_parser();
 
-    awlenv* e = awlenv_new();
-    e->top_level = true;
-    awlenv_add_builtins(e);
+    awlenv* e = awlenv_new_top_level();
 
     /* if the only argument is the interpreter name, run repl */
     if (argc == 1) {
