@@ -101,6 +101,11 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
         }
 
         awlval* val = awlval_eval(e, awlval_pop(a, 0));
+        if (val->type == AWLVAL_ERR) {
+            awlval_del(sym);
+            awlval_del(a);
+            return val;
+        }
 
         awlenv_put(f->env, sym, val, false);
         awlval_del(sym);
