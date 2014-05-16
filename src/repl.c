@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "awl.h"
 #include "assert.h"
 #include "parser.h"
 #include "print.h"
@@ -56,7 +57,7 @@ awlval* eval_repl(awlenv* e, awlval* v) {
 }
 
 void run_repl(awlenv* e) {
-    puts("awl v0.0.3");
+    puts("awl " AWL_VERSION);
     puts("Ctrl+D to exit\n");
 
     while (true) {
