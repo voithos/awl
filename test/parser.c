@@ -19,6 +19,38 @@ void test_numeric(void) {
     teardown_test(e);
 }
 
+void test_string(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "\"mystr\"", AWLVAL_STR);
+    AWL_ASSERT_TYPE(e, "'mystr'", AWLVAL_STR);
+
+    teardown_test(e);
+}
+
+void test_bool(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "true", AWLVAL_BOOL);
+    AWL_ASSERT_TYPE(e, "false", AWLVAL_BOOL);
+
+    teardown_test(e);
+}
+
+void test_qexpr(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "{}", AWLVAL_QEXPR);
+    AWL_ASSERT_TYPE(e, "{true}", AWLVAL_QEXPR);
+    AWL_ASSERT_TYPE(e, "{1 2 3}", AWLVAL_QEXPR);
+    AWL_ASSERT_TYPE(e, "{foo bar baz}", AWLVAL_QEXPR);
+
+    teardown_test(e);
+}
+
 void suite_parser(void) {
     pt_add_test(test_numeric, "Test Numeric", "Suite Parser");
+    pt_add_test(test_string, "Test String", "Suite Parser");
+    pt_add_test(test_bool, "Test Bool", "Suite Parser");
+    pt_add_test(test_qexpr, "Test QExpr", "Suite Parser");
 }
