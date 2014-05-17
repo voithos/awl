@@ -50,7 +50,10 @@ awlval* awlval_eval_args(awlenv* e, awlval* v) {
 }
 
 awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
-    if (v->count == 0) { return v; }
+    if (v->count == 0) {
+        awlval_del(v);
+        return awlval_err("cannot evaluate empty %s", awlval_type_name(AWLVAL_SEXPR));
+    }
 
     EVAL_SINGLE_ARG(e, v, 0);
     awlval* f = awlval_pop(v, 0);
