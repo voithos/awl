@@ -6,25 +6,42 @@
 
 awlval* awlval_eval(awlenv* e, awlval* v) {
     while (true) {
-        if (v->type == AWLVAL_SYM) {
-            awlval* x = awlenv_get(e, v);
-            awlval_del(v);
-            return x;
-        } else if (v->type == AWLVAL_SEXPR) {
-            awlval* x = awlval_eval_sexpr(e, v);
-
-            /* recursively evaluate results */
-            if (x->type == AWLVAL_SYM || x->type == AWLVAL_SEXPR) {
-                v = x;
-            } else if (x->type == AWLVAL_FUN && x->called) {
-                e = x->env;
-                v = awlval_copy(x->body);
-                awlval_del(x);
-            } else {
+        switch (v->type) {
+            case AWLVAL_SYM:
+            {
+                awlval* x = awlenv_get(e, v);
+                awlval_del(v);
                 return x;
+                break;
             }
-        } else {
-            return v;
+
+            case AWLVAL_SEXPR:
+            {
+                awlval* x = awlval_eval_sexpr(e, v);
+
+                /* recursively evaluate results */
+                if (x->type == AWLVAL_SYM || x->type == AWLVAL_SEXPR) {
+                    v = x;
+                } else if (x->type == AWLVAL_FUN && x->called) {
+                    e = x->env;
+                    v = awlval_copy(x->body);
+                    awlval_del(x);
+                } else {
+                    return x;
+                }
+                break;
+            }
+
+            case AWLVAL_QEXPR:
+            {
+                awlval* x = awlval_eval_inner_eexpr(e, v);
+                return x;
+                break;
+            }
+
+            default:
+                return v;
+                break;
         }
     }
 }
@@ -138,3 +155,30 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
     return awlval_copy(f);
 }
 
+awlval* awlval_eval_inner_eexpr(awlenv* e, awlval* v) {
+    switch (v->type) {
+        case AWLVAL_SEXPR:
+        case AWLVAL_QEXPR:
+        {
+            for (int i = 0; i < v->count; i++) {
+                v->cell[i] = awlval_eval_inner_eexpr(e, v->cell[i]);
+                if (v->cell[i]->type == AWLVAL_ERR) {
+                    return awlval_take(v, i);
+                }
+            }
+            return v;
+            break;
+        }
+
+        case AWLVAL_EEXPR:
+        {
+            return awlval_eval(e, awlval_take(v, 0));
+            break;
+
+        }
+
+        default:
+            return v;
+            break;
+    }
+}

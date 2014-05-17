@@ -26,6 +26,7 @@ char* awlval_type_name(awlval_type_t t) {
         case AWLVAL_BOOL: return "Boolean";
         case AWLVAL_SEXPR: return "S-Expression";
         case AWLVAL_QEXPR: return "Q-Expression";
+        case AWLVAL_EEXPR: return "E-Expression";
         default: return "Unknown";
     }
 }
@@ -121,6 +122,14 @@ awlval* awlval_qexpr(void) {
     return v;
 }
 
+awlval* awlval_eexpr(void) {
+    awlval* v = malloc(sizeof(awlval));
+    v->type = AWLVAL_EEXPR;
+    v->count = 0;
+    v->cell = NULL;
+    return v;
+}
+
 void awlval_del(awlval* v) {
     switch (v->type) {
         case AWLVAL_INT:
@@ -154,6 +163,7 @@ void awlval_del(awlval* v) {
 
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
+        case AWLVAL_EEXPR:
             for (int i = 0; i < v->count; i++) {
                 awlval_del(v->cell[i]);
             }
@@ -252,6 +262,7 @@ awlval* awlval_copy(awlval* v) {
 
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
+        case AWLVAL_EEXPR:
             x->count = v->count;
             x->cell = malloc(sizeof(awlval*) * x->count);
             for (int i = 0; i < x->count; i++) {
@@ -303,6 +314,7 @@ bool awlval_eq(awlval* x, awlval* y) {
 
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
+        case AWLVAL_EEXPR:
             if (x->count != y->count) {
                 return false;
             }

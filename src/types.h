@@ -20,7 +20,8 @@ typedef enum {
     AWLVAL_BOOL,
     AWLVAL_FUN,
     AWLVAL_SEXPR,
-    AWLVAL_QEXPR
+    AWLVAL_QEXPR,
+    AWLVAL_EEXPR
 } awlval_type_t;
 
 #define ISNUMERIC(t) t == AWLVAL_INT || t == AWLVAL_FLOAT
@@ -77,6 +78,7 @@ awlval* awlval_fun(awlbuiltin func);
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_sexpr(void);
 awlval* awlval_qexpr(void);
+awlval* awlval_eexpr(void);
 
 /* awlval manipulation functions */
 void awlval_del(awlval* v);
