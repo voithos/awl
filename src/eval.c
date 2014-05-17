@@ -16,9 +16,10 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
             /* recursively evaluate results */
             if (x->type == AWLVAL_SYM || x->type == AWLVAL_SEXPR) {
                 v = x;
-            } else if (x->type == AWLVAL_FUN && x->formals->count == 0) {
+            } else if (x->type == AWLVAL_FUN && x->called) {
                 e = x->env;
                 v = awlval_copy(x->body);
+                awlval_del(x);
             } else {
                 return x;
             }
@@ -127,6 +128,9 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
         awlenv_put(f->env, sym, val, false);
         awlval_del(sym);
         awlval_del(val);
+    }
+    if (f->formals->count == 0) {
+        f->called = true;
     }
 
     awlval_del(a);

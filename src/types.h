@@ -52,6 +52,7 @@ struct awlval {
     awlenv* env;
     awlval* formals;
     awlval* body;
+    bool called;
 };
 
 struct awlenv {

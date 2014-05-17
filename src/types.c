@@ -101,6 +101,7 @@ awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
     v->formals = formals;
     v->body = body;
+    v->called = false;
     return v;
 }
 
@@ -218,6 +219,7 @@ awlval* awlval_copy(awlval* v) {
                 x->env = awlenv_copy(v->env);
                 x->formals = awlval_copy(v->formals);
                 x->body = awlval_copy(v->body);
+                x->called = v->called;
             }
             break;
 
