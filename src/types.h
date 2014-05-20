@@ -25,6 +25,7 @@ typedef enum {
 } awlval_type_t;
 
 #define ISNUMERIC(t) t == AWLVAL_INT || t == AWLVAL_FLOAT
+#define ISCOLLECTION(t) t == AWLVAL_QEXPR || t == AWLVAL_STR
 
 char* awlval_type_name(awlval_type_t t);
 
@@ -47,6 +48,9 @@ struct awlval {
         char* str;
         bool bln;
     /* }; */
+
+    /* collection types have length */
+    int length;
 
     /* function types */
     awlbuiltin builtin;

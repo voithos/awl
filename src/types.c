@@ -75,7 +75,8 @@ awlval* awlval_sym(char* s) {
 awlval* awlval_str(char* s) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_STR;
-    v->str = malloc(strlen(s) + 1);
+    v->length = strlen(s);
+    v->str = malloc(v->length + 1);
     strcpy(v->str, s);
     return v;
 }
@@ -110,6 +111,7 @@ awlval* awlval_sexpr(void) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_SEXPR;
     v->count = 0;
+    v->length = 0;
     v->cell = NULL;
     return v;
 }
@@ -118,6 +120,7 @@ awlval* awlval_qexpr(void) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_QEXPR;
     v->count = 0;
+    v->length = 0;
     v->cell = NULL;
     return v;
 }
@@ -126,6 +129,7 @@ awlval* awlval_eexpr(void) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_EEXPR;
     v->count = 0;
+    v->length = 0;
     v->cell = NULL;
     return v;
 }
@@ -176,6 +180,7 @@ void awlval_del(awlval* v) {
 
 awlval* awlval_add(awlval* v, awlval* x) {
     v->count++;
+    v->length++;
     v->cell = realloc(v->cell, sizeof(awlval*) * v->count);
     v->cell[v->count - 1] = x;
     return v;
@@ -183,6 +188,7 @@ awlval* awlval_add(awlval* v, awlval* x) {
 
 awlval* awlval_add_front(awlval* v, awlval* x) {
     v->count++;
+    v->length++;
     v->cell = realloc(v->cell, sizeof(awlval*) * v->count);
     if (v->count > 1) {
         memmove(&v->cell[1], &v->cell[0], sizeof(awlval*) * (v->count - 1));

@@ -396,9 +396,9 @@ awlval* builtin_cons(awlenv* e, awlval* a) {
 awlval* builtin_len(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "len");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "len");
+    LASSERT_ISCOLLECTION(a, 0, "len");
 
-    awlval* x = awlval_num(a->cell[0]->count);
+    awlval* x = awlval_num(a->cell[0]->length);
     awlval_del(a);
     return x;
 }
