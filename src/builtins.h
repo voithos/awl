@@ -11,6 +11,7 @@ awlval* builtin_sub(awlenv* e, awlval* a);
 awlval* builtin_mul(awlenv* e, awlval* a);
 awlval* builtin_div(awlenv* e, awlval* a);
 awlval* builtin_mod(awlenv* e, awlval* a);
+awlval* builtin_pow(awlenv* e, awlval* a);
 
 awlval* builtin_ord_op(awlenv* e, awlval* a, char* op);
 awlval* builtin_gt(awlenv* e, awlval* a);

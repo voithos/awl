@@ -165,6 +165,20 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
                 }
             }
         }
+        if (strcmp(op, "^") == 0) {
+            if (x->type == AWLVAL_FLOAT || y->type == AWLVAL_FLOAT) {
+                BINARY_OP_FUNC(x, y, pow);
+            } else {
+                /* Handle case where result is fractional */
+                double ans = pow((double)x->lng, y->lng);
+                if (ans - (double)(long)ans != 0.0) {
+                    x->type = AWLVAL_FLOAT;
+                    x->dbl = ans;
+                } else {
+                    x->lng = (long)ans;
+                }
+            }
+        }
 
         awlval_del(y);
     }
@@ -191,6 +205,10 @@ awlval* builtin_div(awlenv* e, awlval* a) {
 
 awlval* builtin_mod(awlenv* e, awlval* a) {
     return builtin_num_op(e, a, "%");
+}
+
+awlval* builtin_pow(awlenv* e, awlval* a) {
+    return builtin_num_op(e, a, "^");
 }
 
 awlval* builtin_ord_op(awlenv* e, awlval* a, char* op) {
@@ -578,6 +596,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "*", builtin_mul);
     awlenv_add_builtin(e, "/", builtin_div);
     awlenv_add_builtin(e, "%", builtin_mod);
+    awlenv_add_builtin(e, "^", builtin_pow);
 
     awlenv_add_builtin(e, ">", builtin_gt);
     awlenv_add_builtin(e, ">=", builtin_gte);
