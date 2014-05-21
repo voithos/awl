@@ -57,7 +57,8 @@ void add_history(char* input) {
 
 awlval* eval_repl(awlenv* e, awlval* v) {
     if (v->count == 0) {
-        return v;
+        awlval_del(v);
+        return awlval_qexpr();
     }
     if (v->count != 1) {
         awlval_del(v);
