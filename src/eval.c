@@ -23,7 +23,7 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
                 if (x->type == AWLVAL_SYM || x->type == AWLVAL_SEXPR) {
                     v = x;
                 } else if (x->type == AWLVAL_FUN && x->called) {
-                    e = x->env;
+                    e = awlenv_copy(x->env);
                     v = awlval_copy(x->body);
                     awlval_del(x);
                 } else {

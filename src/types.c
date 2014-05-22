@@ -491,6 +491,8 @@ awlenv* awlenv_copy(awlenv* e) {
             awlenv_set(n, e->syms[i], e->vals[i], e->locked[i]);
         }
     }
+    n->top_level = e->top_level;
+
     return n;
 }
 
