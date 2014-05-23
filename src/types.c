@@ -144,9 +144,6 @@ void awlval_del(awlval* v) {
 
         case AWLVAL_FUN:
             if (!v->builtin) {
-                if (!v->env->parent->top_level) {
-                    awlenv_del(v->env->parent);
-                }
                 awlenv_del(v->env);
                 awlval_del(v->formals);
                 awlval_del(v->body);
@@ -236,7 +233,6 @@ awlval* awlval_copy(awlval* v) {
             } else {
                 x->builtin = NULL;
                 x->env = awlenv_copy(v->env);
-                x->env->parent = v->env->parent->top_level ? v->env->parent : awlenv_copy(v->env->parent);
                 x->formals = awlval_copy(v->formals);
                 x->body = awlval_copy(v->body);
                 x->called = v->called;
@@ -362,6 +358,9 @@ awlenv* awlenv_new_top_level(void) {
 }
 
 void awlenv_del(awlenv* e) {
+    if (e->parent && !e->parent->top_level) {
+        awlenv_del(e->parent);
+    }
     for (int i = 0; i < e->size; i++) {
         if (e->syms[i]) {
             free(e->syms[i]);
@@ -480,7 +479,7 @@ void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked) {
 
 awlenv* awlenv_copy(awlenv* e) {
     awlenv* n = malloc(sizeof(awlenv));
-    n->parent = e->parent;
+    n->parent = e->parent && !e->parent->top_level ? awlenv_copy(e->parent) : e->parent;
     n->size = e->size;
     n->count = e->count;
     n->syms = malloc(sizeof(char*) * e->size);

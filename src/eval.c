@@ -7,9 +7,6 @@
 
 #define AWLENV_DEL_RECURSING(e) { \
     if (recursing) { \
-        if (!e->parent->top_level) { \
-            awlenv_del(e->parent); \
-        } \
         awlenv_del(e); \
     } \
 }
@@ -38,7 +35,6 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
                     recursing = true;
 
                     e = awlenv_copy(x->env);
-                    e->parent = x->env->parent->top_level ? x->env->parent : awlenv_copy(x->env->parent);
                     v = awlval_copy(x->body);
 
                     awlval_del(x);
