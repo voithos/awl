@@ -1,16 +1,29 @@
 #include "eval.h"
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "builtins.h"
 
+#define AWLENV_DEL_RECURSING(e) { \
+    if (recursing) { \
+        if (!e->parent->top_level) { \
+            awlenv_del(e->parent); \
+        } \
+        awlenv_del(e); \
+    } \
+}
+
 awlval* awlval_eval(awlenv* e, awlval* v) {
+    bool recursing = false;
+
     while (true) {
         switch (v->type) {
             case AWLVAL_SYM:
             {
                 awlval* x = awlenv_get(e, v);
                 awlval_del(v);
+                AWLENV_DEL_RECURSING(e);
                 return x;
                 break;
             }
@@ -20,13 +33,17 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
                 awlval* x = awlval_eval_sexpr(e, v);
 
                 /* recursively evaluate results */
-                if (x->type == AWLVAL_SYM || x->type == AWLVAL_SEXPR) {
-                    v = x;
-                } else if (x->type == AWLVAL_FUN && x->called) {
+                if (x->type == AWLVAL_FUN && x->called) {
+                    AWLENV_DEL_RECURSING(e);
+                    recursing = true;
+
                     e = awlenv_copy(x->env);
+                    e->parent = x->env->parent->top_level ? x->env->parent : awlenv_copy(x->env->parent);
                     v = awlval_copy(x->body);
+
                     awlval_del(x);
                 } else {
+                    AWLENV_DEL_RECURSING(e);
                     return x;
                 }
                 break;
@@ -35,11 +52,13 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
             case AWLVAL_QEXPR:
             {
                 awlval* x = awlval_eval_inner_eexpr(e, v);
+                AWLENV_DEL_RECURSING(e);
                 return x;
                 break;
             }
 
             default:
+                AWLENV_DEL_RECURSING(e);
                 return v;
                 break;
         }
@@ -133,6 +152,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
         awlval_del(val);
     }
 
+    /* Special case for pure variadic function with no arguments */
     if (f->formals->count > 0 &&
             strcmp(f->formals->cell[0]->sym, "&") == 0) {
         if (f->formals->count != 2) {
@@ -146,6 +166,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
         awlval_del(sym);
         awlval_del(val);
     }
+
     if (f->formals->count == 0) {
         f->called = true;
     }
