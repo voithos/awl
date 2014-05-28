@@ -60,7 +60,11 @@ void awlval_print(awlval* v) {
             break;
 
         case AWLVAL_QEXPR:
-            awlval_expr_print(v, '{', '}');
+            if (v->count == 1) {
+                awlval_expr_print(v, ':', '\0');
+            } else {
+                awlval_expr_print(v, '{', '}');
+            }
             break;
 
         case AWLVAL_EEXPR:

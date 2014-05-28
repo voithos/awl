@@ -29,7 +29,7 @@ void setup_parser() {
         comment : /;[^\\r\\n]*/ ;                                           \
         symbol  : /[a-zA-Z0-9_+\\-*\\/=<>!&@%^$]+/ ;                        \
         sexpr   : '(' <expr>* ')' ;                                         \
-        qexpr   : '{' (<expr> | <eexpr>)* '}' ;                             \
+        qexpr   : '{' (<expr> | <eexpr>)* '}' | ':' <expr> ;                \
         eexpr   : '\\\\' <expr> ;                                           \
         expr    : <number> | <bool> | <string> | <symbol> |                 \
                   <comment> | <sexpr> | <qexpr> ;                           \
@@ -105,6 +105,7 @@ awlval* awlval_read(mpc_ast_t* t) {
         if (strcmp(t->children[i]->contents, ")") == 0) { continue; }
         if (strcmp(t->children[i]->contents, "{") == 0) { continue; }
         if (strcmp(t->children[i]->contents, "}") == 0) { continue; }
+        if (strcmp(t->children[i]->contents, ":") == 0) { continue; }
         if (strcmp(t->children[i]->contents, "\\") == 0) { continue; }
         if (strcmp(t->children[i]->tag, "regex") == 0) { continue; }
         if (strstr(t->children[i]->tag, "comment")) { continue; }
