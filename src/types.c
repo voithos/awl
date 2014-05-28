@@ -88,10 +88,12 @@ awlval* awlval_bool(bool b) {
     return v;
 }
 
-awlval* awlval_fun(awlbuiltin builtin) {
+awlval* awlval_fun(awlbuiltin builtin, char* builtin_name) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_FUN;
     v->builtin = builtin;
+    v->builtin_name = malloc(strlen(builtin_name) + 1);
+    strcpy(v->builtin_name, builtin_name);
     return v;
 }
 
@@ -143,7 +145,9 @@ void awlval_del(awlval* v) {
             break;
 
         case AWLVAL_FUN:
-            if (!v->builtin) {
+            if (v->builtin) {
+                free(v->builtin_name);
+            } else {
                 awlenv_del(v->env);
                 awlval_del(v->formals);
                 awlval_del(v->body);
@@ -230,6 +234,8 @@ awlval* awlval_copy(awlval* v) {
         case AWLVAL_FUN:
             if (v->builtin) {
                 x->builtin = v->builtin;
+                x->builtin_name = malloc(strlen(v->builtin_name) + 1);
+                strcpy(x->builtin_name, v->builtin_name);
             } else {
                 x->builtin = NULL;
                 x->env = awlenv_copy(v->env);
@@ -501,7 +507,7 @@ awlenv* awlenv_copy(awlenv* e) {
 
 void awlenv_add_builtin(awlenv* e, char* name, awlbuiltin builtin) {
     awlval* k = awlval_sym(name);
-    awlval* v = awlval_fun(builtin);
+    awlval* v = awlval_fun(builtin, name);
     awlenv_put(e, k, v, true);
     awlval_del(k);
     awlval_del(v);

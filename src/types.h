@@ -54,6 +54,8 @@ struct awlval {
 
     /* function types */
     awlbuiltin builtin;
+    char* builtin_name;
+
     awlenv* env;
     awlval* formals;
     awlval* body;
@@ -78,7 +80,7 @@ awlval* awlval_float(double x);
 awlval* awlval_sym(char* s);
 awlval* awlval_str(char* s);
 awlval* awlval_bool(bool b);
-awlval* awlval_fun(awlbuiltin func);
+awlval* awlval_fun(awlbuiltin builtin, char* builtin_name);
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_sexpr(void);
 awlval* awlval_qexpr(void);

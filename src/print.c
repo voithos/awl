@@ -45,7 +45,7 @@ void awlval_print(awlval* v) {
 
         case AWLVAL_FUN:
             if (v->builtin) {
-                printf("<builtin>");
+                printf("<builtin %s>", v->builtin_name);
             } else {
                 printf("(fn ");
                 awlval_print(v->formals);
