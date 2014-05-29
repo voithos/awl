@@ -353,7 +353,7 @@ awlval* builtin_head(awlenv* e, awlval* a) {
     LASSERT_NONEMPTY(a, a->cell[0], "head");
 
     awlval* v = awlval_take(a, 0);
-    return awlval_take(v, 0);
+    return awlval_eval(e, awlval_take(v, 0));
 }
 
 awlval* builtin_tail(awlenv* e, awlval* a) {
@@ -364,6 +364,32 @@ awlval* builtin_tail(awlenv* e, awlval* a) {
 
     awlval* v = awlval_take(a, 0);
     awlval_del(awlval_pop(v, 0));
+    return v;
+}
+
+awlval* builtin_first(awlenv* e, awlval* a) {
+    LASSERT_ARGCOUNT(a, 1, "first");
+    EVAL_ARGS(e, a);
+    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "first");
+    LASSERT_NONEMPTY(a, a->cell[0], "first");
+
+    awlval* v = awlval_take(a, 0);
+    while (v->count > 1) {
+        awlval_del(awlval_pop(v, 1));
+    }
+    return v;
+}
+
+awlval* builtin_last(awlenv* e, awlval* a) {
+    LASSERT_ARGCOUNT(a, 1, "last");
+    EVAL_ARGS(e, a);
+    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "last");
+    LASSERT_NONEMPTY(a, a->cell[0], "last");
+
+    awlval* v = awlval_take(a, 0);
+    while (v->count > 1) {
+        awlval_del(awlval_pop(v, 0));
+    }
     return v;
 }
 
@@ -612,6 +638,8 @@ void awlenv_add_builtins(awlenv* e) {
 
     awlenv_add_builtin(e, "head", builtin_head);
     awlenv_add_builtin(e, "tail", builtin_tail);
+    awlenv_add_builtin(e, "first", builtin_first);
+    awlenv_add_builtin(e, "last", builtin_last);
     awlenv_add_builtin(e, "list", builtin_list);
     awlenv_add_builtin(e, "eval", builtin_eval);
     awlenv_add_builtin(e, "join", builtin_join);
