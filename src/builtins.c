@@ -410,11 +410,11 @@ awlval* builtin_eval(awlenv* e, awlval* a) {
     return awlval_eval(e, x);
 }
 
-awlval* builtin_join(awlenv* e, awlval* a) {
+awlval* builtin_append(awlenv* e, awlval* a) {
     EVAL_ARGS(e, a);
 
     for (int i = 0; i < a->count; i++) {
-        LASSERT_TYPE(a, i, AWLVAL_QEXPR, "join");
+        LASSERT_TYPE(a, i, AWLVAL_QEXPR, "append");
     }
 
     awlval* x = awlval_pop(a, 0);
@@ -642,7 +642,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "last", builtin_last);
     awlenv_add_builtin(e, "list", builtin_list);
     awlenv_add_builtin(e, "eval", builtin_eval);
-    awlenv_add_builtin(e, "join", builtin_join);
+    awlenv_add_builtin(e, "append", builtin_append);
     awlenv_add_builtin(e, "cons", builtin_cons);
     awlenv_add_builtin(e, "len", builtin_len);
     awlenv_add_builtin(e, "init", builtin_init);
