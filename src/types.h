@@ -18,7 +18,9 @@ typedef enum {
     AWLVAL_SYM,
     AWLVAL_STR,
     AWLVAL_BOOL,
-    AWLVAL_FUN,
+    AWLVAL_BUILTIN,
+    AWLVAL_FUNC,
+
     AWLVAL_SEXPR,
     AWLVAL_QEXPR,
     AWLVAL_EEXPR
@@ -37,29 +39,30 @@ struct awlval {
     int count;
     awlval** cell;
 
-    /* basic types */
-    /* TODO: Certain compilers don't support anonymous
-       nested unions - figure out what the C standard mandates
-       union { */
+    /* collection types have length */
+    int length;
+
+    union {
+        /* basic types */
         char* err;
         long lng;
         double dbl;
         char* sym;
         char* str;
         bool bln;
-    /* }; */
 
-    /* collection types have length */
-    int length;
-
-    /* function types */
-    awlbuiltin builtin;
-    char* builtin_name;
-
-    awlenv* env;
-    awlval* formals;
-    awlval* body;
-    bool called;
+        /* function types */
+        struct {
+            awlbuiltin builtin;
+            char* builtin_name;
+        };
+        struct {
+            awlenv* env;
+            awlval* formals;
+            awlval* body;
+            bool called;
+        };
+    };
 };
 
 struct awlenv {

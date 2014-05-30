@@ -43,16 +43,16 @@ void awlval_print(awlval* v) {
             }
             break;
 
-        case AWLVAL_FUN:
-            if (v->builtin) {
-                printf("<builtin %s>", v->builtin_name);
-            } else {
-                printf("(fn ");
-                awlval_print(v->formals);
-                putchar(' ');
-                awlval_print(v->body);
-                putchar(')');
-            }
+        case AWLVAL_BUILTIN:
+            printf("<builtin %s>", v->builtin_name);
+            break;
+
+        case AWLVAL_FUNC:
+            printf("(fn ");
+            awlval_print(v->formals);
+            putchar(' ');
+            awlval_print(v->body);
+            putchar(')');
             break;
 
         case AWLVAL_SEXPR:

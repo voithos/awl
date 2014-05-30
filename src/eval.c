@@ -30,7 +30,7 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
                 awlval* x = awlval_eval_sexpr(e, v);
 
                 /* recursively evaluate results */
-                if (x->type == AWLVAL_FUN && x->called) {
+                if (x->type == AWLVAL_FUNC && x->called) {
                     AWLENV_DEL_RECURSING(e);
                     recursing = true;
 
@@ -91,9 +91,9 @@ awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
     EVAL_SINGLE_ARG(e, v, 0);
     awlval* f = awlval_pop(v, 0);
 
-    if (f->type != AWLVAL_FUN) {
+    if (f->type != AWLVAL_BUILTIN && f->type != AWLVAL_FUNC) {
         awlval* err = awlval_err("cannot evaluate %s; incorrect type for arg 0; got %s, expected %s",
-                awlval_type_name(AWLVAL_SEXPR), awlval_type_name(f->type), awlval_type_name(AWLVAL_FUN));
+                awlval_type_name(AWLVAL_SEXPR), awlval_type_name(f->type), awlval_type_name(AWLVAL_FUNC));
         awlval_del(v);
         awlval_del(f);
         return err;

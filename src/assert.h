@@ -3,7 +3,7 @@
 
 #define LASSERT(args, cond, fmt, ...) \
     if (!(cond)) { \
-        awlval* err = awlval_err(fmt, ##__VA_ARGS__); \
+        awlval* err = awlval_err(fmt, __VA_ARGS__); \
         awlval_del(args); \
         return err; \
     }

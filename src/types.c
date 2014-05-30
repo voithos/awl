@@ -20,7 +20,8 @@ char* awlval_type_name(awlval_type_t t) {
         case AWLVAL_ERR: return "Error";
         case AWLVAL_INT: return "Integer";
         case AWLVAL_FLOAT: return "Float";
-        case AWLVAL_FUN: return "Function";
+        case AWLVAL_BUILTIN: return "Builtin";
+        case AWLVAL_FUNC: return "Function";
         case AWLVAL_SYM: return "Symbol";
         case AWLVAL_STR: return "String";
         case AWLVAL_BOOL: return "Boolean";
@@ -90,7 +91,7 @@ awlval* awlval_bool(bool b) {
 
 awlval* awlval_fun(awlbuiltin builtin, char* builtin_name) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = AWLVAL_FUN;
+    v->type = AWLVAL_BUILTIN;
     v->builtin = builtin;
     v->builtin_name = malloc(strlen(builtin_name) + 1);
     strcpy(v->builtin_name, builtin_name);
@@ -99,7 +100,7 @@ awlval* awlval_fun(awlbuiltin builtin, char* builtin_name) {
 
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = AWLVAL_FUN;
+    v->type = AWLVAL_FUNC;
     v->builtin = NULL;
     v->env = awlenv_new();
     v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
@@ -144,14 +145,14 @@ void awlval_del(awlval* v) {
         case AWLVAL_FLOAT:
             break;
 
-        case AWLVAL_FUN:
-            if (v->builtin) {
-                free(v->builtin_name);
-            } else {
-                awlenv_del(v->env);
-                awlval_del(v->formals);
-                awlval_del(v->body);
-            }
+        case AWLVAL_BUILTIN:
+            free(v->builtin_name);
+            break;
+
+        case AWLVAL_FUNC:
+            awlenv_del(v->env);
+            awlval_del(v->formals);
+            awlval_del(v->body);
             break;
 
         case AWLVAL_ERR:
@@ -231,18 +232,18 @@ awlval* awlval_copy(awlval* v) {
     x->type = v->type;
 
     switch (v->type) {
-        case AWLVAL_FUN:
-            if (v->builtin) {
-                x->builtin = v->builtin;
-                x->builtin_name = malloc(strlen(v->builtin_name) + 1);
-                strcpy(x->builtin_name, v->builtin_name);
-            } else {
-                x->builtin = NULL;
-                x->env = awlenv_copy(v->env);
-                x->formals = awlval_copy(v->formals);
-                x->body = awlval_copy(v->body);
-                x->called = v->called;
-            }
+        case AWLVAL_BUILTIN:
+            x->builtin = v->builtin;
+            x->builtin_name = malloc(strlen(v->builtin_name) + 1);
+            strcpy(x->builtin_name, v->builtin_name);
+            break;
+
+        case AWLVAL_FUNC:
+            x->builtin = NULL;
+            x->env = awlenv_copy(v->env);
+            x->formals = awlval_copy(v->formals);
+            x->body = awlval_copy(v->body);
+            x->called = v->called;
             break;
 
         case AWLVAL_INT:
@@ -292,12 +293,12 @@ bool awlval_eq(awlval* x, awlval* y) {
     }
 
     switch (x->type) {
-        case AWLVAL_FUN:
-            if (x->builtin || y->builtin) {
-                return x->builtin == y->builtin;
-            } else {
-                return awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
-            }
+        case AWLVAL_BUILTIN:
+            return y->type == AWLVAL_BUILTIN && x->builtin == y->builtin;
+            break;
+
+        case AWLVAL_FUNC:
+            return y->type == AWLVAL_FUNC && awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
             break;
 
         case AWLVAL_INT:
