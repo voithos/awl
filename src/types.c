@@ -101,7 +101,6 @@ awlval* awlval_fun(awlbuiltin builtin, char* builtin_name) {
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_FUNC;
-    v->builtin = NULL;
     v->env = awlenv_new();
     v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
     v->formals = formals;
@@ -239,7 +238,6 @@ awlval* awlval_copy(awlval* v) {
             break;
 
         case AWLVAL_FUNC:
-            x->builtin = NULL;
             x->env = awlenv_copy(v->env);
             x->formals = awlval_copy(v->formals);
             x->body = awlval_copy(v->body);

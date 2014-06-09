@@ -108,7 +108,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
     /* calls a function if builtin, else fills in the corresponding
      * parameters, and lets awlval_eval perform tail call optimization
      */
-    if (f->builtin) {
+    if (f->type == AWLVAL_BUILTIN) {
         return f->builtin(e, a);
     }
 
