@@ -1,26 +1,38 @@
 UNAME := $(shell uname)
 
+# Compilation options
+#
 CC = cc
 CFLAGS = -std=c11 -Wall -pedantic
 LDFLAGS = -lm
 
+# Binary and directory names
+#
 BINARY = awl
+TESTBINARY = run-tests
 
 SRCDIR = src
-OBJDIR = obj
-BINDIR = bin
 TESTDIR = test
+BINDIR = bin
+OBJDIR = obj
+MAINOBJDIR = $(OBJDIR)/$(BINARY)
+TESTOBJDIR = $(OBJDIR)/$(TESTDIR)
 
 TARGET = $(BINDIR)/$(BINARY)
 CODE := $(wildcard $(SRCDIR)/*.c)
+HEADERS := $(wildcard $(SRCDIR)/*.h)
 ifneq ($(UNAME), Linux)
     CODE := $(filter-out $(SRCDIR)/linenoise.c, $(CODE))
+    HEADERS := $(filter-out $(SRCDIR)/linenoise.h, $(HEADERS))
 endif
-OBJECTS = $(addprefix $(OBJDIR)/, $(notdir $(CODE:.c=.o)))
+OBJECTS = $(addprefix $(MAINOBJDIR)/, $(notdir $(CODE:.c=.o)))
+DEPS = $(CODE:.c=.d)
 
-TESTTARGET = $(BINDIR)/run-tests
+TESTTARGET = $(BINDIR)/$(TESTBINARY)
 TESTCODE = $(wildcard $(TESTDIR)/*.c)
-TESTOBJECTS = $(addprefix $(OBJDIR)/$(TESTDIR)/, $(notdir $(TESTCODE:.c=.o))) $(filter-out $(OBJDIR)/awl.o, $(OBJECTS))
+TESTHEADERS = $(wildcard $(TESTDIR)/*.h)
+TESTOBJECTS = $(addprefix $(TESTOBJDIR)/, $(notdir $(TESTCODE:.c=.o))) $(filter-out $(MAINOBJDIR)/awl.o, $(OBJECTS))
+TESTDEPS = $(TESTCODE:.c=.d)
 
 
 all: $(TARGET)
@@ -31,27 +43,36 @@ debug: $(TARGET)
 test: $(TESTTARGET)
 	$(TESTTARGET)
 
-$(BINDIR):
-	mkdir -p $(BINDIR)
+# Directory creation
+$(BINDIR) $(OBJDIR) $(MAINOBJDIR) $(TESTOBJDIR):
+	mkdir -p $@
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+# Dependency management
+$(SRCDIR)/%.d: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -MM -MG -MT"$@" -MT"$(<:$(SRCDIR)%.c=$(MAINOBJDIR)%.o)" -MF"$@" "$<"
 
-$(OBJDIR)/$(TESTDIR):
-	mkdir -p $(OBJDIR)/$(TESTDIR)
+-include $(DEPS)
 
-$(OBJECTS): | $(OBJDIR)
+$(OBJECTS): | $(MAINOBJDIR)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+# Compilation
+$(MAINOBJDIR)/%.o:
+	$(CC) $(CFLAGS) -c $(@:$(MAINOBJDIR)%.o=$(SRCDIR)%.c) -o $@
 
 $(TARGET): $(OBJECTS) | $(BINDIR)
 	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
-$(TESTOBJECTS): | $(OBJDIR)/$(TESTDIR)
+# Tests dependency management
+$(TESTDIR)/%.d: $(TESTDIR)/%.c
+	$(CC) $(CFLAGS) -MM -MG -MT"$@" -MT"$(<:$(TESTDIR)%.c=$(TESTOBJDIR)%.o)" -MF"$@" "$<"
 
-$(OBJDIR)/$(TESTDIR)/%.o: $(TESTDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+-include $(TESTDEPS)
+
+$(TESTOBJECTS): | $(TESTOBJDIR)
+
+# Tests compilation
+$(TESTOBJDIR)/%.o:
+	$(CC) $(CFLAGS) -c $(@:$(TESTOBJDIR)%.o=$(TESTDIR)%.c) -o $@
 
 $(TESTTARGET): CFLAGS += -g
 $(TESTTARGET): $(TESTOBJECTS) | $(BINDIR)
@@ -60,4 +81,4 @@ $(TESTTARGET): $(TESTOBJECTS) | $(BINDIR)
 .PHONY: clean
 
 clean:
-	rm -f $(TARGET) $(OBJDIR)/*.o $(OBJDIR)/$(TESTDIR)/*.o $(BINDIR)/*
+	rm -f $(TARGET) $(OBJDIR)/*.o $(MAINOBJDIR)/*.o $(TESTOBJDIR)/*.o $(BINDIR)/*

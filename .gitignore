@@ -3,3 +3,4 @@ obj/
 tags
 awl
 *.hist
+*.d
