@@ -35,10 +35,13 @@ TESTOBJECTS = $(addprefix $(TESTOBJDIR)/, $(notdir $(TESTCODE:.c=.o))) $(filter-
 TESTDEPS = $(TESTCODE:.c=.d)
 
 
-all: $(TARGET)
+all: debug
 
 debug: CFLAGS += -g
 debug: $(TARGET)
+
+release: CFLAGS += -O3
+release: $(TARGET)
 
 test: $(TESTTARGET)
 	$(TESTTARGET)
