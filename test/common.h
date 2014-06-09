@@ -14,10 +14,10 @@
     } \
 }
 
-#define AWL_ASSERT_EXPR(e, s, ...) { \
+#define AWL_ASSERT_CHAINED(e, s, chain) { \
     { \
         awlval* v = eval_string(e, s); \
-        { __VA_ARGS__ } \
+        { chain } \
         awlval_del(v); \
     } \
 }
