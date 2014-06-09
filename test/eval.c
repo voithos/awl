@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-void test_env(void) {
+void test_eval_env(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "x", AWLVAL_ERR);
@@ -20,6 +20,8 @@ void test_eval_qexpr(void) {
     AWL_ASSERT_TYPE(e, "(x)", AWLVAL_ERR);
     AWL_ASSERT_TYPE(e, "{x}", AWLVAL_QEXPR);
     AWL_ASSERT_TYPE(e, "{x (y z)}", AWLVAL_QEXPR);
+    AWL_ASSERT_TYPE(e, ":x", AWLVAL_QEXPR);
+    AWL_ASSERT_TYPE(e, ":5", AWLVAL_QEXPR);
 
     teardown_test(e);
 }
@@ -35,7 +37,7 @@ void test_eval_eexpr(void) {
 }
 
 void suite_eval(void) {
-    pt_add_test(test_env, "Test Env", "Suite Eval");
-    pt_add_test(test_eval_qexpr, "Test Eval QExpr", "Suite Eval");
-    pt_add_test(test_eval_eexpr, "Test Eval EExpr", "Suite Eval");
+    pt_add_test(test_eval_env, "Test Env", "Suite Eval");
+    pt_add_test(test_eval_qexpr, "Test QExpr", "Suite Eval");
+    pt_add_test(test_eval_eexpr, "Test EExpr", "Suite Eval");
 }

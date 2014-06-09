@@ -14,6 +14,28 @@
     } \
 }
 
+#define AWL_ASSERT_EXPR(e, s, ...) { \
+    { \
+        awlval* v = eval_string(e, s); \
+        { __VA_ARGS__ } \
+        awlval_del(v); \
+    } \
+}
+
+/* Inner-assertions */
+#define AWL_IASSERT(a) { \
+    AWL_ASSERT(a, v); \
+}
+
+#define AWL_IASSERT_TYPE(t) { \
+    AWL_IASSERT(v->type == t); \
+}
+
+#define AWL_IASSERT_COUNT(n) { \
+    AWL_IASSERT(v->count == n); \
+}
+
+/* Special case assertions */
 #define AWL_ASSERT_TYPE(e, s, t) { \
     { \
         awlval* v = eval_string(e, s); \

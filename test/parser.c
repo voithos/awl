@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-void test_numeric(void) {
+void test_parser_numeric(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "15", AWLVAL_INT);
@@ -19,7 +19,7 @@ void test_numeric(void) {
     teardown_test(e);
 }
 
-void test_string(void) {
+void test_parser_string(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "\"mystr\"", AWLVAL_STR);
@@ -28,7 +28,7 @@ void test_string(void) {
     teardown_test(e);
 }
 
-void test_bool(void) {
+void test_parser_bool(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "true", AWLVAL_BOOL);
@@ -37,7 +37,7 @@ void test_bool(void) {
     teardown_test(e);
 }
 
-void test_qexpr(void) {
+void test_parser_qexpr(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "{}", AWLVAL_QEXPR);
@@ -49,8 +49,8 @@ void test_qexpr(void) {
 }
 
 void suite_parser(void) {
-    pt_add_test(test_numeric, "Test Numeric", "Suite Parser");
-    pt_add_test(test_string, "Test String", "Suite Parser");
-    pt_add_test(test_bool, "Test Bool", "Suite Parser");
-    pt_add_test(test_qexpr, "Test QExpr", "Suite Parser");
+    pt_add_test(test_parser_numeric, "Test Numeric", "Suite Parser");
+    pt_add_test(test_parser_string, "Test String", "Suite Parser");
+    pt_add_test(test_parser_bool, "Test Bool", "Suite Parser");
+    pt_add_test(test_parser_qexpr, "Test QExpr", "Suite Parser");
 }
