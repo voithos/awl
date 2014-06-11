@@ -2,7 +2,7 @@ UNAME := $(shell uname)
 
 # Compilation options
 #
-CC = cc
+CC := cc
 CFLAGS = -std=c11 -Wall -pedantic
 LDFLAGS = -lm
 
@@ -19,6 +19,9 @@ MAINOBJDIR = $(OBJDIR)/$(BINARY)
 TESTOBJDIR = $(OBJDIR)/$(TESTDIR)
 
 TARGET = $(BINDIR)/$(BINARY)
+BITCODE = $(TARGET).bc
+WEBTARGET = $(BINARY).js
+WEBMAP = $(WEBTARGET).map
 CODE := $(wildcard $(SRCDIR)/*.c)
 HEADERS := $(wildcard $(SRCDIR)/*.h)
 ifneq ($(UNAME), Linux)
@@ -34,6 +37,9 @@ TESTHEADERS = $(wildcard $(TESTDIR)/*.h)
 TESTOBJECTS = $(addprefix $(TESTOBJDIR)/, $(notdir $(TESTCODE:.c=.o))) $(filter-out $(MAINOBJDIR)/awl.o, $(OBJECTS))
 TESTDEPS = $(TESTCODE:.c=.d)
 
+CLEAN = rm -f $(TARGET) $(BITCODE) $(WEBTARGET) $(WEBMAP) $(OBJDIR)/*.o $(MAINOBJDIR)/*.o $(TESTOBJDIR)/*.o $(BINDIR)/*
+
+.PHONY: debug release clean web
 
 all: debug
 
@@ -42,6 +48,16 @@ debug: $(TARGET)
 
 release: CFLAGS += -O3
 release: $(TARGET)
+
+web: CC := emcc
+web: clean $(WEBTARGET)
+	$(CLEAN)
+	mv $(WEBTARGET).tmp $(WEBTARGET)
+
+$(WEBTARGET): $(TARGET)
+	mv $(TARGET) $(BITCODE)
+	$(CC) $(BITCODE) -o $(WEBTARGET)
+	mv $(WEBTARGET) $(WEBTARGET).tmp
 
 test: $(TESTTARGET)
 	$(TESTTARGET)
@@ -81,7 +97,5 @@ $(TESTTARGET): CFLAGS += -g
 $(TESTTARGET): $(TESTOBJECTS) | $(BINDIR)
 	$(CC) $(LDFLAGS) $(TESTOBJECTS) -o $@
 
-.PHONY: clean
-
 clean:
-	rm -f $(TARGET) $(OBJDIR)/*.o $(MAINOBJDIR)/*.o $(TESTOBJDIR)/*.o $(BINDIR)/*
+	$(CLEAN)
