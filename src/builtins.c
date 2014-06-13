@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <string.h>
 #include <math.h>
+#include <sys/stat.h>
 
 #include "assert.h"
 #include "eval.h"
@@ -553,14 +554,54 @@ awlval* builtin_lambda(awlenv* e, awlval* a) {
     return awlval_lambda(e, formals, body);
 }
 
-awlval* builtin_load(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "load");
+awlval* builtin_import(awlenv* e, awlval* a) {
+    LASSERT_ARGCOUNT(a, 1, "import");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_STR, "load");
+    LASSERT_TYPE(a, 0, AWLVAL_STR, "import");
+
+    // Check the import path
+    char* importPath = malloc(strlen(a->cell[0]->str) + 5); // extra space for extension
+    strcpy(importPath, a->cell[0]->str);
+    strcat(importPath, ".awl");
+
+    // Attempt twice: once with the .awl extension, and once with the raw path
+    for (int attempt = 0; attempt < 2; attempt++) {
+        struct stat s;
+        int statErr = stat(importPath, &s);
+
+        bool hasError = statErr || !S_ISREG(s.st_mode);
+
+        // Keep going if we've successfully found a file
+        if (!hasError) {
+            break;
+        } else {
+            free(importPath);
+
+            // Try the raw path if we have once more attempt
+            if (attempt == 0) {
+                importPath = malloc(strlen(a->cell[0]->str) + 1);
+                strcpy(importPath, a->cell[0]->str);
+            } else {
+                // Return error otherwise
+                awlval* errval;
+                if (statErr && errno == ENOENT) {
+                    errval = awlval_err("path '%s' does not exist", a->cell[0]->str);
+                } else if (!S_ISREG(s.st_mode)) {
+                    errval = awlval_err("path '%s' is not a regular file", a->cell[0]->str);
+                } else {
+                    errval = awlval_err("unknown import error");
+                }
+                awlval_del(a);
+                return errval;
+            }
+        }
+    }
 
     awlval* v;
     char* err;
-    if (awlval_parse_file(a->cell[0]->str, &v, &err)) {
+    if (awlval_parse_file(importPath, &v, &err)) {
+        free(importPath);
+
         while (v->count) {
             awlval* x = awlval_eval(e, awlval_pop(v, 0));
             if (x->type == AWLVAL_ERR) {
@@ -574,7 +615,9 @@ awlval* builtin_load(awlenv* e, awlval* a) {
 
         return awlval_qexpr();
     } else {
-        awlval* errval = awlval_err("could not load %s", err);
+        free(importPath);
+
+        awlval* errval = awlval_err("could not import %s", err);
         free(err);
         awlval_del(a);
 
@@ -652,7 +695,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "global", builtin_global);
     awlenv_add_builtin(e, "fn", builtin_lambda);
 
-    awlenv_add_builtin(e, "load", builtin_load);
+    awlenv_add_builtin(e, "import", builtin_import);
     awlenv_add_builtin(e, "print", builtin_print);
     awlenv_add_builtin(e, "println", builtin_println);
     awlenv_add_builtin(e, "error", builtin_error);

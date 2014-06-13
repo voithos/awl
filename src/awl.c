@@ -15,7 +15,7 @@
 void run_scripts(awlenv* e, int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
         awlval* args = awlval_add(awlval_sexpr(), awlval_str(argv[i]));
-        awlval* x = builtin_load(e, args);
+        awlval* x = builtin_import(e, args);
 
         if (x->type == AWLVAL_ERR) {
             awlval_println(x);

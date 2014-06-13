@@ -46,7 +46,7 @@ awlval* builtin_global(awlenv* e, awlval* a);
 
 awlval* builtin_lambda(awlenv* e, awlval* a);
 
-awlval* builtin_load(awlenv* e, awlval* a);
+awlval* builtin_import(awlenv* e, awlval* a);
 awlval* builtin_print(awlenv* e, awlval* a);
 awlval* builtin_println(awlenv* e, awlval* a);
 awlval* builtin_error(awlenv* e, awlval* a);
