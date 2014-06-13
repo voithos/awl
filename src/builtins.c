@@ -179,6 +179,12 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
                     x->lng = (long)ans;
                 }
             }
+
+            // Check for NaN
+            if (x->type == AWLVAL_FLOAT && isnan(x->dbl)) {
+                awlval_del(x);
+                x = awlval_err("pow resulted in NaN");
+            }
         }
 
         awlval_del(y);
