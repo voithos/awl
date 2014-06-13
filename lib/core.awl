@@ -1,0 +1,6 @@
+(global nil {})
+
+(global nil? (fn (x) (== x nil)))
+(global do (fn (& l) (if (nil? l)
+                     nil
+                     (last l))))

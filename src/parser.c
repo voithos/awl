@@ -27,7 +27,7 @@ void setup_parser() {
         bool    : \"true\" | \"false\" ;                                    \
         string  : /\"(\\\\.|[^\"])*\"/ | /'(\\\\.|[^'])*'/ ;                \
         comment : /;[^\\r\\n]*/ ;                                           \
-        symbol  : /[a-zA-Z0-9_+\\-*\\/=<>!&@%^$]+/ ;                        \
+        symbol  : /[a-zA-Z0-9_+\\-*\\/=<>!\\?&@%^$]+/ ;                     \
         sexpr   : '(' <expr>* ')' ;                                         \
         qexpr   : '{' (<expr> | <eexpr>)* '}' | ':' <expr> ;                \
         eexpr   : '\\\\' <expr> ;                                           \
