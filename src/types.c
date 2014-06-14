@@ -226,6 +226,23 @@ awlval* awlval_join(awlval* x, awlval* y) {
     return x;
 }
 
+void awlval_maybe_promote_numeric(awlval* a, awlval* b) {
+    if (!(ISNUMERIC(a->type) && ISNUMERIC(b->type))) {
+        return;
+    }
+    if (a->type == AWLVAL_FLOAT || b->type == AWLVAL_FLOAT) {
+        awlval_promote_numeric(a);
+        awlval_promote_numeric(b);
+    }
+}
+
+void awlval_promote_numeric(awlval* x) {
+    if (x->type != AWLVAL_FLOAT) {
+        x->type = AWLVAL_FLOAT;
+        x->dbl = (double)x->lng;
+    }
+}
+
 awlval* awlval_copy(awlval* v) {
     awlval* x = malloc(sizeof(awlval));
     x->type = v->type;
@@ -286,6 +303,7 @@ awlval* awlval_copy(awlval* v) {
 }
 
 bool awlval_eq(awlval* x, awlval* y) {
+    awlval_maybe_promote_numeric(x, y);
     if (x->type != y->type) {
         return false;
     }

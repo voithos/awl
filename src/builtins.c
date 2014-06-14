@@ -27,27 +27,10 @@
 #define BINARY_OP(a, b, op) { \
     switch (a->type) { \
         case AWLVAL_INT: \
-            switch (b->type) { \
-                case AWLVAL_INT: \
-                    a->lng = a->lng op b->lng; \
-                    break; \
-                case AWLVAL_FLOAT: \
-                    a->type = AWLVAL_FLOAT; \
-                    a->dbl = a->lng op b->dbl; \
-                    break; \
-                default: break; \
-            } \
+            a->lng = a->lng op b->lng; \
             break; \
         case AWLVAL_FLOAT: \
-            switch (b->type) { \
-                case AWLVAL_INT: \
-                    a->dbl = a->dbl op b->lng; \
-                    break; \
-                case AWLVAL_FLOAT: \
-                    a->dbl = a->dbl op b->dbl; \
-                    break; \
-                default: break; \
-            } \
+            a->dbl = a->dbl op b->dbl; \
             break; \
         default: break; \
     } \
@@ -56,26 +39,10 @@
 #define BINARY_OP_RES(res, a, b, op) { \
     switch (a->type) { \
         case AWLVAL_INT: \
-            switch (b->type) { \
-                case AWLVAL_INT: \
-                    res = a->lng op b->lng; \
-                    break; \
-                case AWLVAL_FLOAT: \
-                    res = a->lng op b->dbl; \
-                    break; \
-                default: break; \
-            } \
+            res = a->lng op b->lng; \
             break; \
         case AWLVAL_FLOAT: \
-            switch (b->type) { \
-                case AWLVAL_INT: \
-                    res = a->dbl op b->lng; \
-                    break; \
-                case AWLVAL_FLOAT: \
-                    res = a->dbl op b->dbl; \
-                    break; \
-                default: break; \
-            } \
+            res = a->dbl op b->dbl; \
             break; \
         default: break; \
     } \
@@ -84,27 +51,10 @@
 #define BINARY_OP_FUNC(a, b, func) { \
     switch (a->type) { \
         case AWLVAL_INT: \
-            switch (b->type) { \
-                case AWLVAL_INT: \
-                    a->lng = func (a->lng, b->lng); \
-                    break; \
-                case AWLVAL_FLOAT: \
-                    a->type = AWLVAL_FLOAT; \
-                    a->dbl = func (a->lng, b->dbl); \
-                    break; \
-                default: break; \
-            } \
+            a->lng = func (a->lng, b->lng); \
             break; \
         case AWLVAL_FLOAT: \
-            switch (b->type) { \
-                case AWLVAL_INT: \
-                    a->dbl = func (a->dbl, b->lng); \
-                    break; \
-                case AWLVAL_FLOAT: \
-                    a->dbl = func (a->dbl, b->dbl); \
-                    break; \
-                default: break; \
-            } \
+            a->dbl = func (a->dbl, b->dbl); \
             break; \
         default: break; \
     } \
@@ -135,6 +85,8 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
     while (a->count > 0) {
         awlval* y = awlval_pop(a, 0);
 
+        awlval_maybe_promote_numeric(x, y);
+
         if (strcmp(op, "+") == 0) { BINARY_OP(x, y, +); }
         if (strcmp(op, "-") == 0) { BINARY_OP(x, y, -); }
         if (strcmp(op, "*") == 0) { BINARY_OP(x, y, *); }
@@ -152,8 +104,8 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
             if (strcmp(op, "/") == 0) {
                 /* Handle fractional integer division */
                 if (x->type == AWLVAL_INT && y->type == AWLVAL_INT && x->lng % y->lng != 0) {
-                    x->type = AWLVAL_FLOAT;
-                    x->dbl = (double)x->lng;
+                    awlval_promote_numeric(x);
+                    awlval_promote_numeric(y);
                 }
 
                 BINARY_OP(x, y, /);
@@ -226,6 +178,8 @@ awlval* builtin_ord_op(awlenv* e, awlval* a, char* op) {
 
     awlval* x = awlval_pop(a, 0);
     awlval* y = awlval_pop(a, 0);
+
+    awlval_maybe_promote_numeric(x, y);
 
     bool res;
     if (strcmp(op, ">") == 0) {
