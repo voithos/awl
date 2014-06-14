@@ -118,7 +118,58 @@ void test_builtin_pow() {
             AWL_IASSERT(v->type == AWLVAL_FLOAT)
             AWL_IASSERT(v->dbl == 2.0L));
 
+    // Square root of a negative number
     AWL_ASSERT_TYPE(e, "(^ -4 0.5)", AWLVAL_ERR);
+
+    teardown_test(e);
+}
+
+void test_builtin_equality() {
+    awlenv* e = setup_test();
+
+    // Numeric
+    AWL_ASSERT_CHAINED(e, "(== 5 5)",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == true));
+
+    AWL_ASSERT_CHAINED(e, "(== 5 5.0)",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == true));
+
+    // Strings
+    AWL_ASSERT_CHAINED(e, "(== 'a' 'a')",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == true));
+
+    AWL_ASSERT_CHAINED(e, "(== 'a' 'ab')",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == false));
+
+    // Booleans
+    AWL_ASSERT_CHAINED(e, "(== true false)",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == false));
+
+    AWL_ASSERT_CHAINED(e, "(== false false)",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == true));
+
+    // QExprs
+    AWL_ASSERT_CHAINED(e, "(== {} {})",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == true));
+
+    AWL_ASSERT_CHAINED(e, "(== {x} {})",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == false));
+
+    AWL_ASSERT_CHAINED(e, "(== {x} {x})",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == true));
+
+    AWL_ASSERT_CHAINED(e, "(== {x {1 2 z}} {x {1 2 z}})",
+            AWL_IASSERT(v->type == AWLVAL_BOOL)
+            AWL_IASSERT(v->bln == true));
 
     teardown_test(e);
 }
@@ -128,4 +179,5 @@ void suite_builtin(void) {
     pt_add_test(test_builtin_div, "Test Div", "Suite Builtin");
     pt_add_test(test_builtin_mod, "Test Modulo", "Suite Builtin");
     pt_add_test(test_builtin_pow, "Test Pow", "Suite Builtin");
+    pt_add_test(test_builtin_equality, "Test Equality", "Suite Builtin");
 }
