@@ -2,9 +2,9 @@ UNAME := $(shell uname)
 
 # Compilation options
 #
-CC := cc
-CFLAGS = -std=c11 -Wall -pedantic
-LDFLAGS = -lm
+CC ?= cc
+CFLAGS ?= -std=c11 -Wall -pedantic
+LDFLAGS ?= -lm
 
 # Binary and directory names
 #
