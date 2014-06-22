@@ -28,6 +28,7 @@ char* awlval_type_name(awlval_type_t t) {
         case AWLVAL_SEXPR: return "S-Expression";
         case AWLVAL_QEXPR: return "Q-Expression";
         case AWLVAL_EEXPR: return "E-Expression";
+        case AWLVAL_CEXPR: return "C-Expression";
         default: return "Unknown";
     }
 }
@@ -136,6 +137,15 @@ awlval* awlval_eexpr(void) {
     return v;
 }
 
+awlval* awlval_cexpr(void) {
+    awlval* v = malloc(sizeof(awlval));
+    v->type = AWLVAL_CEXPR;
+    v->count = 0;
+    v->length = 0;
+    v->cell = NULL;
+    return v;
+}
+
 void awlval_del(awlval* v) {
     switch (v->type) {
         case AWLVAL_INT:
@@ -172,6 +182,7 @@ void awlval_del(awlval* v) {
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
         case AWLVAL_EEXPR:
+        case AWLVAL_CEXPR:
             for (int i = 0; i < v->count; i++) {
                 awlval_del(v->cell[i]);
             }
@@ -220,6 +231,25 @@ awlval* awlval_take(awlval* v, int i) {
 awlval* awlval_join(awlval* x, awlval* y) {
     while (y->count) {
         x = awlval_add(x, awlval_pop(y, 0));
+    }
+
+    awlval_del(y);
+    return x;
+}
+
+awlval* awlval_insert(awlval* x, awlval* y, int i) {
+    x->count++;
+    x->length++;
+    x->cell = realloc(x->cell, sizeof(awlval*) * x->count);
+
+    memmove(&x->cell[i + 1], &x->cell[i], sizeof(awlval*) * (x->count - i - 1));
+    x->cell[i] = y;
+    return x;
+}
+
+awlval* awlval_shift(awlval* x, awlval* y, int i) {
+    while (y->count) {
+        x = awlval_insert(x, awlval_pop(y, y->count - 1), i);
     }
 
     awlval_del(y);
@@ -291,6 +321,7 @@ awlval* awlval_copy(awlval* v) {
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
         case AWLVAL_EEXPR:
+        case AWLVAL_CEXPR:
             x->count = v->count;
             x->cell = malloc(sizeof(awlval*) * x->count);
             for (int i = 0; i < x->count; i++) {
@@ -344,6 +375,7 @@ bool awlval_eq(awlval* x, awlval* y) {
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
         case AWLVAL_EEXPR:
+        case AWLVAL_CEXPR:
             if (x->count != y->count) {
                 return false;
             }

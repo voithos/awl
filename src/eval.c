@@ -47,7 +47,7 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
 
             case AWLVAL_QEXPR:
             {
-                awlval* x = awlval_eval_inner_eexpr(e, v);
+                awlval* x = awlval_eval_inside_qexpr(e, v);
                 AWLENV_DEL_RECURSING(e);
                 return x;
                 break;
@@ -172,15 +172,27 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
     return awlval_copy(f);
 }
 
-awlval* awlval_eval_inner_eexpr(awlenv* e, awlval* v) {
+awlval* awlval_eval_inside_qexpr(awlenv* e, awlval* v) {
     switch (v->type) {
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
         {
             for (int i = 0; i < v->count; i++) {
-                v->cell[i] = awlval_eval_inner_eexpr(e, v->cell[i]);
-                if (v->cell[i]->type == AWLVAL_ERR) {
-                    return awlval_take(v, i);
+                // Special case fo C-Expressions
+                if (v->cell[i]->type == AWLVAL_CEXPR) {
+                    awlval* cexpr = awlval_eval_cexpr(e, awlval_pop(v, i));
+                    if (cexpr->type == AWLVAL_ERR) {
+                        awlval_del(v);
+                        return cexpr;
+                    }
+
+                    // Populate current container with result of CExpr
+                    v = awlval_shift(v, cexpr, i);
+                } else {
+                    v->cell[i] = awlval_eval_inside_qexpr(e, v->cell[i]);
+                    if (v->cell[i]->type == AWLVAL_ERR) {
+                        return awlval_take(v, i);
+                    }
                 }
             }
             return v;
@@ -198,4 +210,16 @@ awlval* awlval_eval_inner_eexpr(awlenv* e, awlval* v) {
             return v;
             break;
     }
+}
+
+awlval* awlval_eval_cexpr(awlenv* e, awlval* v) {
+    awlval* res = awlval_eval(e, awlval_take(v, 0));
+    if (res->type == AWLVAL_ERR) {
+        return res;
+    }
+    if (res->type != AWLVAL_QEXPR) {
+        awlval_del(res);
+        return awlval_err("result of %s must be %s", awlval_type_name(AWLVAL_CEXPR), awlval_type_name(AWLVAL_QEXPR));
+    }
+    return res;
 }

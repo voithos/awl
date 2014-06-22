@@ -23,6 +23,7 @@ awlval* awlval_eval_arg(awlenv* e, awlval* v, int arg);
 awlval* awlval_eval_args(awlenv* e, awlval* v);
 awlval* awlval_eval_sexpr(awlenv* e, awlval* v);
 awlval* awlval_call(awlenv* e, awlval* f, awlval* a);
-awlval* awlval_eval_inner_eexpr(awlenv* e, awlval* v);
+awlval* awlval_eval_inside_qexpr(awlenv* e, awlval* v);
+awlval* awlval_eval_cexpr(awlenv* e, awlval* v);
 
 #endif

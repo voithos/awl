@@ -1,5 +1,6 @@
 ## Language features
 - macros! will allow nicely defined builtins
+- dictionaries: possible syntax
 - conversion functions between builtin types
 - more arithmetic operators
     - truncating division (div) ?

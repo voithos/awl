@@ -70,6 +70,10 @@ void awlval_print(awlval* v) {
         case AWLVAL_EEXPR:
             awlval_expr_print(v, '\\', '\0');
             break;
+
+        case AWLVAL_CEXPR:
+            awlval_expr_print(v, '@', '\0');
+            break;
     }
 }
 

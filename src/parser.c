@@ -16,6 +16,7 @@ void setup_parser() {
     Sexpr = mpc_new("sexpr");
     Qexpr = mpc_new("qexpr");
     EExpr = mpc_new("eexpr");
+    CExpr = mpc_new("cexpr");
     Expr = mpc_new("expr");
     Awl = mpc_new("awl");
 
@@ -27,19 +28,20 @@ void setup_parser() {
         bool    : \"true\" | \"false\" ;                                    \
         string  : /\"(\\\\.|[^\"])*\"/ | /'(\\\\.|[^'])*'/ ;                \
         comment : /;[^\\r\\n]*/ ;                                           \
-        symbol  : /[a-zA-Z0-9_+\\-*\\/=<>!\\?&@%^$]+/ ;                     \
+        symbol  : /[a-zA-Z0-9_+\\-*\\/=<>!\\?&%^$]+/ ;                      \
         sexpr   : '(' <expr>* ')' ;                                         \
-        qexpr   : '{' (<expr> | <eexpr>)* '}' | ':' <expr> ;                \
+        qexpr   : '{' (<expr> | <eexpr> | <cexpr>)* '}' | ':' <expr> ;      \
         eexpr   : '\\\\' <expr> ;                                           \
+        cexpr   : '@' <expr> ;                                              \
         expr    : <number> | <bool> | <string> | <symbol> |                 \
                   <comment> | <sexpr> | <qexpr> ;                           \
         awl     : /^/ <expr>* /$/ ;                                         \
         ",
-        Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, Expr, Awl);
+        Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
 }
 
 void teardown_parser() {
-    mpc_cleanup(11, Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, Expr, Awl);
+    mpc_cleanup(11, Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
 }
 
 bool awlval_parse(char* input, awlval** v, char** err) {
@@ -99,6 +101,9 @@ awlval* awlval_read(mpc_ast_t* t) {
     else if (strstr(t->tag, "eexpr")) {
         x = awlval_eexpr();
     }
+    else if (strstr(t->tag, "cexpr")) {
+        x = awlval_cexpr();
+    }
 
     for (int i = 0; i < t->children_num; i++) {
         if (strcmp(t->children[i]->contents, "(") == 0) { continue; }
@@ -107,6 +112,7 @@ awlval* awlval_read(mpc_ast_t* t) {
         if (strcmp(t->children[i]->contents, "}") == 0) { continue; }
         if (strcmp(t->children[i]->contents, ":") == 0) { continue; }
         if (strcmp(t->children[i]->contents, "\\") == 0) { continue; }
+        if (strcmp(t->children[i]->contents, "@") == 0) { continue; }
         if (strcmp(t->children[i]->tag, "regex") == 0) { continue; }
         if (strstr(t->children[i]->tag, "comment")) { continue; }
         x = awlval_add(x, awlval_read(t->children[i]));

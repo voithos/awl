@@ -23,7 +23,8 @@ typedef enum {
 
     AWLVAL_SEXPR,
     AWLVAL_QEXPR,
-    AWLVAL_EEXPR
+    AWLVAL_EEXPR,
+    AWLVAL_CEXPR
 } awlval_type_t;
 
 #define ISNUMERIC(t) (t == AWLVAL_INT || t == AWLVAL_FLOAT)
@@ -88,6 +89,7 @@ awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_sexpr(void);
 awlval* awlval_qexpr(void);
 awlval* awlval_eexpr(void);
+awlval* awlval_cexpr(void);
 
 /* awlval manipulation functions */
 void awlval_del(awlval* v);
@@ -96,6 +98,8 @@ awlval* awlval_add_front(awlval* v, awlval* x);
 awlval* awlval_pop(awlval* v, int i);
 awlval* awlval_take(awlval* v, int i);
 awlval* awlval_join(awlval* x, awlval* y);
+awlval* awlval_insert(awlval* x, awlval* y, int i);
+awlval* awlval_shift(awlval* x, awlval* y, int i);
 void awlval_maybe_promote_numeric(awlval* a, awlval* b);
 void awlval_promote_numeric(awlval* a);
 awlval* awlval_copy(awlval* v);
