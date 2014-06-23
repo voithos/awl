@@ -6,6 +6,7 @@
 #include "../src/eval.h"
 #include "../src/repl.h"
 #include "../src/print.h"
+#include "../src/util.h"
 
 #define AWL_ASSERT(a, v) { \
     PT_ASSERT(a); \

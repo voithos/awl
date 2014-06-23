@@ -11,6 +11,7 @@
 #include "eval.h"
 #include "parser.h"
 #include "print.h"
+#include "util.h"
 
 #define UNARY_OP(a, op) { \
     switch (a->type) { \
@@ -78,7 +79,7 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
     }
 
     awlval* x = awlval_pop(a, 0);
-    if ((strcmp(op, "-") == 0) && a->count == 0) {
+    if (streq(op, "-") && a->count == 0) {
         UNARY_OP(x, -);
     }
 
@@ -87,10 +88,10 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
 
         awlval_maybe_promote_numeric(x, y);
 
-        if (strcmp(op, "+") == 0) { BINARY_OP(x, y, +); }
-        if (strcmp(op, "-") == 0) { BINARY_OP(x, y, -); }
-        if (strcmp(op, "*") == 0) { BINARY_OP(x, y, *); }
-        if (strcmp(op, "/") == 0 || strcmp(op, "%") == 0) {
+        if (streq(op, "+")) { BINARY_OP(x, y, +); }
+        if (streq(op, "-")) { BINARY_OP(x, y, -); }
+        if (streq(op, "*")) { BINARY_OP(x, y, *); }
+        if (streq(op, "/") || streq(op, "%")) {
             /* Handle division or modulo by zero */
             if ((y->type == AWLVAL_INT && y->lng == 0) ||
                 (y->type == AWLVAL_FLOAT && y->dbl == 0)) {
@@ -101,7 +102,7 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
                 break;
             }
 
-            if (strcmp(op, "/") == 0) {
+            if (streq(op, "/")) {
                 /* Handle fractional integer division */
                 if (x->type == AWLVAL_INT && y->type == AWLVAL_INT && x->lng % y->lng != 0) {
                     awlval_promote_numeric(x);
@@ -118,7 +119,7 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
                 }
             }
         }
-        if (strcmp(op, "^") == 0) {
+        if (streq(op, "^")) {
             if (x->type == AWLVAL_FLOAT || y->type == AWLVAL_FLOAT) {
                 BINARY_OP_FUNC(x, y, pow);
             } else {
@@ -182,16 +183,16 @@ awlval* builtin_ord_op(awlenv* e, awlval* a, char* op) {
     awlval_maybe_promote_numeric(x, y);
 
     bool res;
-    if (strcmp(op, ">") == 0) {
+    if (streq(op, ">")) {
         BINARY_OP_RES(res, x, y, >);
     }
-    if (strcmp(op, "<") == 0) {
+    if (streq(op, "<")) {
         BINARY_OP_RES(res, x, y, <);
     }
-    if (strcmp(op, ">=") == 0) {
+    if (streq(op, ">=")) {
         BINARY_OP_RES(res, x, y, >=);
     }
-    if (strcmp(op, "<=") == 0) {
+    if (streq(op, "<=")) {
         BINARY_OP_RES(res, x, y, <=);
     }
 
@@ -225,10 +226,10 @@ awlval* builtin_logic_op(awlenv* e, awlval* a, char* op) {
 
     bool eq = awlval_eq(a->cell[0], a->cell[1]);
     bool res;
-    if (strcmp(op, "==") == 0) {
+    if (streq(op, "==")) {
         res = eq;
     }
-    if (strcmp(op, "!=") == 0) {
+    if (streq(op, "!=")) {
         res = !eq;
     }
     awlval_del(a);
@@ -244,7 +245,7 @@ awlval* builtin_neq(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
-    if (strcmp(op, "not") == 0) {
+    if (streq(op, "not")) {
         LASSERT_ARGCOUNT(a, 1, op);
         EVAL_SINGLE_ARG(e, a, 0);
         LASSERT_TYPE(a, 0, AWLVAL_BOOL, op);
@@ -269,7 +270,7 @@ awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
         return err;
     }
 
-    if ((strcmp(op, "and") == 0 && !x->bln) || (strcmp(op, "or") == 0 && x->bln)) {
+    if ((streq(op, "and") && !x->bln) || (streq(op, "or") && x->bln)) {
         awlval_del(y);
         return x;
     }
@@ -284,10 +285,10 @@ awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
         return err;
     }
 
-    if (strcmp(op, "and") == 0) {
+    if (streq(op, "and")) {
         x->bln = x->bln && y->bln;
     }
-    if (strcmp(op, "or") == 0) {
+    if (streq(op, "or")) {
         x->bln = x->bln || y->bln;
     }
 

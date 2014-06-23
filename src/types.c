@@ -357,15 +357,15 @@ bool awlval_eq(awlval* x, awlval* y) {
             break;
 
         case AWLVAL_ERR:
-            return strcmp(x->err, y->err) == 0;
+            return streq(x->err, y->err);
             break;
 
         case AWLVAL_SYM:
-            return strcmp(x->sym, y->sym) == 0;
+            return streq(x->sym, y->sym);
             break;
 
         case AWLVAL_STR:
-            return strcmp(x->str, y->str) == 0;
+            return streq(x->str, y->str);
             break;
 
         case AWLVAL_BOOL:
@@ -441,7 +441,7 @@ static unsigned int awlenv_hash(const char* str) {
 static int awlenv_findslot(awlenv* e, char* k) {
     unsigned int i = awlenv_hash(k) % e->size;
     unsigned int probe = 1;
-    while (e->syms[i] && strcmp(e->syms[i], k) != 0) {
+    while (e->syms[i] && !streq(e->syms[i], k)) {
         i = (i + probe) % e->size;
         probe += AWLENV_PROBE_INTERVAL;
     }

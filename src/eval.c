@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "builtins.h"
+#include "util.h"
 
 #define AWLENV_DEL_RECURSING(e) { \
     if (recursing) { \
@@ -123,7 +124,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
         awlval* sym = awlval_pop(f->formals, 0);
 
         /* special case for variadic functions */
-        if (strcmp(sym->sym, "&") == 0) {
+        if (streq(sym->sym, "&")) {
             if (f->formals->count != 1) {
                 awlval_del(a);
                 return awlval_err("function format invalid; symbol '&' not followed by single symbol");
@@ -150,7 +151,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
 
     /* Special case for pure variadic function with no arguments */
     if (f->formals->count > 0 &&
-            strcmp(f->formals->cell[0]->sym, "&") == 0) {
+            streq(f->formals->cell[0]->sym, "&")) {
         if (f->formals->count != 2) {
             return awlval_err("function format invalid; symbol '&' not followed by single symbol");
         }

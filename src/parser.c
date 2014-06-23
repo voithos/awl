@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "assert.h"
+#include "util.h"
 
 void setup_parser() {
     Integer = mpc_new("integer");
@@ -89,7 +90,7 @@ awlval* awlval_read(mpc_ast_t* t) {
 
     awlval* x = NULL;
     /* If root '>' */
-    if (strcmp(t->tag, ">") == 0) {
+    if (streq(t->tag, ">")) {
         x = awlval_sexpr();
     }
     else if (strstr(t->tag, "sexpr")) {
@@ -106,14 +107,14 @@ awlval* awlval_read(mpc_ast_t* t) {
     }
 
     for (int i = 0; i < t->children_num; i++) {
-        if (strcmp(t->children[i]->contents, "(") == 0) { continue; }
-        if (strcmp(t->children[i]->contents, ")") == 0) { continue; }
-        if (strcmp(t->children[i]->contents, "{") == 0) { continue; }
-        if (strcmp(t->children[i]->contents, "}") == 0) { continue; }
-        if (strcmp(t->children[i]->contents, ":") == 0) { continue; }
-        if (strcmp(t->children[i]->contents, "\\") == 0) { continue; }
-        if (strcmp(t->children[i]->contents, "@") == 0) { continue; }
-        if (strcmp(t->children[i]->tag, "regex") == 0) { continue; }
+        if (streq(t->children[i]->contents, "(")) { continue; }
+        if (streq(t->children[i]->contents, ")")) { continue; }
+        if (streq(t->children[i]->contents, "{")) { continue; }
+        if (streq(t->children[i]->contents, "}")) { continue; }
+        if (streq(t->children[i]->contents, ":")) { continue; }
+        if (streq(t->children[i]->contents, "\\")) { continue; }
+        if (streq(t->children[i]->contents, "@")) { continue; }
+        if (streq(t->children[i]->tag, "regex")) { continue; }
         if (strstr(t->children[i]->tag, "comment")) { continue; }
         x = awlval_add(x, awlval_read(t->children[i]));
     }
@@ -133,7 +134,7 @@ awlval* awlval_read_float(mpc_ast_t* t) {
 }
 
 awlval* awlval_read_bool(mpc_ast_t* t) {
-    if (strcmp(t->contents, "true") == 0) {
+    if (streq(t->contents, "true")) {
         return awlval_bool(true);
     }
     return awlval_bool(false);
