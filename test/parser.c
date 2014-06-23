@@ -48,9 +48,31 @@ void test_parser_qexpr(void) {
     teardown_test(e);
 }
 
+void test_parser_eexpr(void) {
+    awlenv* e = setup_test();
+
+    // EExprs may only appear within QExprs
+    AWL_ASSERT_TYPE(e, "\\(+ 2 3)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(+ \\(+ 2 3) 5)", AWLVAL_ERR);
+
+    teardown_test(e);
+}
+
+void test_parser_cexpr(void) {
+    awlenv* e = setup_test();
+
+    // CExprs may only appear within QExprs
+    AWL_ASSERT_TYPE(e, "@(+ 2 3)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(+ @(+ 2 3) 5)", AWLVAL_ERR);
+
+    teardown_test(e);
+}
+
 void suite_parser(void) {
     pt_add_test(test_parser_numeric, "Test Numeric", "Suite Parser");
     pt_add_test(test_parser_string, "Test String", "Suite Parser");
     pt_add_test(test_parser_bool, "Test Bool", "Suite Parser");
     pt_add_test(test_parser_qexpr, "Test QExpr", "Suite Parser");
+    pt_add_test(test_parser_eexpr, "Test EExpr", "Suite Parser");
+    pt_add_test(test_parser_cexpr, "Test CExpr", "Suite Parser");
 }

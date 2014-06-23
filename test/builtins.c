@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-void test_builtin_arithmetic() {
+void test_builtin_arithmetic(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_CHAINED(e, "(+ 5 5)",
@@ -26,7 +26,7 @@ void test_builtin_arithmetic() {
     teardown_test(e);
 }
 
-void test_builtin_div() {
+void test_builtin_div(void) {
     // Tests proper integer promotion when performing division
     awlenv* e = setup_test();
 
@@ -53,7 +53,7 @@ void test_builtin_div() {
     teardown_test(e);
 }
 
-void test_builtin_mod() {
+void test_builtin_mod(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_CHAINED(e, "(% 9 5)",
@@ -91,7 +91,7 @@ void test_builtin_mod() {
     teardown_test(e);
 }
 
-void test_builtin_pow() {
+void test_builtin_pow(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_CHAINED(e, "(^ 2 0)",
@@ -124,7 +124,7 @@ void test_builtin_pow() {
     teardown_test(e);
 }
 
-void test_builtin_equality() {
+void test_builtin_equality(void) {
     awlenv* e = setup_test();
 
     // Numeric
@@ -174,7 +174,7 @@ void test_builtin_equality() {
     teardown_test(e);
 }
 
-void test_builtin_head() {
+void test_builtin_head(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "(head 5)", AWLVAL_ERR);
@@ -191,7 +191,7 @@ void test_builtin_head() {
     teardown_test(e);
 }
 
-void test_builtin_tail() {
+void test_builtin_tail(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "(tail 20)", AWLVAL_ERR);
@@ -209,7 +209,7 @@ void test_builtin_tail() {
     teardown_test(e);
 }
 
-void test_builtin_first() {
+void test_builtin_first(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "(first 20)", AWLVAL_ERR);
@@ -231,7 +231,7 @@ void test_builtin_first() {
     teardown_test(e);
 }
 
-void test_builtin_last() {
+void test_builtin_last(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "(last 20)", AWLVAL_ERR);
@@ -253,7 +253,7 @@ void test_builtin_last() {
     teardown_test(e);
 }
 
-void test_builtin_list() {
+void test_builtin_list(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "(list)", AWLVAL_QEXPR);
