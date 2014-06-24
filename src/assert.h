@@ -23,6 +23,11 @@
             "function '%s' passed incorrect type for arg %i; got %s, expected collection type", \
             fname, i, awlval_type_name(args->cell[i]->type));
 
+#define LASSERT_ISEXPR(args, i, fname) \
+    LASSERT(args, (ISEXPR(args->cell[i]->type)), \
+            "function '%s' passed incorrect type for arg %i; got %s, expected expression type", \
+            fname, i, awlval_type_name(args->cell[i]->type));
+
 #define LASSERT_ARGCOUNT(args, expected, fname) \
     LASSERT(args, (args->count == expected), \
             "function '%s' takes exactly %i argument(s); %i given", fname, expected, args->count);

@@ -504,10 +504,11 @@ awlval* builtin_global(awlenv* e, awlval* a) {
 
 awlval* builtin_lambda(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 2, "fn");
+    LASSERT_ISEXPR(a, 0, "fn");
 
     for (int i = 0; i < a->cell[0]->count; i++) {
         LASSERT(a, (a->cell[0]->cell[i]->type == AWLVAL_SYM),
-                "function 'fn' cannot define non-symbol at position %i", i);
+                "function 'fn' cannot take non-symbol argument at position %i", i);
     }
 
     awlval* formals = awlval_pop(a, 0);

@@ -29,6 +29,7 @@ typedef enum {
 
 #define ISNUMERIC(t) (t == AWLVAL_INT || t == AWLVAL_FLOAT)
 #define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR)
+#define ISEXPR(t) (t == AWLVAL_QEXPR || t == AWLVAL_SEXPR)
 
 char* awlval_type_name(awlval_type_t t);
 

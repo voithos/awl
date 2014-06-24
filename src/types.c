@@ -9,6 +9,7 @@
 #include <stdarg.h>
 
 #include "assert.h"
+#include "util.h"
 
 #define AWLENV_INITIAL_SIZE 16
 #define AWLENV_PROBE_INTERVAL 1
