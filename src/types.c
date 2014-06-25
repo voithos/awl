@@ -455,7 +455,7 @@ static unsigned int awlenv_hash(const char* str) {
     /* djb2 hash */
     unsigned int hash = 5381;
     for (int i = 0; str[i]; i++) {
-        /* XOR has * 33 with current char val */
+        /* XOR hash * 33 with current char val */
         hash = ((hash << 5) + hash) ^ str[i];
     }
     return hash;
@@ -537,7 +537,11 @@ static void awlenv_resize(awlenv* e) {
 }
 
 int awlenv_index(awlenv* e, awlval* k) {
-    return awlenv_findslot(e, k->sym);
+    int i = awlenv_findslot(e, k->sym);
+    if (!e->syms[i]) {
+        i = -1;
+    }
+    return i;
 }
 
 awlval* awlenv_get(awlenv* e, awlval* k) {

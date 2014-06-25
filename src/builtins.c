@@ -521,6 +521,12 @@ awlval* builtin_macro(awlenv* e, awlval* a) {
     LASSERT_TYPE(a, 0, AWLVAL_SYM, "macro");
     LASSERT_ISEXPR(a, 1, "macro");
 
+    int index = awlenv_index(e, a->cell[0]);
+    if (index != -1) {
+        LASSERT(a, !(e->locked[index]),
+                "cannot redefine builtin function '%s'", e->syms[index]);
+    }
+
     for (int i = 0; i < a->cell[1]->count; i++) {
         LASSERT(a, (a->cell[1]->cell[i]->type == AWLVAL_SYM),
                 "macro cannot take non-symbol argument at position %i", i);
