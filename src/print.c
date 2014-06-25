@@ -55,6 +55,14 @@ void awlval_print(awlval* v) {
             putchar(')');
             break;
 
+        case AWLVAL_MACRO:
+            printf("(macro ");
+            awlval_print(v->formals);
+            putchar(' ');
+            awlval_print(v->body);
+            putchar(')');
+            break;
+
         case AWLVAL_SEXPR:
             awlval_expr_print(v, '(', ')');
             break;

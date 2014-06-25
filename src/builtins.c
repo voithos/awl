@@ -516,6 +516,29 @@ awlval* builtin_lambda(awlenv* e, awlval* a) {
     return awlval_lambda(e, formals, body);
 }
 
+awlval* builtin_macro(awlenv* e, awlval* a) {
+    LASSERT_ARGCOUNT(a, 3, "macro");
+    LASSERT_TYPE(a, 0, AWLVAL_SYM, "macro");
+    LASSERT_ISEXPR(a, 1, "macro");
+
+    for (int i = 0; i < a->cell[1]->count; i++) {
+        LASSERT(a, (a->cell[1]->cell[i]->type == AWLVAL_SYM),
+                "macro cannot take non-symbol argument at position %i", i);
+    }
+
+    awlval* name = awlval_pop(a, 0);
+    awlval* formals = awlval_pop(a, 0);
+    awlval* body = awlval_take(a, 0);
+
+    awlval* macro = awlval_macro(e, formals, body);
+
+    awlenv_put(e, name, macro, false);
+
+    awlval_del(name);
+    awlval_del(macro);
+    return awlval_qexpr();
+}
+
 awlval* builtin_import(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "import");
     EVAL_ARGS(e, a);
@@ -655,7 +678,9 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "if", builtin_if);
     awlenv_add_builtin(e, "def", builtin_def);
     awlenv_add_builtin(e, "global", builtin_global);
+
     awlenv_add_builtin(e, "fn", builtin_lambda);
+    awlenv_add_builtin(e, "macro", builtin_macro);
 
     awlenv_add_builtin(e, "import", builtin_import);
     awlenv_add_builtin(e, "print", builtin_print);

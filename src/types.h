@@ -20,6 +20,7 @@ typedef enum {
     AWLVAL_BOOL,
     AWLVAL_BUILTIN,
     AWLVAL_FUNC,
+    AWLVAL_MACRO,
 
     AWLVAL_SEXPR,
     AWLVAL_QEXPR,
@@ -87,6 +88,7 @@ awlval* awlval_str(char* s);
 awlval* awlval_bool(bool b);
 awlval* awlval_fun(awlbuiltin builtin, char* builtin_name);
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body);
+awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_sexpr(void);
 awlval* awlval_qexpr(void);
 awlval* awlval_eexpr(void);

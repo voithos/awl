@@ -23,6 +23,7 @@ char* awlval_type_name(awlval_type_t t) {
         case AWLVAL_FLOAT: return "Float";
         case AWLVAL_BUILTIN: return "Builtin";
         case AWLVAL_FUNC: return "Function";
+        case AWLVAL_MACRO: return "Macro";
         case AWLVAL_SYM: return "Symbol";
         case AWLVAL_STR: return "String";
         case AWLVAL_BOOL: return "Boolean";
@@ -111,6 +112,16 @@ awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     return v;
 }
 
+awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body) {
+    awlval* v = malloc(sizeof(awlval));
+    v->type = AWLVAL_MACRO;
+    v->env = awlenv_new();
+    v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
+    v->formals = formals;
+    v->body = body;
+    return v;
+}
+
 awlval* awlval_sexpr(void) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_SEXPR;
@@ -160,6 +171,7 @@ void awlval_del(awlval* v) {
             break;
 
         case AWLVAL_FUNC:
+        case AWLVAL_MACRO:
             awlenv_del(v->env);
             awlval_del(v->formals);
             awlval_del(v->body);
@@ -292,6 +304,12 @@ awlval* awlval_copy(awlval* v) {
             x->called = v->called;
             break;
 
+        case AWLVAL_MACRO:
+            x->env = awlenv_copy(v->env);
+            x->formals = awlval_copy(v->formals);
+            x->body = awlval_copy(v->body);
+            break;
+
         case AWLVAL_INT:
             x->lng = v->lng;
             break;
@@ -347,6 +365,10 @@ bool awlval_eq(awlval* x, awlval* y) {
 
         case AWLVAL_FUNC:
             return y->type == AWLVAL_FUNC && awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
+            break;
+
+        case AWLVAL_MACRO:
+            return y->type == AWLVAL_MACRO && awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
             break;
 
         case AWLVAL_INT:
