@@ -42,8 +42,8 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
 
                     awlval_del(x);
                 } else {
-                    AWLENV_DEL_RECURSING(e);
-                    return x;
+                    /* evaluate result in next loop */
+                    v = x;
                 }
                 break;
             }
