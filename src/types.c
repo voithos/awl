@@ -113,12 +113,8 @@ awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
 }
 
 awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = awlval_lambda(closure, formals, body);
     v->type = AWLVAL_MACRO;
-    v->env = awlenv_new();
-    v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
-    v->formals = formals;
-    v->body = body;
     return v;
 }
 
@@ -298,16 +294,11 @@ awlval* awlval_copy(awlval* v) {
             break;
 
         case AWLVAL_FUNC:
-            x->env = awlenv_copy(v->env);
-            x->formals = awlval_copy(v->formals);
-            x->body = awlval_copy(v->body);
-            x->called = v->called;
-            break;
-
         case AWLVAL_MACRO:
             x->env = awlenv_copy(v->env);
             x->formals = awlval_copy(v->formals);
             x->body = awlval_copy(v->body);
+            x->called = v->called;
             break;
 
         case AWLVAL_INT:
@@ -364,11 +355,8 @@ bool awlval_eq(awlval* x, awlval* y) {
             break;
 
         case AWLVAL_FUNC:
-            return y->type == AWLVAL_FUNC && awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
-            break;
-
         case AWLVAL_MACRO:
-            return y->type == AWLVAL_MACRO && awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
+            return y->type == x->type && awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
             break;
 
         case AWLVAL_INT:

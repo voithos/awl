@@ -14,6 +14,7 @@
 
 awlval* awlval_eval(awlenv* e, awlval* v) {
     bool recursing = false;
+    bool macro_expansion = false;
 
     while (true) {
         switch (v->type) {
@@ -31,9 +32,10 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
                 awlval* x = awlval_eval_sexpr(e, v);
 
                 /* recursively evaluate results */
-                if (x->type == AWLVAL_FUNC && x->called) {
+                if (ISRECURSABLE(x->type) && x->called) {
                     AWLENV_DEL_RECURSING(e);
                     recursing = true;
+                    macro_expansion = macro_expansion || x->type == AWLVAL_MACRO;
 
                     e = awlenv_copy(x->env);
                     v = awlval_copy(x->body);
@@ -49,9 +51,21 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
             case AWLVAL_QEXPR:
             {
                 awlval* x = awlval_eval_inside_qexpr(e, v);
+                if (macro_expansion) {
+                    x->type = AWLVAL_SEXPR;
+                    x = awlval_eval(e, x);
+                }
                 AWLENV_DEL_RECURSING(e);
                 return x;
                 break;
+            }
+
+            case AWLVAL_EEXPR:
+            case AWLVAL_CEXPR:
+            {
+                AWLENV_DEL_RECURSING(e);
+                return awlval_err("cannot directly evaluate %s; must be contained inside %s",
+                        awlval_type_name(v->type), awlval_type_name(AWLVAL_QEXPR));
             }
 
             default:
@@ -92,9 +106,9 @@ awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
     EVAL_SINGLE_ARG(e, v, 0);
     awlval* f = awlval_pop(v, 0);
 
-    if (f->type != AWLVAL_BUILTIN && f->type != AWLVAL_FUNC) {
-        awlval* err = awlval_err("cannot evaluate %s; incorrect type for arg 0; got %s, expected %s",
-                awlval_type_name(AWLVAL_SEXPR), awlval_type_name(f->type), awlval_type_name(AWLVAL_FUNC));
+    if (!ISCALLABLE(f->type)) {
+        awlval* err = awlval_err("cannot evaluate %s; incorrect type for arg 0; got %s, expected callable",
+                awlval_type_name(AWLVAL_SEXPR), awlval_type_name(f->type));
         awlval_del(v);
         awlval_del(f);
         return err;
@@ -116,10 +130,25 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
     int given = a->count;
     int total = f->formals->count;
 
+    /* special case for macros */
+    if (f->type == AWLVAL_MACRO) {
+        for (int i = 0; i < a->count; i++) {
+            /* wrap SExprs and Symbols in QExprs to avoid evaluation */
+            if (a->cell[i]->type == AWLVAL_SEXPR) {
+                a->cell[i]->type = AWLVAL_QEXPR;
+            } else if (a->cell[i]->type == AWLVAL_SYM) {
+                awlval* q = awlval_qexpr();
+                q = awlval_add(q, a->cell[i]);
+                a->cell[i] = q;
+            }
+        }
+    }
+
     while (a->count) {
         if (f->formals->count == 0) {
             awlval_del(a);
-            return awlval_err("function passed too many arguments; got %i, expected %i", given, total);
+            return awlval_err("%s passed too many arguments; got %i, expected %i",
+                    awlval_type_name(f->type), given, total);
         }
         awlval* sym = awlval_pop(f->formals, 0);
 

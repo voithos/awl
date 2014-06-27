@@ -31,11 +31,11 @@ void setup_parser() {
         comment : /;[^\\r\\n]*/ ;                                           \
         symbol  : /[a-zA-Z0-9_+\\-*\\/=<>!\\?&%^$]+/ ;                      \
         sexpr   : '(' <expr>* ')' ;                                         \
-        qexpr   : '{' (<expr> | <eexpr> | <cexpr>)* '}' | ':' <expr> ;      \
+        qexpr   : '{' <expr>* '}' | ':' <expr> ;                            \
         eexpr   : '\\\\' <expr> ;                                           \
         cexpr   : '@' <expr> ;                                              \
         expr    : <number> | <bool> | <string> | <symbol> |                 \
-                  <comment> | <sexpr> | <qexpr> ;                           \
+                  <comment> | <sexpr> | <qexpr> | <eexpr> | <cexpr> ;       \
         awl     : /^/ <expr>* /$/ ;                                         \
         ",
         Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
