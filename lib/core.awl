@@ -1,15 +1,31 @@
+;; Awl core library
+;;
+
+; Global definitions
 (global nil {})
 
+; System macros
 (macro func (f b)
     {global @(first f) (fn (@(tail f)) (@b))})
 
+; Type functions
+(func (int? x) (== (typeof x) 'integer'))
+(func (float? x) (== (typeof x) 'float'))
+(func (string? x) (== (typeof x) 'string'))
+(func (func? x) (== (typeof x) 'function'))
+(func (bool? x) (== (typeof x) 'boolean'))
+(func (qexpr? x) (== (typeof x) 'qexpr'))
+(global list? qexpr?)
+
 (func (nil? x) (== x nil))
 
+; Basic control structures
 (func (do & l)
     (if (nil? l)
         nil
         (last l)))
 
+; Higher-order functions
 (func (reduce f l acc)
     (if (nil? l)
         acc
