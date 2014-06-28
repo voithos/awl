@@ -14,12 +14,15 @@ awlval* eval_string(awlenv* e, char* input) {
     }
 }
 
+static awlenv* clean_env = NULL;
+
 awlenv* setup_test(void) {
-    setup_parser();
-    return awlenv_new_top_level();
+    if (clean_env == NULL) {
+        clean_env = awlenv_new_top_level();
+    }
+    return awlenv_copy(clean_env);
 }
 
 void teardown_test(awlenv* e) {
     awlenv_del(e);
-    teardown_parser();
 }
