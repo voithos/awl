@@ -10,7 +10,7 @@
 #include "parser.h"
 #include "print.h"
 #include "repl.h"
-
+#include "util.h"
 
 void run_scripts(awlenv* e, int argc, char** argv) {
     for (int i = 1; i < argc; i++) {

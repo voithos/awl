@@ -1,5 +1,4 @@
 #include "types.h"
-#include "builtins.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +8,7 @@
 #include <stdarg.h>
 
 #include "assert.h"
+#include "builtins.h"
 #include "util.h"
 
 #define AWLENV_INITIAL_SIZE 16
@@ -420,6 +420,7 @@ awlenv* awlenv_new_top_level(void) {
     awlenv* e = awlenv_new();
     e->top_level = true;
     awlenv_add_builtins(e);
+    awlenv_add_core_lib(e);
     return e;
 }
 
@@ -575,4 +576,62 @@ void awlenv_add_builtin(awlenv* e, char* name, awlbuiltin builtin) {
     awlenv_put(e, k, v, true);
     awlval_del(k);
     awlval_del(v);
+}
+
+void awlenv_add_builtins(awlenv* e) {
+    awlenv_add_builtin(e, "+", builtin_add);
+    awlenv_add_builtin(e, "-", builtin_sub);
+    awlenv_add_builtin(e, "*", builtin_mul);
+    awlenv_add_builtin(e, "/", builtin_div);
+    awlenv_add_builtin(e, "%", builtin_mod);
+    awlenv_add_builtin(e, "^", builtin_pow);
+
+    awlenv_add_builtin(e, ">", builtin_gt);
+    awlenv_add_builtin(e, ">=", builtin_gte);
+    awlenv_add_builtin(e, "<", builtin_lt);
+    awlenv_add_builtin(e, "<=", builtin_lte);
+
+    awlenv_add_builtin(e, "==", builtin_eq);
+    awlenv_add_builtin(e, "!=", builtin_neq);
+
+    awlenv_add_builtin(e, "and", builtin_and);
+    awlenv_add_builtin(e, "or", builtin_or);
+    awlenv_add_builtin(e, "not", builtin_not);
+
+    awlenv_add_builtin(e, "head", builtin_head);
+    awlenv_add_builtin(e, "tail", builtin_tail);
+    awlenv_add_builtin(e, "first", builtin_first);
+    awlenv_add_builtin(e, "last", builtin_last);
+    awlenv_add_builtin(e, "list", builtin_list);
+    awlenv_add_builtin(e, "eval", builtin_eval);
+    awlenv_add_builtin(e, "append", builtin_append);
+    awlenv_add_builtin(e, "cons", builtin_cons);
+    awlenv_add_builtin(e, "len", builtin_len);
+    awlenv_add_builtin(e, "init", builtin_init);
+
+    awlenv_add_builtin(e, "if", builtin_if);
+    awlenv_add_builtin(e, "def", builtin_def);
+    awlenv_add_builtin(e, "global", builtin_global);
+
+    awlenv_add_builtin(e, "fn", builtin_lambda);
+    awlenv_add_builtin(e, "macro", builtin_macro);
+
+    awlenv_add_builtin(e, "import", builtin_import);
+    awlenv_add_builtin(e, "print", builtin_print);
+    awlenv_add_builtin(e, "println", builtin_println);
+    awlenv_add_builtin(e, "error", builtin_error);
+    awlenv_add_builtin(e, "exit", builtin_exit);
+}
+
+void awlenv_add_core_lib(awlenv* e) {
+    char* awl_base = get_base_path();
+
+    char* corelib = path_join(awl_base, "lib/core");
+
+    awlval* args = awlval_sexpr();
+    args = awlval_add(args, awlval_str(corelib));
+    awlval_del(builtin_import(e, args));
+
+    free(awl_base);
+    free(corelib);
 }

@@ -53,6 +53,4 @@ awlval* builtin_println(awlenv* e, awlval* a);
 awlval* builtin_error(awlenv* e, awlval* a);
 awlval* builtin_exit(awlenv* e, awlval* a);
 
-void awlenv_add_builtins(awlenv* e);
-
 #endif

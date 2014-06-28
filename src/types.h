@@ -121,5 +121,7 @@ void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked);
 awlenv* awlenv_copy(awlenv* e);
 
 void awlenv_add_builtin(awlenv* e, char* name, awlbuiltin func);
+void awlenv_add_builtins(awlenv* e);
+void awlenv_add_core_lib(awlenv* e);
 
 #endif
