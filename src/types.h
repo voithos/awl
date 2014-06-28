@@ -35,6 +35,7 @@ typedef enum {
 #define ISRECURSABLE(t) (t == AWLVAL_FUNC || t == AWLVAL_MACRO)
 
 char* awlval_type_name(awlval_type_t t);
+char* awlval_type_sysname(awlval_type_t t);
 
 /* function pointer */
 typedef awlval*(*awlbuiltin)(awlenv*, awlval*);

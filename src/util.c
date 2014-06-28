@@ -13,6 +13,7 @@ bool streq(char* a, char* b) {
 }
 
 char* get_executable_path() {
+    /* TODO: reading /proc is definitely not cross platform */
     char* path = malloc(BUFSIZE);
     if (readlink("/proc/self/exe", path, BUFSIZE) == -1) {
         free(path);

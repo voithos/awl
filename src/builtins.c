@@ -563,6 +563,16 @@ awlval* builtin_macro(awlenv* e, awlval* a) {
     return awlval_qexpr();
 }
 
+awlval* builtin_typeof(awlenv* e, awlval* a) {
+    LASSERT_ARGCOUNT(a, 1, "typeof");
+    EVAL_ARGS(e, a);
+
+    awlval* arg = awlval_take(a, 0);
+    awlval* res = awlval_str(awlval_type_sysname(arg->type));
+    awlval_del(arg);
+    return res;
+}
+
 awlval* builtin_import(awlenv* e, awlval* a) {
     LASSERT_ARGCOUNT(a, 1, "import");
     EVAL_ARGS(e, a);

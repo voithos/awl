@@ -35,6 +35,25 @@ char* awlval_type_name(awlval_type_t t) {
     }
 }
 
+char* awlval_type_sysname(awlval_type_t t) {
+    switch (t) {
+        case AWLVAL_ERR: return "error";
+        case AWLVAL_INT: return "integer";
+        case AWLVAL_FLOAT: return "float";
+        case AWLVAL_BUILTIN: return "function";
+        case AWLVAL_FUNC: return "function";
+        case AWLVAL_MACRO: return "macro";
+        case AWLVAL_SYM: return "symbol";
+        case AWLVAL_STR: return "string";
+        case AWLVAL_BOOL: return "boolean";
+        case AWLVAL_SEXPR: return "sexpr";
+        case AWLVAL_QEXPR: return "qexpr";
+        case AWLVAL_EEXPR: return "eexpr";
+        case AWLVAL_CEXPR: return "cexpr";
+        default: return "unknown";
+    }
+}
+
 awlval* awlval_err(char* fmt, ...) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_ERR;
@@ -624,6 +643,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "fn", builtin_lambda);
     awlenv_add_builtin(e, "macro", builtin_macro);
 
+    awlenv_add_builtin(e, "typeof", builtin_typeof);
     awlenv_add_builtin(e, "import", builtin_import);
     awlenv_add_builtin(e, "print", builtin_print);
     awlenv_add_builtin(e, "println", builtin_println);
