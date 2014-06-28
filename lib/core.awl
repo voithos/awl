@@ -1,6 +1,16 @@
 (global nil {})
 
-(global nil? (fn (x) (== x nil)))
-(global do (fn (& l) (if (nil? l)
-                     nil
-                     (last l))))
+(macro func (f b)
+    {global @(first f) (fn (@(tail f)) (@b))})
+
+(func (nil? x) (== x nil))
+
+(func (do & l)
+    (if (nil? l)
+        nil
+        (last l)))
+
+(func (reduce f l acc)
+    (if (nil? l)
+        acc
+        (reduce f (tail l) (f acc (head l)))))
