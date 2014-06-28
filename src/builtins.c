@@ -91,7 +91,7 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
         if (streq(op, "+")) { BINARY_OP(x, y, +); }
         if (streq(op, "-")) { BINARY_OP(x, y, -); }
         if (streq(op, "*")) { BINARY_OP(x, y, *); }
-        if (streq(op, "/") || streq(op, "%")) {
+        if (streq(op, "/") || streq(op, "//") || streq(op, "%")) {
             /* Handle division or modulo by zero */
             if ((y->type == AWLVAL_INT && y->lng == 0) ||
                 (y->type == AWLVAL_FLOAT && y->dbl == 0)) {
@@ -102,7 +102,10 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
                 break;
             }
 
-            if (streq(op, "/")) {
+            if (strstr(op, "/")) {
+                awlval_type_t oldtype_x = x->type;
+                awlval_type_t oldtype_y = y->type;
+
                 /* Handle fractional integer division */
                 if (x->type == AWLVAL_INT && y->type == AWLVAL_INT && x->lng % y->lng != 0) {
                     awlval_promote_numeric(x);
@@ -110,6 +113,17 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
                 }
 
                 BINARY_OP(x, y, /);
+
+                if (streq(op, "//")) {
+                    /* Truncating division, based on old types */
+                    if (oldtype_x == AWLVAL_INT && oldtype_y == AWLVAL_INT) {
+                        awlval_demote_numeric(x);
+                    } else {
+                        /* Truncate, but we still need to keep result a float */
+                        awlval_demote_numeric(x);
+                        awlval_promote_numeric(x);
+                    }
+                }
             } else {
                 /* Handle modulo */
                 if (x->type == AWLVAL_FLOAT || y->type == AWLVAL_FLOAT) {
@@ -161,6 +175,10 @@ awlval* builtin_mul(awlenv* e, awlval* a) {
 
 awlval* builtin_div(awlenv* e, awlval* a) {
     return builtin_num_op(e, a, "/");
+}
+
+awlval* builtin_trunc_div(awlenv* e, awlval* a) {
+    return builtin_num_op(e, a, "//");
 }
 
 awlval* builtin_mod(awlenv* e, awlval* a) {

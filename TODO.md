@@ -1,10 +1,7 @@
 ## Language features
 - dictionaries: possible syntax
 - conversion functions between builtin types
-- more arithmetic operators
-    - truncating division (div) ?
 - string manipulation functions
-    - overload len for strings
     - substring (slice?)
     - index-of
 - precision decimal (and fraction) types?

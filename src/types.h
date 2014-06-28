@@ -107,6 +107,7 @@ awlval* awlval_insert(awlval* x, awlval* y, int i);
 awlval* awlval_shift(awlval* x, awlval* y, int i);
 void awlval_maybe_promote_numeric(awlval* a, awlval* b);
 void awlval_promote_numeric(awlval* a);
+void awlval_demote_numeric(awlval* a);
 awlval* awlval_copy(awlval* v);
 bool awlval_eq(awlval* x, awlval* y);
 

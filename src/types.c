@@ -282,6 +282,13 @@ void awlval_promote_numeric(awlval* x) {
     }
 }
 
+void awlval_demote_numeric(awlval* x) {
+    if (x->type != AWLVAL_INT) {
+        x->type = AWLVAL_INT;
+        x->lng = (long)x->dbl;
+    }
+}
+
 awlval* awlval_copy(awlval* v) {
     awlval* x = malloc(sizeof(awlval));
     x->type = v->type;
@@ -583,6 +590,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "-", builtin_sub);
     awlenv_add_builtin(e, "*", builtin_mul);
     awlenv_add_builtin(e, "/", builtin_div);
+    awlenv_add_builtin(e, "//", builtin_trunc_div);
     awlenv_add_builtin(e, "%", builtin_mod);
     awlenv_add_builtin(e, "^", builtin_pow);
 

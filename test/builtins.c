@@ -53,6 +53,33 @@ void test_builtin_div(void) {
     teardown_test(e);
 }
 
+void test_builtin_trunc_div(void) {
+    // Tests proper integer demotion after performing division
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_CHAINED(e, "(// 5 5)",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == 1L));
+
+    AWL_ASSERT_CHAINED(e, "(// -5 5)",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == -1L));
+
+    AWL_ASSERT_CHAINED(e, "(// 5 2)",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == 2L));
+
+    AWL_ASSERT_CHAINED(e, "(// -5 2)",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == -2L));
+
+    AWL_ASSERT_CHAINED(e, "(// 5.0 2)",
+            AWL_IASSERT(v->type == AWLVAL_FLOAT)
+            AWL_IASSERT(v->dbl == 2.0L));
+
+    teardown_test(e);
+}
+
 void test_builtin_mod(void) {
     awlenv* e = setup_test();
 
@@ -272,6 +299,7 @@ void test_builtin_list(void) {
 void suite_builtin(void) {
     pt_add_test(test_builtin_arithmetic, "Test Arithmetic", "Suite Builtin");
     pt_add_test(test_builtin_div, "Test Div", "Suite Builtin");
+    pt_add_test(test_builtin_trunc_div, "Test Truncating Div", "Suite Builtin");
     pt_add_test(test_builtin_mod, "Test Modulo", "Suite Builtin");
     pt_add_test(test_builtin_pow, "Test Pow", "Suite Builtin");
     pt_add_test(test_builtin_equality, "Test Equality", "Suite Builtin");
