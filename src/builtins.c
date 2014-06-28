@@ -75,7 +75,7 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
     EVAL_ARGS(e, a);
 
     for (int i = 0; i < a->count; i++) {
-        LASSERT_ISNUMERIC(a, i, op);
+        AWLASSERT_ISNUMERIC(a, i, op);
     }
 
     awlval* x = awlval_pop(a, 0);
@@ -190,10 +190,10 @@ awlval* builtin_pow(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_ord_op(awlenv* e, awlval* a, char* op) {
-    LASSERT_ARGCOUNT(a, 2, op);
+    AWLASSERT_ARGCOUNT(a, 2, op);
     EVAL_ARGS(e, a);
-    LASSERT_ISNUMERIC(a, 0, op);
-    LASSERT_ISNUMERIC(a, 1, op);
+    AWLASSERT_ISNUMERIC(a, 0, op);
+    AWLASSERT_ISNUMERIC(a, 1, op);
 
     awlval* x = awlval_pop(a, 0);
     awlval* y = awlval_pop(a, 0);
@@ -239,7 +239,7 @@ awlval* builtin_lte(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_logic_op(awlenv* e, awlval* a, char* op) {
-    LASSERT_ARGCOUNT(a, 2, op);
+    AWLASSERT_ARGCOUNT(a, 2, op);
     EVAL_ARGS(e, a);
 
     bool eq = awlval_eq(a->cell[0], a->cell[1]);
@@ -264,16 +264,16 @@ awlval* builtin_neq(awlenv* e, awlval* a) {
 
 awlval* builtin_bool_op(awlenv* e, awlval* a, char* op) {
     if (streq(op, "not")) {
-        LASSERT_ARGCOUNT(a, 1, op);
+        AWLASSERT_ARGCOUNT(a, 1, op);
         EVAL_SINGLE_ARG(e, a, 0);
-        LASSERT_TYPE(a, 0, AWLVAL_BOOL, op);
+        AWLASSERT_TYPE(a, 0, AWLVAL_BOOL, op);
 
         awlval* x = awlval_take(a, 0);
         x->bln = !x->bln;
         return x;
     }
 
-    LASSERT_ARGCOUNT(a, 2, op);
+    AWLASSERT_ARGCOUNT(a, 2, op);
 
     awlval* x = awlval_pop(a, 0);
     awlval* y = awlval_take(a, 0);
@@ -327,20 +327,20 @@ awlval* builtin_not(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_head(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "head");
+    AWLASSERT_ARGCOUNT(a, 1, "head");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "head");
-    LASSERT_NONEMPTY(a, a->cell[0], "head");
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "head");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "head");
 
     awlval* v = awlval_take(a, 0);
     return awlval_eval(e, awlval_take(v, 0));
 }
 
 awlval* builtin_tail(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "tail");
+    AWLASSERT_ARGCOUNT(a, 1, "tail");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "tail");
-    LASSERT_NONEMPTY(a, a->cell[0], "tail");
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "tail");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "tail");
 
     awlval* v = awlval_take(a, 0);
     awlval_del(awlval_pop(v, 0));
@@ -348,10 +348,10 @@ awlval* builtin_tail(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_first(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "first");
+    AWLASSERT_ARGCOUNT(a, 1, "first");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "first");
-    LASSERT_NONEMPTY(a, a->cell[0], "first");
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "first");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "first");
 
     awlval* v = awlval_take(a, 0);
     while (v->count > 1) {
@@ -361,10 +361,10 @@ awlval* builtin_first(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_last(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "last");
+    AWLASSERT_ARGCOUNT(a, 1, "last");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "last");
-    LASSERT_NONEMPTY(a, a->cell[0], "last");
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "last");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "last");
 
     awlval* v = awlval_take(a, 0);
     while (v->count > 1) {
@@ -381,9 +381,9 @@ awlval* builtin_list(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_eval(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "eval");
+    AWLASSERT_ARGCOUNT(a, 1, "eval");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "eval");
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "eval");
 
     awlval* x = awlval_take(a, 0);
     x->type = AWLVAL_SEXPR;
@@ -394,7 +394,7 @@ awlval* builtin_append(awlenv* e, awlval* a) {
     EVAL_ARGS(e, a);
 
     for (int i = 0; i < a->count; i++) {
-        LASSERT_TYPE(a, i, AWLVAL_QEXPR, "append");
+        AWLASSERT_TYPE(a, i, AWLVAL_QEXPR, "append");
     }
 
     awlval* x = awlval_pop(a, 0);
@@ -407,9 +407,9 @@ awlval* builtin_append(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_cons(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 2, "cons");
+    AWLASSERT_ARGCOUNT(a, 2, "cons");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 1, AWLVAL_QEXPR, "cons");
+    AWLASSERT_TYPE(a, 1, AWLVAL_QEXPR, "cons");
 
     awlval* v = awlval_pop(a, 0);
     awlval* x = awlval_take(a, 0);
@@ -418,9 +418,9 @@ awlval* builtin_cons(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_len(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "len");
+    AWLASSERT_ARGCOUNT(a, 1, "len");
     EVAL_ARGS(e, a);
-    LASSERT_ISCOLLECTION(a, 0, "len");
+    AWLASSERT_ISCOLLECTION(a, 0, "len");
 
     awlval* x = awlval_num(a->cell[0]->length);
     awlval_del(a);
@@ -428,10 +428,10 @@ awlval* builtin_len(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_init(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "init");
+    AWLASSERT_ARGCOUNT(a, 1, "init");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_QEXPR, "init");
-    LASSERT_NONEMPTY(a, a->cell[0], "init");
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "init");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "init");
 
     awlval* v = awlval_take(a, 0);
     awlval_del(awlval_pop(v, v->count - 1));
@@ -439,10 +439,10 @@ awlval* builtin_init(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_if(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 3, "if");
+    AWLASSERT_ARGCOUNT(a, 3, "if");
 
     EVAL_SINGLE_ARG(e, a, 0);
-    LASSERT_TYPE(a, 0, AWLVAL_BOOL, "if");
+    AWLASSERT_TYPE(a, 0, AWLVAL_BOOL, "if");
 
     awlval* x;
     /* does not eval result; sends it back to awlval_eval for
@@ -462,7 +462,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
 
     /* Special case when there is a single symbol to be defined */
     if (a->cell[0]->type == AWLVAL_SYM) {
-        LASSERT_ARGCOUNT(a, 2, op);
+        AWLASSERT_ARGCOUNT(a, 2, op);
         EVAL_SINGLE_ARG(e, a, 1);
 
         if (global) {
@@ -474,24 +474,24 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
         return awlval_qexpr();
     }
 
-    LASSERT_MINARGCOUNT(a, 2, op);
-    LASSERT_TYPE(a, 0, AWLVAL_SEXPR, op);
+    AWLASSERT_MINARGCOUNT(a, 2, op);
+    AWLASSERT_TYPE(a, 0, AWLVAL_SEXPR, op);
 
     awlval* syms = a->cell[0];
     for (int i = 0; i < syms->count; i++) {
-        LASSERT(a, (syms->cell[i]->type == AWLVAL_SYM),
+        AWLASSERT(a, (syms->cell[i]->type == AWLVAL_SYM),
                 "function '%s' cannot define non-symbol at position %i", op, i);
     }
 
     for (int i = 0; i < syms->count; i++) {
         int index = awlenv_index(e, syms->cell[i]);
         if (index != -1) {
-            LASSERT(a, !(e->locked[index]),
+            AWLASSERT(a, !(e->locked[index]),
                     "cannot redefine builtin function '%s'", e->syms[index]);
         }
     }
 
-    LASSERT(a, (syms->count == a->count - 1),
+    AWLASSERT(a, (syms->count == a->count - 1),
             "function '%s' given non-matching number of symbols and values; %i symbols, %i values",
             op, syms->count, a->count - 1);
 
@@ -521,11 +521,11 @@ awlval* builtin_global(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_lambda(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 2, "fn");
-    LASSERT_ISEXPR(a, 0, "fn");
+    AWLASSERT_ARGCOUNT(a, 2, "fn");
+    AWLASSERT_ISEXPR(a, 0, "fn");
 
     for (int i = 0; i < a->cell[0]->count; i++) {
-        LASSERT(a, (a->cell[0]->cell[i]->type == AWLVAL_SYM),
+        AWLASSERT(a, (a->cell[0]->cell[i]->type == AWLVAL_SYM),
                 "function 'fn' cannot take non-symbol argument at position %i", i);
     }
 
@@ -535,18 +535,18 @@ awlval* builtin_lambda(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_macro(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 3, "macro");
-    LASSERT_TYPE(a, 0, AWLVAL_SYM, "macro");
-    LASSERT_ISEXPR(a, 1, "macro");
+    AWLASSERT_ARGCOUNT(a, 3, "macro");
+    AWLASSERT_TYPE(a, 0, AWLVAL_SYM, "macro");
+    AWLASSERT_ISEXPR(a, 1, "macro");
 
     int index = awlenv_index(e, a->cell[0]);
     if (index != -1) {
-        LASSERT(a, !(e->locked[index]),
+        AWLASSERT(a, !(e->locked[index]),
                 "cannot redefine builtin function '%s'", e->syms[index]);
     }
 
     for (int i = 0; i < a->cell[1]->count; i++) {
-        LASSERT(a, (a->cell[1]->cell[i]->type == AWLVAL_SYM),
+        AWLASSERT(a, (a->cell[1]->cell[i]->type == AWLVAL_SYM),
                 "macro cannot take non-symbol argument at position %i", i);
     }
 
@@ -564,7 +564,7 @@ awlval* builtin_macro(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_typeof(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "typeof");
+    AWLASSERT_ARGCOUNT(a, 1, "typeof");
     EVAL_ARGS(e, a);
 
     awlval* arg = awlval_take(a, 0);
@@ -574,9 +574,9 @@ awlval* builtin_typeof(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_import(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "import");
+    AWLASSERT_ARGCOUNT(a, 1, "import");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_STR, "import");
+    AWLASSERT_TYPE(a, 0, AWLVAL_STR, "import");
 
     // Check the import path
     char* importPath = malloc(strlen(a->cell[0]->str) + 5); // extra space for extension
@@ -663,9 +663,9 @@ awlval* builtin_println(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_error(awlenv* e, awlval* a) {
-    LASSERT_ARGCOUNT(a, 1, "error");
+    AWLASSERT_ARGCOUNT(a, 1, "error");
     EVAL_ARGS(e, a);
-    LASSERT_TYPE(a, 0, AWLVAL_STR, "error");
+    AWLASSERT_TYPE(a, 0, AWLVAL_STR, "error");
 
     awlval* err = awlval_err(a->cell[0]->str);
     awlval_del(a);
