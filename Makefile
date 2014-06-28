@@ -50,6 +50,7 @@ release: CFLAGS += -O3
 release: $(TARGET)
 
 web: CC := emcc
+web: LDFLAGS :=
 web: clean $(WEBTARGET)
 	$(CLEAN)
 	mv $(WEBTARGET).tmp $(WEBTARGET)
