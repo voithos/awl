@@ -24,6 +24,7 @@ char* strrev(char* str) {
         start++;
         end--;
     }
+    newstr[len] = '\0';
     return newstr;
 }
 
@@ -38,9 +39,13 @@ char* strsubstr(char* str, int start, int end) {
 char* get_executable_path() {
     /* TODO: reading /proc is definitely not cross platform */
     char* path = malloc(BUFSIZE);
-    if (readlink("/proc/self/exe", path, BUFSIZE) == -1) {
+
+    int len = readlink("/proc/self/exe", path, BUFSIZE);
+    if (len == -1) {
         free(path);
         path = NULL;
+    } else {
+        path[len] = '\0';
     }
     return path;
 }
