@@ -245,6 +245,7 @@ awlval* awlval_pop(awlval* v, int i) {
 
     memmove(&v->cell[i], &v->cell[i + 1], sizeof(awlval*) * (v->count - i - 1));
     v->count--;
+    v->length--;
 
     v->cell = realloc(v->cell, sizeof(awlval*) * v->count);
     return x;
@@ -359,6 +360,7 @@ awlval* awlval_copy(awlval* v) {
         case AWLVAL_EEXPR:
         case AWLVAL_CEXPR:
             x->count = v->count;
+            x->length = v->length;
             x->cell = malloc(sizeof(awlval*) * x->count);
             for (int i = 0; i < x->count; i++) {
                 x->cell[i] = awlval_copy(v->cell[i]);
@@ -402,7 +404,7 @@ bool awlval_eq(awlval* x, awlval* y) {
             break;
 
         case AWLVAL_STR:
-            return streq(x->str, y->str);
+            return x->length == y->length && streq(x->str, y->str);
             break;
 
         case AWLVAL_BOOL:
