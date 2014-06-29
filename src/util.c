@@ -12,6 +12,29 @@ bool streq(char* a, char* b) {
     return strcmp(a, b) == 0;
 }
 
+char* strrev(char* str) {
+    int len = strlen(str);
+    char* newstr = malloc(len + 1);
+
+    char* start = newstr;
+    char* end = str + len - 1;
+
+    for (int i = 0; i < len; i++) {
+        *start = *end;
+        start++;
+        end--;
+    }
+    return newstr;
+}
+
+char* strsubstr(char* str, int start, int end) {
+    int len = end - start;
+    char* buffer = malloc(len + 1);
+    memcpy(buffer, &str[start], len);
+    buffer[len] = '\0';
+    return buffer;
+}
+
 char* get_executable_path() {
     /* TODO: reading /proc is definitely not cross platform */
     char* path = malloc(BUFSIZE);

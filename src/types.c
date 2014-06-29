@@ -285,6 +285,42 @@ awlval* awlval_shift(awlval* x, awlval* y, int i) {
     return x;
 }
 
+awlval* awlval_reverse(awlval* x) {
+    awlval* y = awlval_qexpr();
+    while (x->count) {
+        y = awlval_add(y, awlval_pop(x, x->count - 1));
+    }
+    awlval_del(x);
+    return y;
+}
+
+awlval* awlval_reverse_str(awlval* x) {
+    char* reversed = strrev(x->str);
+    free(x->str);
+    x->str = reversed;
+    return x;
+}
+
+awlval* awlval_slice(awlval* x, int start, int end) {
+    /* Remove from front */
+    while (start) {
+        awlval_del(awlval_pop(x, 0));
+        start--; end--;
+    }
+    /* Remove from back */
+    while (end < x->count) {
+        awlval_del(awlval_pop(x, end));
+    }
+    return x;
+}
+
+awlval* awlval_slice_str(awlval* x, int start, int end) {
+    char* sliced = strsubstr(x->str, start, end);
+    free(x->str);
+    x->str = sliced;
+    return x;
+}
+
 void awlval_maybe_promote_numeric(awlval* a, awlval* b) {
     if (!(ISNUMERIC(a->type) && ISNUMERIC(b->type))) {
         return;
@@ -635,8 +671,11 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "eval", builtin_eval);
     awlenv_add_builtin(e, "append", builtin_append);
     awlenv_add_builtin(e, "cons", builtin_cons);
-    awlenv_add_builtin(e, "len", builtin_len);
     awlenv_add_builtin(e, "init", builtin_init);
+
+    awlenv_add_builtin(e, "len", builtin_len);
+    awlenv_add_builtin(e, "reverse", builtin_reverse);
+    awlenv_add_builtin(e, "slice", builtin_slice);
 
     awlenv_add_builtin(e, "if", builtin_if);
     awlenv_add_builtin(e, "def", builtin_def);

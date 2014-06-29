@@ -36,6 +36,10 @@
     AWLASSERT(args, (args->count >= min), \
             "function '%s' takes %i or more arguments; %i given", fname, min, args->count);
 
+#define AWLASSERT_RANGEARGCOUNT(args, min, max, fname) \
+    AWLASSERT(args, (args->count >= min && args->count <= max), \
+            "function '%s' takes between %i and %i arguments; %i given", fname, min, max, args->count);
+
 #define AWLASSERT_NONEMPTY(args, awlval, fname) \
     AWLASSERT(args, (awlval->count != 0), "function '%s' passed {}", fname);
 

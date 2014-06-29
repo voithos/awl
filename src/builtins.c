@@ -343,8 +343,7 @@ awlval* builtin_tail(awlenv* e, awlval* a) {
     AWLASSERT_NONEMPTY(a, a->cell[0], "tail");
 
     awlval* v = awlval_take(a, 0);
-    awlval_del(awlval_pop(v, 0));
-    return v;
+    return awlval_slice(v, 1, v->count);
 }
 
 awlval* builtin_first(awlenv* e, awlval* a) {
@@ -354,10 +353,7 @@ awlval* builtin_first(awlenv* e, awlval* a) {
     AWLASSERT_NONEMPTY(a, a->cell[0], "first");
 
     awlval* v = awlval_take(a, 0);
-    while (v->count > 1) {
-        awlval_del(awlval_pop(v, 1));
-    }
-    return v;
+    return awlval_slice(v, 0, 1);
 }
 
 awlval* builtin_last(awlenv* e, awlval* a) {
@@ -367,10 +363,17 @@ awlval* builtin_last(awlenv* e, awlval* a) {
     AWLASSERT_NONEMPTY(a, a->cell[0], "last");
 
     awlval* v = awlval_take(a, 0);
-    while (v->count > 1) {
-        awlval_del(awlval_pop(v, 0));
-    }
-    return v;
+    return awlval_slice(v, v->count - 1, v->count);
+}
+
+awlval* builtin_init(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 1, "init");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "init");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "init");
+
+    awlval* v = awlval_take(a, 0);
+    return awlval_slice(v, 0, v->count - 1);
 }
 
 awlval* builtin_list(awlenv* e, awlval* a) {
@@ -427,15 +430,70 @@ awlval* builtin_len(awlenv* e, awlval* a) {
     return x;
 }
 
-awlval* builtin_init(awlenv* e, awlval* a) {
-    AWLASSERT_ARGCOUNT(a, 1, "init");
+awlval* builtin_reverse(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 1, "reverse");
     EVAL_ARGS(e, a);
-    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "init");
-    AWLASSERT_NONEMPTY(a, a->cell[0], "init");
+    AWLASSERT_ISCOLLECTION(a, 0, "reverse");
 
-    awlval* v = awlval_take(a, 0);
-    awlval_del(awlval_pop(v, v->count - 1));
-    return v;
+    awlval* collection = awlval_take(a, 0);
+
+    if (collection->type == AWLVAL_QEXPR) {
+        return awlval_reverse(collection);
+    } else {
+        return awlval_reverse_str(collection);
+    }
+}
+
+awlval* builtin_slice(awlenv* e, awlval* a) {
+    AWLASSERT_RANGEARGCOUNT(a, 2, 3, "slice");
+    EVAL_ARGS(e, a);
+    AWLASSERT_ISCOLLECTION(a, 0, "slice");
+    AWLASSERT_TYPE(a, 1, AWLVAL_INT, "slice");
+
+    bool end_arg_given = a->count > 2;
+    if (end_arg_given) {
+        AWLASSERT_TYPE(a, 2, AWLVAL_INT, "slice");
+    }
+
+    awlval* collection = awlval_pop(a, 0);
+
+    int start, end;
+    bool reverse_slice = false;
+
+    /* TODO: Index cast is unsafe here */
+    start = (int)a->cell[0]->lng;
+    end = end_arg_given ? (int)a->cell[1]->lng : collection->length;
+
+    awlval_del(a);
+
+    /* Support negative indices to represent index from end */
+    if (start < 0) {
+        start = collection->length + start;
+    }
+    if (end < 0) {
+        end = collection->length + end;
+    }
+
+    if (end < start) {
+        reverse_slice = true;
+        int temp = start;
+        start = end;
+        end = temp;
+    }
+
+    /* Constrain to collection bounds */
+    start = start < 0 ? 0 :
+        (start > collection->length - 1 ? collection->length - 1 : start);
+    end = end < 0 ? 0 :
+        (end > collection->length ? collection->length : end);
+
+    if (collection->type == AWLVAL_QEXPR) {
+        collection = awlval_slice(collection, start, end);
+        return reverse_slice ? awlval_reverse(collection) : collection;
+    } else {
+        collection = awlval_slice_str(collection, start, end);
+        return reverse_slice ? awlval_reverse_str(collection) : collection;
+    }
 }
 
 awlval* builtin_if(awlenv* e, awlval* a) {
