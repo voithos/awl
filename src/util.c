@@ -36,6 +36,17 @@ char* strsubstr(char* str, int start, int end) {
     return buffer;
 }
 
+char* strstep(char* str, int step) {
+    int len = strlen(str);
+    int bufferlen = len / step + (len % step == 0 ? 0 : 1);
+    char* buffer = malloc(bufferlen + 1);
+    for (int i = 0, j = 0; i < bufferlen; i++, j += step) {
+        buffer[i] = str[j];
+    }
+    buffer[bufferlen] = '\0';
+    return buffer;
+}
+
 char* get_executable_path() {
     /* TODO: reading /proc is definitely not cross platform */
     char* path = malloc(BUFSIZE);

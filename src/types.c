@@ -302,6 +302,14 @@ awlval* awlval_reverse_str(awlval* x) {
 }
 
 awlval* awlval_slice(awlval* x, int start, int end) {
+    return awlval_slice_step(x, start, end, 1);
+}
+
+awlval* awlval_slice_str(awlval* x, int start, int end) {
+    return awlval_slice_step_str(x, start, end, 1);
+}
+
+awlval* awlval_slice_step(awlval* x, int start, int end, int step) {
     /* Remove from front */
     while (start) {
         awlval_del(awlval_pop(x, 0));
@@ -311,11 +319,31 @@ awlval* awlval_slice(awlval* x, int start, int end) {
     while (end < x->count) {
         awlval_del(awlval_pop(x, end));
     }
+    /* Remove by steps */
+    if (step > 1 && x->count) {
+        int final_count = x->count / step + (x->count % step == 0 ? 0 : 1),
+            multiplier = 0,
+            removal_offset = 0;
+
+        while (x->count > final_count) {
+            for (int i = 1; i < step; i++) {
+                int idx = multiplier * step + i - removal_offset;
+                awlval_del(awlval_pop(x, idx));
+                removal_offset++;
+            }
+            multiplier++;
+        }
+    }
     return x;
 }
 
-awlval* awlval_slice_str(awlval* x, int start, int end) {
+awlval* awlval_slice_step_str(awlval* x, int start, int end, int step) {
     char* sliced = strsubstr(x->str, start, end);
+    if (step > 1 && strlen(sliced)) {
+        char* stepped = strstep(sliced, step);
+        free(sliced);
+        sliced = stepped;
+    }
     free(x->str);
     x->str = sliced;
     return x;

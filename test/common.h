@@ -15,6 +15,16 @@
     } \
 }
 
+#define AWL_ASSERT_EQ(e, s, expected) { \
+    { \
+        awlval* v = eval_string(e, s); \
+        awlval* v_expected = eval_string(e, expected); \
+        AWL_ASSERT(awlval_eq(v, v_expected), v); \
+        awlval_del(v); \
+        awlval_del(v_expected); \
+    } \
+}
+
 #define AWL_ASSERT_CHAINED(e, s, chain) { \
     { \
         awlval* v = eval_string(e, s); \

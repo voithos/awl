@@ -43,4 +43,7 @@
 #define AWLASSERT_NONEMPTY(args, awlval, fname) \
     AWLASSERT(args, (awlval->count != 0), "function '%s' passed {}", fname);
 
+#define AWLASSERT_NONZERO(args, val, fname) \
+    AWLASSERT(args, (val != 0), "function '%s' requires nonzero argument", fname);
+
 #endif

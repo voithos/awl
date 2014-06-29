@@ -110,6 +110,8 @@ awlval* awlval_reverse(awlval* x);
 awlval* awlval_reverse_str(awlval* x);
 awlval* awlval_slice(awlval* x, int start, int end);
 awlval* awlval_slice_str(awlval* x, int start, int end);
+awlval* awlval_slice_step(awlval* x, int start, int end, int step);
+awlval* awlval_slice_step_str(awlval* x, int start, int end, int step);
 void awlval_maybe_promote_numeric(awlval* a, awlval* b);
 void awlval_promote_numeric(awlval* a);
 void awlval_demote_numeric(awlval* a);

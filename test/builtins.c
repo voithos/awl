@@ -296,6 +296,42 @@ void test_builtin_list(void) {
     teardown_test(e);
 }
 
+void test_builtin_slice(void) {
+    awlenv* e = setup_test();
+
+    eval_string(e, "(global x {1 2 3 4 5 6})");
+
+    AWL_ASSERT_EQ(e, "(slice x 0)", "{1 2 3 4 5 6}");
+    AWL_ASSERT_EQ(e, "(slice x 2)", "{3 4 5 6}");
+    AWL_ASSERT_EQ(e, "(slice x 2 4)", "{3 4}");
+    AWL_ASSERT_EQ(e, "(slice x 2 50)", "{3 4 5 6}");
+    AWL_ASSERT_EQ(e, "(slice x 2 2)", "{}");
+
+    AWL_ASSERT_EQ(e, "(slice x 25)", "{}");
+    AWL_ASSERT_EQ(e, "(slice x 25 50)", "{}");
+
+    AWL_ASSERT_EQ(e, "(slice x 3 1)", "{4 3}");
+    AWL_ASSERT_EQ(e, "(slice x 5 3)", "{6 5}");
+    AWL_ASSERT_EQ(e, "(slice x 1 0)", "{2}");
+
+    AWL_ASSERT_EQ(e, "(slice x -1)", "{6}");
+    AWL_ASSERT_EQ(e, "(slice x -2)", "{5 6}");
+    AWL_ASSERT_EQ(e, "(slice x -25)", "{1 2 3 4 5 6}");
+    AWL_ASSERT_EQ(e, "(slice x -5 -2)", "{2 3 4}");
+    AWL_ASSERT_EQ(e, "(slice x -2 -5)", "{5 4 3}");
+
+    AWL_ASSERT_EQ(e, "(slice x 2 6 2)", "{3 5}");
+    AWL_ASSERT_EQ(e, "(slice x 2 6 3)", "{3 6}");
+    AWL_ASSERT_EQ(e, "(slice x 2 5 1)", "{3 4 5}");
+    AWL_ASSERT_EQ(e, "(slice x 2 5 -1)", "{6 5 4}");
+    AWL_ASSERT_EQ(e, "(slice x 2 5 -2)", "{6 4}");
+    AWL_ASSERT_EQ(e, "(slice x 1 5 -3)", "{6 3}");
+
+    AWL_ASSERT_EQ(e, "(slice x 5 1 -2)", "{2 4}");
+
+    teardown_test(e);
+}
+
 void suite_builtin(void) {
     pt_add_test(test_builtin_arithmetic, "Test Arithmetic", "Suite Builtin");
     pt_add_test(test_builtin_div, "Test Div", "Suite Builtin");
@@ -308,4 +344,5 @@ void suite_builtin(void) {
     pt_add_test(test_builtin_first, "Test First", "Suite Builtin");
     pt_add_test(test_builtin_last, "Test Last", "Suite Builtin");
     pt_add_test(test_builtin_list, "Test List", "Suite Builtin");
+    pt_add_test(test_builtin_slice, "Test Slice", "Suite Builtin");
 }

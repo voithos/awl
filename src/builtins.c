@@ -445,7 +445,7 @@ awlval* builtin_reverse(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_slice(awlenv* e, awlval* a) {
-    AWLASSERT_RANGEARGCOUNT(a, 2, 3, "slice");
+    AWLASSERT_RANGEARGCOUNT(a, 2, 4, "slice");
     EVAL_ARGS(e, a);
     AWLASSERT_ISCOLLECTION(a, 0, "slice");
     AWLASSERT_TYPE(a, 1, AWLVAL_INT, "slice");
@@ -455,14 +455,21 @@ awlval* builtin_slice(awlenv* e, awlval* a) {
         AWLASSERT_TYPE(a, 2, AWLVAL_INT, "slice");
     }
 
+    bool step_arg_given = a->count > 3;
+    if (step_arg_given) {
+        AWLASSERT_TYPE(a, 3, AWLVAL_INT, "slice");
+        AWLASSERT_NONZERO(a, (int)a->cell[3]->lng, "slice");
+    }
+
     awlval* collection = awlval_pop(a, 0);
 
-    int start, end;
+    int start, end, step;
     bool reverse_slice = false;
 
     /* TODO: Index cast is unsafe here */
     start = (int)a->cell[0]->lng;
     end = end_arg_given ? (int)a->cell[1]->lng : collection->length;
+    step = step_arg_given ? (int)a->cell[2]->lng : 1;
 
     awlval_del(a);
 
@@ -474,24 +481,32 @@ awlval* builtin_slice(awlenv* e, awlval* a) {
         end = collection->length + end;
     }
 
-    if (end < start) {
-        reverse_slice = true;
+    /* Handle negative step */
+    if (step < 0) {
+        step = -step;
         int temp = start;
         start = end;
         end = temp;
     }
 
+    if (end < start) {
+        reverse_slice = true;
+        int temp = start + 1;
+        start = end + 1;
+        end = temp;
+    }
+
     /* Constrain to collection bounds */
     start = start < 0 ? 0 :
-        (start > collection->length - 1 ? collection->length - 1 : start);
+        (start > collection->length ? collection->length : start);
     end = end < 0 ? 0 :
         (end > collection->length ? collection->length : end);
 
     if (collection->type == AWLVAL_QEXPR) {
-        collection = awlval_slice(collection, start, end);
+        collection = awlval_slice_step(collection, start, end, step);
         return reverse_slice ? awlval_reverse(collection) : collection;
     } else {
-        collection = awlval_slice_str(collection, start, end);
+        collection = awlval_slice_step_str(collection, start, end, step);
         return reverse_slice ? awlval_reverse_str(collection) : collection;
     }
 }

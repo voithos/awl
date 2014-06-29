@@ -2,7 +2,6 @@
 - dictionaries: possible syntax
 - conversion functions between builtin types
 - string manipulation functions
-    - substring (slice?)
     - index-of
 - proper error handling? Propagation and try/catch
 - precision decimal (and fraction) types?
