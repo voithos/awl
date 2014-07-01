@@ -3,10 +3,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "mpc.h"
 #include "assert.h"
 #include "util.h"
 
-void setup_parser() {
+static mpc_parser_t* Integer;
+static mpc_parser_t* FPoint;
+static mpc_parser_t* Number;
+static mpc_parser_t* Bool;
+static mpc_parser_t* String;
+static mpc_parser_t* Comment;
+static mpc_parser_t* Symbol;
+static mpc_parser_t* Sexpr;
+static mpc_parser_t* Qexpr;
+static mpc_parser_t* EExpr;
+static mpc_parser_t* CExpr;
+static mpc_parser_t* Expr;
+static mpc_parser_t* Awl;
+
+void setup_parser(void) {
     Integer = mpc_new("integer");
     FPoint = mpc_new("fpoint");
     Number = mpc_new("number");
@@ -41,37 +56,42 @@ void setup_parser() {
         Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
 }
 
-void teardown_parser() {
+void teardown_parser(void) {
     mpc_cleanup(11, Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
 }
 
-bool awlval_parse(char* input, awlval** v, char** err) {
-    mpc_result_t r;
-    if (mpc_parse("<stdin>", input, Awl, &r)) {
-        *v = awlval_read(r.output);
-        mpc_ast_delete(r.output);
-        return true;
-    } else {
-        *err = mpc_err_string(r.error);
-        mpc_err_delete(r.error);
-        return false;
-    }
+static awlval* awlval_read_int(const mpc_ast_t* t) {
+    errno = 0;
+    long x = strtol(t->contents, NULL, 10);
+    return errno != ERANGE ? awlval_num(x) : awlval_err("invalid number: %s", t->contents);
 }
 
-bool awlval_parse_file(char* file, awlval** v, char** err) {
-    mpc_result_t r;
-    if (mpc_parse_contents(file, Awl, &r)) {
-        *v = awlval_read(r.output);
-        mpc_ast_delete(r.output);
-        return true;
-    } else {
-        *err = mpc_err_string(r.error);
-        mpc_err_delete(r.error);
-        return false;
-    }
+static awlval* awlval_read_float(const mpc_ast_t* t) {
+    double x = strtod(t->contents, NULL);
+    return errno != ERANGE ? awlval_float(x) : awlval_err("invalid float: %s", t->contents);
 }
 
-awlval* awlval_read(mpc_ast_t* t) {
+static awlval* awlval_read_bool(const mpc_ast_t* t) {
+    if (streq(t->contents, "true")) {
+        return awlval_bool(true);
+    }
+    return awlval_bool(false);
+}
+
+static awlval* awlval_read_string(const mpc_ast_t* t) {
+    t->contents[strlen(t->contents) - 1] = '\0';
+
+    char* unescaped = malloc(strlen(t->contents + 1) + 1);
+    strcpy(unescaped, t->contents + 1);
+
+    unescaped = mpcf_unescape(unescaped);
+    awlval* str = awlval_str(unescaped);
+
+    free(unescaped);
+    return str;
+}
+
+static awlval* awlval_read(const mpc_ast_t* t) {
     if (strstr(t->tag, "integer")) {
         return awlval_read_int(t);
     }
@@ -122,33 +142,28 @@ awlval* awlval_read(mpc_ast_t* t) {
     return x;
 }
 
-awlval* awlval_read_int(mpc_ast_t* t) {
-    errno = 0;
-    long x = strtol(t->contents, NULL, 10);
-    return errno != ERANGE ? awlval_num(x) : awlval_err("invalid number: %s", t->contents);
-}
-
-awlval* awlval_read_float(mpc_ast_t* t) {
-    double x = strtod(t->contents, NULL);
-    return errno != ERANGE ? awlval_float(x) : awlval_err("invalid float: %s", t->contents);
-}
-
-awlval* awlval_read_bool(mpc_ast_t* t) {
-    if (streq(t->contents, "true")) {
-        return awlval_bool(true);
+bool awlval_parse(const char* input, awlval** v, char** err) {
+    mpc_result_t r;
+    if (mpc_parse("<stdin>", input, Awl, &r)) {
+        *v = awlval_read(r.output);
+        mpc_ast_delete(r.output);
+        return true;
+    } else {
+        *err = mpc_err_string(r.error);
+        mpc_err_delete(r.error);
+        return false;
     }
-    return awlval_bool(false);
 }
 
-awlval* awlval_read_string(mpc_ast_t* t) {
-    t->contents[strlen(t->contents) - 1] = '\0';
-
-    char* unescaped = malloc(strlen(t->contents + 1) + 1);
-    strcpy(unescaped, t->contents + 1);
-
-    unescaped = mpcf_unescape(unescaped);
-    awlval* str = awlval_str(unescaped);
-
-    free(unescaped);
-    return str;
+bool awlval_parse_file(const char* file, awlval** v, char** err) {
+    mpc_result_t r;
+    if (mpc_parse_contents(file, Awl, &r)) {
+        *v = awlval_read(r.output);
+        mpc_ast_delete(r.output);
+        return true;
+    } else {
+        *err = mpc_err_string(r.error);
+        mpc_err_delete(r.error);
+        return false;
+    }
 }
