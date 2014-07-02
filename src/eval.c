@@ -14,7 +14,6 @@
 
 awlval* awlval_eval(awlenv* e, awlval* v) {
     bool recursing = false;
-    bool macro_expansion = false;
 
     while (true) {
         switch (v->type) {
@@ -32,10 +31,9 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
                 awlval* x = awlval_eval_sexpr(e, v);
 
                 /* recursively evaluate results */
-                if (ISRECURSABLE(x->type) && x->called) {
+                if (x->type == AWLVAL_FUNC && x->called) {
                     AWLENV_DEL_RECURSING(e);
                     recursing = true;
-                    macro_expansion = macro_expansion || x->type == AWLVAL_MACRO;
 
                     e = awlenv_copy(x->env);
                     v = awlval_copy(x->body);
@@ -51,10 +49,6 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
             case AWLVAL_QEXPR:
             {
                 awlval* x = awlval_eval_inside_qexpr(e, v);
-                if (macro_expansion) {
-                    x->type = AWLVAL_SEXPR;
-                    x = awlval_eval(e, x);
-                }
                 AWLENV_DEL_RECURSING(e);
                 return x;
                 break;
@@ -120,8 +114,9 @@ awlval* awlval_eval_sexpr(awlenv* e, awlval* v) {
 }
 
 awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
-    /* calls a function if builtin, else fills in the corresponding
-     * parameters, and lets awlval_eval perform tail call optimization
+    /* calls a function if builtin, or evals a macro, else fills in the
+     * corresponding parameters, and lets awlval_eval perform tail
+     * call optimization
      */
     if (f->type == AWLVAL_BUILTIN) {
         return f->builtin(e, a);
@@ -199,7 +194,27 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
 
     awlval_del(a);
 
-    return awlval_copy(f);
+    /* Handle macros -- they are called directly because their output must
+     * be evaluated in the enclosing environment */
+    if (f->type == AWLVAL_MACRO && f->called) {
+        return awlval_eval_macro(f);
+    } else {
+        return awlval_copy(f);
+    }
+}
+
+awlval* awlval_eval_macro(awlval* m) {
+    awlenv* e = awlenv_copy(m->env);
+    awlval* b = awlval_copy(m->body);
+
+    awlval* v = awlval_eval(e, b);
+
+    awlenv_del(e);
+
+    if (v->type == AWLVAL_QEXPR) {
+        v->type = AWLVAL_SEXPR;
+    }
+    return v;
 }
 
 awlval* awlval_eval_inside_qexpr(awlenv* e, awlval* v) {

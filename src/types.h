@@ -32,7 +32,6 @@ typedef enum {
 #define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR)
 #define ISEXPR(t) (t == AWLVAL_QEXPR || t == AWLVAL_SEXPR)
 #define ISCALLABLE(t) (t == AWLVAL_BUILTIN || t == AWLVAL_FUNC || t == AWLVAL_MACRO)
-#define ISRECURSABLE(t) (t == AWLVAL_FUNC || t == AWLVAL_MACRO)
 
 char* awlval_type_name(awlval_type_t t);
 char* awlval_type_sysname(awlval_type_t t);
