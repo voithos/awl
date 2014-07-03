@@ -25,6 +25,7 @@ char* awlval_type_name(awlval_type_t t) {
         case AWLVAL_FUNC: return "Function";
         case AWLVAL_MACRO: return "Macro";
         case AWLVAL_SYM: return "Symbol";
+        case AWLVAL_QSYM: return "Q-Symbol";
         case AWLVAL_STR: return "String";
         case AWLVAL_BOOL: return "Boolean";
         case AWLVAL_SEXPR: return "S-Expression";
@@ -44,6 +45,7 @@ char* awlval_type_sysname(awlval_type_t t) {
         case AWLVAL_FUNC: return "function";
         case AWLVAL_MACRO: return "macro";
         case AWLVAL_SYM: return "symbol";
+        case AWLVAL_QSYM: return "qsymbol";
         case AWLVAL_STR: return "string";
         case AWLVAL_BOOL: return "boolean";
         case AWLVAL_SEXPR: return "sexpr";
@@ -87,11 +89,22 @@ awlval* awlval_float(double x) {
     return v;
 }
 
-awlval* awlval_sym(const char* s) {
+static awlval* awlval_sym_base(const char* s) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = AWLVAL_SYM;
     v->sym = malloc(strlen(s) + 1);
     strcpy(v->sym, s);
+    return v;
+}
+
+awlval* awlval_sym(const char* s) {
+    awlval* v = awlval_sym_base(s);
+    v->type = AWLVAL_SYM;
+    return v;
+}
+
+awlval* awlval_qsym(const char* s) {
+    awlval* v = awlval_sym_base(s);
+    v->type = AWLVAL_QSYM;
     return v;
 }
 
@@ -197,6 +210,7 @@ void awlval_del(awlval* v) {
             break;
 
         case AWLVAL_SYM:
+        case AWLVAL_QSYM:
             free(v->sym);
             break;
 
@@ -406,6 +420,7 @@ awlval* awlval_copy(const awlval* v) {
             break;
 
         case AWLVAL_SYM:
+        case AWLVAL_QSYM:
             x->sym = malloc(strlen(v->sym) + 1);
             strcpy(x->sym, v->sym);
             break;
@@ -464,6 +479,7 @@ bool awlval_eq(awlval* x, awlval* y) {
             break;
 
         case AWLVAL_SYM:
+        case AWLVAL_QSYM:
             return streq(x->sym, y->sym);
             break;
 

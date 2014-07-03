@@ -349,9 +349,7 @@ awlval* builtin_qhead(awlenv* e, awlval* a) {
     if (v->type == AWLVAL_SEXPR) {
         v->type = AWLVAL_QEXPR;
     } else if (v->type == AWLVAL_SYM) {
-        awlval* sq = awlval_qexpr();
-        sq = awlval_add(sq, v);
-        v = sq;
+        v->type = AWLVAL_QSYM;
     }
     return awlval_eval(e, v);
 }

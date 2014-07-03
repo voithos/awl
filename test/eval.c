@@ -14,14 +14,21 @@ void test_eval_env(void) {
     teardown_test(e);
 }
 
+void test_eval_qsym(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, ":x", AWLVAL_QSYM);
+    AWL_ASSERT_TYPE(e, ":asdf", AWLVAL_QSYM);
+
+    teardown_test(e);
+}
+
 void test_eval_qexpr(void) {
     awlenv* e = setup_test();
 
     AWL_ASSERT_TYPE(e, "(x)", AWLVAL_ERR);
     AWL_ASSERT_TYPE(e, "{x}", AWLVAL_QEXPR);
     AWL_ASSERT_TYPE(e, "{x (y z)}", AWLVAL_QEXPR);
-    AWL_ASSERT_TYPE(e, ":x", AWLVAL_QEXPR);
-    AWL_ASSERT_TYPE(e, ":5", AWLVAL_QEXPR);
 
     teardown_test(e);
 }
@@ -78,6 +85,7 @@ void test_eval_cexpr(void) {
 
 void suite_eval(void) {
     pt_add_test(test_eval_env, "Test Env", "Suite Eval");
+    pt_add_test(test_eval_qsym, "Test QSym", "Suite Eval");
     pt_add_test(test_eval_qexpr, "Test QExpr", "Suite Eval");
     pt_add_test(test_eval_eexpr, "Test EExpr", "Suite Eval");
     pt_add_test(test_eval_cexpr, "Test CExpr", "Suite Eval");

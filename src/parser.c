@@ -14,6 +14,7 @@ static mpc_parser_t* Bool;
 static mpc_parser_t* String;
 static mpc_parser_t* Comment;
 static mpc_parser_t* Symbol;
+static mpc_parser_t* QSymbol;
 static mpc_parser_t* Sexpr;
 static mpc_parser_t* Qexpr;
 static mpc_parser_t* EExpr;
@@ -29,6 +30,7 @@ void setup_parser(void) {
     String = mpc_new("string");
     Comment = mpc_new("comment");
     Symbol = mpc_new("symbol");
+    QSymbol = mpc_new("qsymbol");
     Sexpr = mpc_new("sexpr");
     Qexpr = mpc_new("qexpr");
     EExpr = mpc_new("eexpr");
@@ -45,19 +47,20 @@ void setup_parser(void) {
         string  : /\"(\\\\.|[^\"])*\"/ | /'(\\\\.|[^'])*'/ ;                \
         comment : /;[^\\r\\n]*/ ;                                           \
         symbol  : /[a-zA-Z0-9_+\\-*\\/=<>!\\?&%^$]+/ ;                      \
+        qsymbol : ':' <symbol> ;                                            \
         sexpr   : '(' <expr>* ')' ;                                         \
-        qexpr   : '{' <expr>* '}' | ':' <expr> ;                            \
+        qexpr   : '{' <expr>* '}' ;                                         \
         eexpr   : '\\\\' <expr> ;                                           \
         cexpr   : '@' <expr> ;                                              \
-        expr    : <number> | <bool> | <string> | <symbol> |                 \
+        expr    : <number> | <bool> | <string> | <symbol> | <qsymbol> |     \
                   <comment> | <sexpr> | <qexpr> | <eexpr> | <cexpr> ;       \
         awl     : /^/ <expr>* /$/ ;                                         \
         ",
-        Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
+        Integer, FPoint, Number, Bool, String, Comment, Symbol, QSymbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
 }
 
 void teardown_parser(void) {
-    mpc_cleanup(11, Integer, FPoint, Number, Bool, String, Comment, Symbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
+    mpc_cleanup(12, Integer, FPoint, Number, Bool, String, Comment, Symbol, QSymbol, Sexpr, Qexpr, EExpr, CExpr, Expr, Awl);
 }
 
 static awlval* awlval_read_int(const mpc_ast_t* t) {
@@ -103,6 +106,9 @@ static awlval* awlval_read(const mpc_ast_t* t) {
     }
     if (strstr(t->tag, "string")) {
         return awlval_read_string(t);
+    }
+    if (strstr(t->tag, "qsymbol")) {
+        return awlval_qsym(t->contents);
     }
     if (strstr(t->tag, "symbol")) {
         return awlval_sym(t->contents);

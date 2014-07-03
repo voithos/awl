@@ -289,7 +289,7 @@ void test_builtin_list(void) {
     AWL_ASSERT_TYPE(e, "(list {})", AWLVAL_QEXPR);
     AWL_ASSERT_TYPE(e, "(list {1 2} {3 4} 53)", AWLVAL_QEXPR);
 
-    AWL_ASSERT_CHAINED(e, "(list 1 3 24 {21 32} :23)",
+    AWL_ASSERT_CHAINED(e, "(list 1 3 24 {21 32} :foo)",
             AWL_IASSERT(v->type == AWLVAL_QEXPR)
             AWL_IASSERT(v->count == 5));
 

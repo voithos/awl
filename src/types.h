@@ -16,6 +16,7 @@ typedef enum {
 
     AWLVAL_ERR,
     AWLVAL_SYM,
+    AWLVAL_QSYM,
     AWLVAL_STR,
     AWLVAL_BOOL,
     AWLVAL_BUILTIN,
@@ -86,6 +87,7 @@ awlval* awlval_err(const char* fmt, ...);
 awlval* awlval_num(long x);
 awlval* awlval_float(double x);
 awlval* awlval_sym(const char* s);
+awlval* awlval_qsym(const char* s);
 awlval* awlval_str(const char* s);
 awlval* awlval_bool(bool b);
 awlval* awlval_fun(const awlbuiltin builtin, const char* builtin_name);

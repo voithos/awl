@@ -133,7 +133,6 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
                 awlval* q = awlval_qexpr();
                 q = awlval_add(q, a->cell[i]);
                 a->cell[i] = q;
-                a->cell[i]->type = AWLVAL_QEXPR;
             } else if (a->cell[i]->type == AWLVAL_SYM) {
                 awlval* q = awlval_qexpr();
                 q = awlval_add(q, a->cell[i]);

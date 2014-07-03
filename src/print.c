@@ -53,6 +53,10 @@ void awlval_print(const awlval* v) {
             printf("%s", v->sym);
             break;
 
+        case AWLVAL_QSYM:
+            printf(":%s", v->sym);
+            break;
+
         case AWLVAL_STR:
             awlval_print_str(v);
             break;
@@ -90,11 +94,7 @@ void awlval_print(const awlval* v) {
             break;
 
         case AWLVAL_QEXPR:
-            if (v->count == 1) {
-                awlval_expr_print(v, ':', '\0');
-            } else {
-                awlval_expr_print(v, '{', '}');
-            }
+            awlval_expr_print(v, '{', '}');
             break;
 
         case AWLVAL_EEXPR:
