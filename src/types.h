@@ -82,13 +82,13 @@ struct awlenv {
 };
 
 /* awlval instantiation functions */
-awlval* awlval_err(char* fmt, ...);
+awlval* awlval_err(const char* fmt, ...);
 awlval* awlval_num(long x);
 awlval* awlval_float(double x);
-awlval* awlval_sym(char* s);
-awlval* awlval_str(char* s);
+awlval* awlval_sym(const char* s);
+awlval* awlval_str(const char* s);
 awlval* awlval_bool(bool b);
-awlval* awlval_fun(awlbuiltin builtin, char* builtin_name);
+awlval* awlval_fun(const awlbuiltin builtin, const char* builtin_name);
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_sexpr(void);
@@ -114,7 +114,7 @@ awlval* awlval_slice_step_str(awlval* x, int start, int end, int step);
 void awlval_maybe_promote_numeric(awlval* a, awlval* b);
 void awlval_promote_numeric(awlval* a);
 void awlval_demote_numeric(awlval* a);
-awlval* awlval_copy(awlval* v);
+awlval* awlval_copy(const awlval* v);
 bool awlval_eq(awlval* x, awlval* y);
 
 /* awlenv functions */

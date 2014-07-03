@@ -8,16 +8,16 @@
 
 #define BUFSIZE 4096
 
-bool streq(char* a, char* b) {
+bool streq(const char* a, const char* b) {
     return strcmp(a, b) == 0;
 }
 
-char* strrev(char* str) {
+char* strrev(const char* str) {
     int len = strlen(str);
     char* newstr = malloc(len + 1);
 
     char* start = newstr;
-    char* end = str + len - 1;
+    const char* end = str + len - 1;
 
     for (int i = 0; i < len; i++) {
         *start = *end;
@@ -28,7 +28,7 @@ char* strrev(char* str) {
     return newstr;
 }
 
-char* strsubstr(char* str, int start, int end) {
+char* strsubstr(const char* str, int start, int end) {
     int len = end - start;
     char* buffer = malloc(len + 1);
     memcpy(buffer, &str[start], len);
@@ -36,7 +36,7 @@ char* strsubstr(char* str, int start, int end) {
     return buffer;
 }
 
-char* strstep(char* str, int step) {
+char* strstep(const char* str, int step) {
     int len = strlen(str);
     int bufferlen = len / step + (len % step == 0 ? 0 : 1);
     char* buffer = malloc(bufferlen + 1);
@@ -47,7 +47,7 @@ char* strstep(char* str, int step) {
     return buffer;
 }
 
-char* get_executable_path() {
+char* get_executable_path(void) {
     /* TODO: reading /proc is definitely not cross platform */
     char* path = malloc(BUFSIZE);
 
@@ -61,7 +61,7 @@ char* get_executable_path() {
     return path;
 }
 
-char* get_base_path() {
+char* get_base_path(void) {
     // Executable is in 'bin' directory, so we need to go up twice
     char* exe_path = get_executable_path();
     char* base_path = path_join(dirname(exe_path), "../");
@@ -69,7 +69,7 @@ char* get_base_path() {
     return base_path;
 }
 
-char* path_join(char* a, char* b) {
+char* path_join(const char* a, const char* b) {
     char* buffer = malloc(BUFSIZE);
     snprintf(buffer, BUFSIZE, "%s/%s", a, b);
     return buffer;

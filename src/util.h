@@ -3,12 +3,12 @@
 
 #include <stdbool.h>
 
-bool streq(char* a, char* b);
-char* strrev(char* str);
-char* strsubstr(char* str, int start, int end);
-char* strstep(char* str, int step);
-char* get_executable_path();
-char* get_base_path();
-char* path_join(char* a, char* b);
+bool streq(const char* a, const char* b);
+char* strrev(const char* str);
+char* strsubstr(const char* str, int start, int end);
+char* strstep(const char* str, int step);
+char* get_executable_path(void);
+char* get_base_path(void);
+char* path_join(const char* a, const char* b);
 
 #endif

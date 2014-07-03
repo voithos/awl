@@ -1,6 +1,8 @@
 #ifndef AWL_TEST_COMMON_H
 #define AWL_TEST_COMMON_H
 
+#include <stdio.h>
+
 #include "../src/types.h"
 #include "../src/parser.h"
 #include "../src/eval.h"

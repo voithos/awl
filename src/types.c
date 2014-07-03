@@ -54,7 +54,7 @@ char* awlval_type_sysname(awlval_type_t t) {
     }
 }
 
-awlval* awlval_err(char* fmt, ...) {
+awlval* awlval_err(const char* fmt, ...) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_ERR;
 
@@ -87,7 +87,7 @@ awlval* awlval_float(double x) {
     return v;
 }
 
-awlval* awlval_sym(char* s) {
+awlval* awlval_sym(const char* s) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_SYM;
     v->sym = malloc(strlen(s) + 1);
@@ -95,7 +95,7 @@ awlval* awlval_sym(char* s) {
     return v;
 }
 
-awlval* awlval_str(char* s) {
+awlval* awlval_str(const char* s) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_STR;
     v->length = strlen(s);
@@ -111,7 +111,7 @@ awlval* awlval_bool(bool b) {
     return v;
 }
 
-awlval* awlval_fun(awlbuiltin builtin, char* builtin_name) {
+awlval* awlval_fun(const awlbuiltin builtin, const char* builtin_name) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_BUILTIN;
     v->builtin = builtin;
@@ -373,7 +373,7 @@ void awlval_demote_numeric(awlval* x) {
     }
 }
 
-awlval* awlval_copy(awlval* v) {
+awlval* awlval_copy(const awlval* v) {
     awlval* x = malloc(sizeof(awlval));
     x->type = v->type;
 
