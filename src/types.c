@@ -692,6 +692,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "not", builtin_not);
 
     awlenv_add_builtin(e, "head", builtin_head);
+    awlenv_add_builtin(e, "qhead", builtin_qhead);
     awlenv_add_builtin(e, "tail", builtin_tail);
     awlenv_add_builtin(e, "first", builtin_first);
     awlenv_add_builtin(e, "last", builtin_last);

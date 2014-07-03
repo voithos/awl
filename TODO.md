@@ -1,5 +1,4 @@
 ## Issues
-- `func` macro surrounds any resulting expression in an SExpr
 
 ## Language features
 - dictionaries: possible syntax

@@ -337,6 +337,25 @@ awlval* builtin_head(awlenv* e, awlval* a) {
     return awlval_eval(e, awlval_take(v, 0));
 }
 
+awlval* builtin_qhead(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 1, "qhead");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "qhead");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "qhead");
+
+    awlval* q = awlval_take(a, 0);
+    awlval* v = awlval_take(q, 0);
+
+    if (v->type == AWLVAL_SEXPR) {
+        v->type = AWLVAL_QEXPR;
+    } else if (v->type == AWLVAL_SYM) {
+        awlval* sq = awlval_qexpr();
+        sq = awlval_add(sq, v);
+        v = sq;
+    }
+    return awlval_eval(e, v);
+}
+
 awlval* builtin_tail(awlenv* e, awlval* a) {
     AWLASSERT_ARGCOUNT(a, 1, "tail");
     EVAL_ARGS(e, a);

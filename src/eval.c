@@ -130,6 +130,9 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
         for (int i = 0; i < a->count; i++) {
             /* wrap SExprs and Symbols in QExprs to avoid evaluation */
             if (a->cell[i]->type == AWLVAL_SEXPR) {
+                awlval* q = awlval_qexpr();
+                q = awlval_add(q, a->cell[i]);
+                a->cell[i] = q;
                 a->cell[i]->type = AWLVAL_QEXPR;
             } else if (a->cell[i]->type == AWLVAL_SYM) {
                 awlval* q = awlval_qexpr();
@@ -223,7 +226,7 @@ awlval* awlval_eval_inside_qexpr(awlenv* e, awlval* v) {
         case AWLVAL_QEXPR:
         {
             for (int i = 0; i < v->count; i++) {
-                // Special case fo C-Expressions
+                // Special case for C-Expressions
                 if (v->cell[i]->type == AWLVAL_CEXPR) {
                     awlval* cexpr = awlval_eval_cexpr(e, awlval_pop(v, i));
                     if (cexpr->type == AWLVAL_ERR) {
@@ -232,7 +235,11 @@ awlval* awlval_eval_inside_qexpr(awlenv* e, awlval* v) {
                     }
 
                     // Populate current container with result of CExpr
-                    v = awlval_shift(v, cexpr, i);
+                    if (cexpr->type == AWLVAL_QEXPR) {
+                        v = awlval_shift(v, cexpr, i);
+                    } else {
+                        v = awlval_insert(v, cexpr, i);
+                    }
                 } else {
                     v->cell[i] = awlval_eval_inside_qexpr(e, v->cell[i]);
                     if (v->cell[i]->type == AWLVAL_ERR) {
@@ -261,10 +268,6 @@ awlval* awlval_eval_cexpr(awlenv* e, awlval* v) {
     awlval* res = awlval_eval(e, awlval_take(v, 0));
     if (res->type == AWLVAL_ERR) {
         return res;
-    }
-    if (res->type != AWLVAL_QEXPR) {
-        awlval_del(res);
-        return awlval_err("result of %s must be %s", awlval_type_name(AWLVAL_CEXPR), awlval_type_name(AWLVAL_QEXPR));
     }
     return res;
 }

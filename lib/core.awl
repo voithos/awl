@@ -6,7 +6,7 @@
 
 ; System macros
 (macro func (f b)
-    {global @(first f) (fn (@(tail f)) (@b))})
+    {global @(first (qhead f)) (fn (@(tail (qhead f))) @b)})
 
 ; Type functions
 (func (int? x) (== (typeof x) 'integer'))

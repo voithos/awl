@@ -30,6 +30,7 @@ awlval* builtin_or(awlenv* e, awlval* a);
 awlval* builtin_not(awlenv* e, awlval* a);
 
 awlval* builtin_head(awlenv* e, awlval* a);
+awlval* builtin_qhead(awlenv* e, awlval* a);
 awlval* builtin_tail(awlenv* e, awlval* a);
 awlval* builtin_first(awlenv* e, awlval* a);
 awlval* builtin_last(awlenv* e, awlval* a);
