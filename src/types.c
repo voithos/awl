@@ -699,7 +699,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "eval", builtin_eval);
     awlenv_add_builtin(e, "append", builtin_append);
     awlenv_add_builtin(e, "cons", builtin_cons);
-    awlenv_add_builtin(e, "init", builtin_init);
+    awlenv_add_builtin(e, "except-last", builtin_exceptlast);
 
     awlenv_add_builtin(e, "len", builtin_len);
     awlenv_add_builtin(e, "reverse", builtin_reverse);

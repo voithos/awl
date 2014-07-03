@@ -367,11 +367,11 @@ awlval* builtin_last(awlenv* e, awlval* a) {
     return awlval_slice(v, v->count - 1, v->count);
 }
 
-awlval* builtin_init(awlenv* e, awlval* a) {
-    AWLASSERT_ARGCOUNT(a, 1, "init");
+awlval* builtin_exceptlast(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 1, "except-last");
     EVAL_ARGS(e, a);
-    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "init");
-    AWLASSERT_NONEMPTY(a, a->cell[0], "init");
+    AWLASSERT_TYPE(a, 0, AWLVAL_QEXPR, "except-last");
+    AWLASSERT_NONEMPTY(a, a->cell[0], "except-last");
 
     awlval* v = awlval_take(a, 0);
     return awlval_slice(v, 0, v->count - 1);

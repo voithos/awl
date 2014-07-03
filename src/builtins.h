@@ -33,7 +33,7 @@ awlval* builtin_head(awlenv* e, awlval* a);
 awlval* builtin_tail(awlenv* e, awlval* a);
 awlval* builtin_first(awlenv* e, awlval* a);
 awlval* builtin_last(awlenv* e, awlval* a);
-awlval* builtin_init(awlenv* e, awlval* a);
+awlval* builtin_exceptlast(awlenv* e, awlval* a);
 awlval* builtin_list(awlenv* e, awlval* a);
 awlval* builtin_eval(awlenv* e, awlval* a);
 awlval* builtin_append(awlenv* e, awlval* a);
