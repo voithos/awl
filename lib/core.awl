@@ -23,10 +23,25 @@
 (func (do & l)
     (if (nil? l)
         nil
-        (last l)))
+        (head (last l))))
 
 ; Higher-order functions
 (func (reduce f l acc)
     (if (nil? l)
         acc
+        (f (reduce f (tail l) acc) (head l))))
+
+(func (reduce-left f l acc)
+    (if (nil? l)
+        acc
         (reduce f (tail l) (f acc (head l)))))
+
+(func (map f l)
+    (reduce (fn (acc v)
+                (cons (f v) acc)) l nil))
+
+(func (filter f l)
+    (reduce (fn (acc v)
+                (if (f v)
+                    (cons v acc)
+                    acc)) l nil))
