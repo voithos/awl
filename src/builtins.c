@@ -741,7 +741,11 @@ awlval* builtin_print(awlenv* e, awlval* a) {
         if (i != 0) {
             putchar(' ');
         }
-        awlval_print(a->cell[i]);
+        if (a->cell[i]->type == AWLVAL_STR) {
+            printf("%s", a->cell[i]->str);
+        } else {
+            awlval_print(a->cell[i]);
+        }
     }
     awlval_del(a);
     return awlval_qexpr();
