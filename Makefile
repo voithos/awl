@@ -80,7 +80,7 @@ $(MAINOBJDIR)/%.o:
 	$(CC) $(CFLAGS) -c $(@:$(MAINOBJDIR)%.o=$(SRCDIR)%.c) -o $@
 
 $(TARGET): $(OBJECTS) | $(BINDIR)
-	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 
 # Tests dependency management
 $(TESTDIR)/%.d: $(TESTDIR)/%.c
@@ -96,7 +96,7 @@ $(TESTOBJDIR)/%.o:
 
 $(TESTTARGET): CFLAGS += -g
 $(TESTTARGET): $(TESTOBJECTS) | $(BINDIR)
-	$(CC) $(LDFLAGS) $(TESTOBJECTS) -o $@
+	$(CC) $(TESTOBJECTS) $(LDFLAGS) -o $@
 
 clean:
 	$(CLEAN)
