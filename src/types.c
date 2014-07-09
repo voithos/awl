@@ -723,7 +723,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "slice", builtin_slice);
 
     awlenv_add_builtin(e, "if", builtin_if);
-    awlenv_add_builtin(e, "def", builtin_def);
+    awlenv_add_builtin(e, "define", builtin_define);
     awlenv_add_builtin(e, "global", builtin_global);
 
     awlenv_add_builtin(e, "fn", builtin_lambda);

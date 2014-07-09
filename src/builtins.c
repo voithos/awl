@@ -549,7 +549,7 @@ awlval* builtin_if(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_var(awlenv* e, awlval* a, bool global) {
-    char* op = global ? "global" : "def";
+    char* op = global ? "global" : "define";
 
     /* Special case when there is a single symbol to be defined */
     if (a->cell[0]->type == AWLVAL_SYM) {
@@ -603,7 +603,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     return awlval_qexpr();
 }
 
-awlval* builtin_def(awlenv* e, awlval* a) {
+awlval* builtin_define(awlenv* e, awlval* a) {
     return builtin_var(e, a, false);
 }
 

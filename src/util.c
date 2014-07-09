@@ -51,7 +51,7 @@ char* get_executable_path(void) {
     /* TODO: reading /proc is definitely not cross platform */
     char* path = malloc(BUFSIZE);
 
-    int len = readlink("/proc/self/exe", path, BUFSIZE);
+    int len = readlink("/proc/self/exe", path, BUFSIZE - 1);
     if (len == -1) {
         free(path);
         path = NULL;
