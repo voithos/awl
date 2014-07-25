@@ -48,6 +48,7 @@ awlval* builtin_if(awlenv* e, awlval* a);
 awlval* builtin_var(awlenv* e, awlval* a, bool global);
 awlval* builtin_define(awlenv* e, awlval* a);
 awlval* builtin_global(awlenv* e, awlval* a);
+awlval* builtin_let(awlenv* e, awlval* a);
 
 awlval* builtin_lambda(awlenv* e, awlval* a);
 awlval* builtin_macro(awlenv* e, awlval* a);
