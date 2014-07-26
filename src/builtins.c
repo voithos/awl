@@ -653,6 +653,8 @@ awlval* builtin_let(awlenv* e, awlval* a) {
     }
 
     awlval* v = awlval_eval(lenv, awlval_take(a, 1));
+
+    lenv->parent = NULL;
     awlenv_del(lenv);
     return v;
 }
