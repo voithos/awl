@@ -3,6 +3,7 @@
 
 ; Global definitions
 (global nil {})
+(global else true)
 
 ; System macros
 (macro func (f b)
@@ -26,6 +27,9 @@
         (head (last l))))
 
 ; Higher-order functions
+(func (compose f g & x)
+      (f (g x)))
+
 (func (reduce f l acc)
     (if (nil? l)
         acc
@@ -45,3 +49,43 @@
                 (if (f v)
                     (cons v acc)
                     acc)) l nil))
+
+(func (sum l)
+      (reduce + l 0))
+
+(func (product l)
+      (reduce * l 1))
+
+; List functions
+(func (pack f & xs)
+      (f xs))
+
+(func (unpack f xs)
+      (eval (cons f xs)))
+
+(global curry pack)
+(global uncurry unpack)
+
+(func (nth n l)
+      (let ((s (slice l n (+ n 1))))
+            (if (nil? s)
+                s
+                (head s))))
+
+(func (take n l)
+      (slice l 0 n))
+
+(func (drop n l)
+      (slice l n))
+
+(func (member? x l)
+      (if (nil? l)
+          false
+          (if (== x (head l))
+              true
+              (elem-of x (tail l)))))
+
+(func (range s e)
+      (if (>= s e)
+          nil
+          (cons s (range (+ s 1) e))))
