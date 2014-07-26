@@ -612,7 +612,8 @@ awlval* builtin_global(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_let(awlenv* e, awlval* a) {
-    e = awlenv_copy(e);
+    awlenv* lenv = awlenv_new();
+    lenv->parent = e;
 
     /* maybe fix DEFINE and GLOBAL to work like this too... */
     AWLASSERT_ARGCOUNT(a, 2, "let");
@@ -631,16 +632,16 @@ awlval* builtin_let(awlenv* e, awlval* a) {
     }
 
     for (int i = 0; i < bindings->count; i++) {
-        int index = awlenv_index(e, bindings->cell[i]->cell[0]);
+        int index = awlenv_index(lenv, bindings->cell[i]->cell[0]);
         if (index != -1) {
-            AWLASSERT(a, !(e->locked[index]),
-                    "cannot redefine builtin function '%s'", e->syms[index]);
+            AWLASSERT(a, !(lenv->locked[index]),
+                    "cannot redefine builtin function '%s'", lenv->syms[index]);
         }
     }
 
     /* Evaluate value arguments (but not the symbols) */
     for (int i = 0; i < bindings->count; i++) {
-        bindings->cell[i] = awlval_eval_arg(e, bindings->cell[i], 1);
+        bindings->cell[i] = awlval_eval_arg(lenv, bindings->cell[i], 1);
 
         if (bindings->cell[i]->type == AWLVAL_ERR) {
             awlval* err = awlval_pop(bindings, i);
@@ -648,11 +649,11 @@ awlval* builtin_let(awlenv* e, awlval* a) {
             return err;
         }
 
-        awlenv_put(e, bindings->cell[i]->cell[0], bindings->cell[i]->cell[1], false);
+        awlenv_put(lenv, bindings->cell[i]->cell[0], bindings->cell[i]->cell[1], false);
     }
 
-    awlval* v = awlval_eval(e, awlval_take(a, 1));
-    awlenv_del(e);
+    awlval* v = awlval_eval(lenv, awlval_take(a, 1));
+    awlenv_del(lenv);
     return v;
 }
 
