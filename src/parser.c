@@ -94,6 +94,14 @@ static awlval* awlval_read_string(const mpc_ast_t* t) {
     return str;
 }
 
+static awlval* awlval_read_qsym(const mpc_ast_t* t) {
+    return awlval_qsym(t->children[1]->contents);
+}
+
+static awlval* awlval_read_sym(const mpc_ast_t* t) {
+    return awlval_sym(t->contents);
+}
+
 static awlval* awlval_read(const mpc_ast_t* t) {
     if (strstr(t->tag, "integer")) {
         return awlval_read_int(t);
@@ -108,10 +116,10 @@ static awlval* awlval_read(const mpc_ast_t* t) {
         return awlval_read_string(t);
     }
     if (strstr(t->tag, "qsymbol")) {
-        return awlval_qsym(t->contents);
+        return awlval_read_qsym(t);
     }
     if (strstr(t->tag, "symbol")) {
-        return awlval_sym(t->contents);
+        return awlval_read_sym(t);
     }
 
     awlval* x = NULL;
