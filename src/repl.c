@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include "awl.h"
 #include "assert.h"
@@ -55,7 +56,6 @@ void add_history(char* input) {
 
 #endif
 
-
 awlval* eval_repl(awlenv* e, awlval* v) {
     if (v->count == 0) {
         awlval_del(v);
@@ -77,8 +77,13 @@ void run_repl(awlenv* e) {
     while (true) {
         char* input = get_input("awl> ");
         if (!input) {
-            putchar('\n');
-            break;
+            if (errno == EAGAIN) {
+                errno = 0;
+                continue;
+            } else {
+                putchar('\n');
+                break;
+            }
         }
         add_history(input);
 
