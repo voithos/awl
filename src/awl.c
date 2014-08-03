@@ -8,7 +8,6 @@
 #include "builtins.h"
 #include "parser.h"
 #include "print.h"
-#include "repl.h"
 #include "util.h"
 
 void run_scripts(awlenv* e, int argc, char** argv) {
@@ -23,20 +22,11 @@ void run_scripts(awlenv* e, int argc, char** argv) {
     }
 }
 
-int main(int argc, char** argv) {
+void setup_awl(void) {
+    register_default_print_fn();
     setup_parser();
+}
 
-    awlenv* e = awlenv_new_top_level();
-
-    /* if the only argument is the interpreter name, run repl */
-    if (argc == 1) {
-        run_repl(e);
-    } else {
-        run_scripts(e, argc, argv);
-    }
-
-    awlenv_del(e);
+void teardown_awl(void) {
     teardown_parser();
-
-    return 0;
 }

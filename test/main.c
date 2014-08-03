@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#include "../src/parser.h"
+#include "../src/awl.h"
 #include "ptest.h"
 
 void suite_parser(void);
@@ -9,7 +9,7 @@ void suite_builtin(void);
 
 int main(int argc, char** argv) {
     /* Setup/teardown parser only once, since it isn't modified */
-    setup_parser();
+    setup_awl();
 
     pt_add_suite(suite_parser);
     pt_add_suite(suite_eval);
@@ -17,6 +17,6 @@ int main(int argc, char** argv) {
 
     int retval = pt_run();
 
-    teardown_parser();
+    teardown_awl();
     return retval;
 }

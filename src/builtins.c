@@ -787,10 +787,10 @@ awlval* builtin_print(awlenv* e, awlval* a) {
     EVAL_ARGS(e, a);
     for (int i = 0; i < a->count; i++) {
         if (i != 0) {
-            putchar(' ');
+            awl_printf(" ");
         }
         if (a->cell[i]->type == AWLVAL_STR) {
-            printf("%s", a->cell[i]->str);
+            awl_printf("%s", a->cell[i]->str);
         } else {
             awlval_print(a->cell[i]);
         }
@@ -801,7 +801,7 @@ awlval* builtin_print(awlenv* e, awlval* a) {
 
 awlval* builtin_println(awlenv* e, awlval* a) {
     awlval* x = builtin_print(e, a);
-    putchar('\n');
+    awl_printf("\n");
     return x;
 }
 

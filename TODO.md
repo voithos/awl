@@ -23,5 +23,4 @@
 - file system interface
 
 ## Standard library
-- basic functional components (map, reduce, filter, etc)
 - mathematical functions

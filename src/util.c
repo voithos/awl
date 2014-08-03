@@ -62,11 +62,18 @@ char* get_executable_path(void) {
 }
 
 char* get_base_path(void) {
+#ifdef EMSCRIPTEN
+    char* base_path = malloc(2);
+    base_path[0] = '.';
+    base_path[1] = '\0';
+    return base_path;
+#else
     // Executable is in 'bin' directory, so we need to go up twice
     char* exe_path = get_executable_path();
     char* base_path = path_join(dirname(exe_path), "../");
     free(exe_path);
     return base_path;
+#endif
 }
 
 char* path_join(const char* a, const char* b) {

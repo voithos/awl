@@ -12,7 +12,7 @@
 
 #define HIST_FILE "awl.hist"
 
-#ifdef _WIN32
+#if defined(_WIN32)
 
 #include <stdio.h>
 #include <string.h>
@@ -68,9 +68,22 @@ awlval* eval_repl(awlenv* e, awlval* v) {
     return awlval_eval(e, awlval_take(v, 0));
 }
 
+void eval_repl_str(awlenv* e, char* input) {
+    awlval* v;
+    char* err;
+    if (awlval_parse(input, &v, &err)) {
+        awlval* x = eval_repl(e, v);
+        awlval_println(x);
+        awlval_del(x);
+    } else {
+        awl_printf("%s", err);
+        free(err);
+    }
+}
+
 void run_repl(awlenv* e) {
-    puts("awl " AWL_VERSION);
-    puts("Ctrl+D to exit\n");
+    awl_printf("awl " AWL_VERSION "\n");
+    awl_printf("Ctrl+D to exit\n\n");
 
     load_history();
 
@@ -81,23 +94,12 @@ void run_repl(awlenv* e) {
                 errno = 0;
                 continue;
             } else {
-                putchar('\n');
+                awl_printf("\n");
                 break;
             }
         }
         add_history(input);
-
-        awlval* v;
-        char* err;
-        if (awlval_parse(input, &v, &err)) {
-            awlval* x = eval_repl(e, v);
-            awlval_println(x);
-            awlval_del(x);
-        } else {
-            printf("%s", err);
-            free(err);
-        }
-
+        eval_repl_str(e, input);
         free(input);
     }
 }

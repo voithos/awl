@@ -14,14 +14,17 @@ TESTBINARY = run-tests
 SRCDIR = src
 TESTDIR = test
 BINDIR = bin
+WEBDIR = web
 OBJDIR = obj
+LIBDIR = lib
 MAINOBJDIR = $(OBJDIR)/$(BINARY)
 TESTOBJDIR = $(OBJDIR)/$(TESTDIR)
 
 TARGET = $(BINDIR)/$(BINARY)
 BITCODE = $(TARGET).bc
-WEBTARGET = $(BINARY).js
+WEBTARGET = $(WEBDIR)/$(BINARY).js
 WEBMAP = $(WEBTARGET).map
+WEBFUNCS = "['_setup_awl','_teardown_awl','_register_print_fn','_awlenv_new_top_level','_eval_repl_str']"
 CODE := $(wildcard $(SRCDIR)/*.c)
 HEADERS := $(wildcard $(SRCDIR)/*.h)
 ifneq ($(UNAME), Linux)
@@ -34,7 +37,7 @@ DEPS = $(CODE:.c=.d)
 TESTTARGET = $(BINDIR)/$(TESTBINARY)
 TESTCODE = $(wildcard $(TESTDIR)/*.c)
 TESTHEADERS = $(wildcard $(TESTDIR)/*.h)
-TESTOBJECTS = $(addprefix $(TESTOBJDIR)/, $(notdir $(TESTCODE:.c=.o))) $(filter-out $(MAINOBJDIR)/awl.o, $(OBJECTS))
+TESTOBJECTS = $(addprefix $(TESTOBJDIR)/, $(notdir $(TESTCODE:.c=.o))) $(filter-out $(MAINOBJDIR)/main.o, $(OBJECTS))
 TESTDEPS = $(TESTCODE:.c=.d)
 
 CLEAN = rm -f $(TARGET) $(BITCODE) $(WEBTARGET) $(WEBMAP) $(OBJDIR)/*.o $(MAINOBJDIR)/*.o $(TESTOBJDIR)/*.o $(BINDIR)/*
@@ -46,19 +49,22 @@ all: debug
 debug: CFLAGS += -g
 debug: $(TARGET)
 
-release: CFLAGS += -O3
+release: CFLAGS += -O2
 release: $(TARGET)
 
 web: CC := emcc
-web: LDFLAGS :=
+web: CFLAGS += -g
+web: LDFLAGS := -g --preload-file $(LIBDIR) -s EXPORTED_FUNCTIONS=$(WEBFUNCS) -s RESERVED_FUNCTION_POINTERS=1
 web: clean $(WEBTARGET)
 	$(CLEAN)
 	mv $(WEBTARGET).tmp $(WEBTARGET)
+	mv $(WEBMAP).tmp $(WEBMAP)
 
 $(WEBTARGET): $(TARGET)
 	mv $(TARGET) $(BITCODE)
-	$(CC) $(BITCODE) -o $(WEBTARGET)
+	$(CC) $(LDFLAGS) $(BITCODE) -o $(WEBTARGET)
 	mv $(WEBTARGET) $(WEBTARGET).tmp
+	mv $(WEBMAP) $(WEBMAP).tmp
 
 test: $(TESTTARGET)
 	$(TESTTARGET)
