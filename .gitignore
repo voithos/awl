@@ -1,6 +1,8 @@
 bin/
 obj/
-web/
+web/awl.js
+web/awl.data
+web/awl.js.map
 tags
 awl
 *.hist
