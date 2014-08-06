@@ -280,6 +280,26 @@ void test_builtin_last(void) {
     teardown_test(e);
 }
 
+void test_builtin_exceptlast(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "(exceptlast 20)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(exceptlast {})", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(exceptlast {1 2} {3 4})", AWLVAL_ERR);
+
+    AWL_ASSERT_CHAINED(e, "(exceptlast {1 2 3 4})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 3)
+            AWL_IASSERT(v->cell[2]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[2]->lng == 3L));
+
+    AWL_ASSERT_CHAINED(e, "(exceptlast {1})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 0));
+
+    teardown_test(e);
+}
+
 void test_builtin_list(void) {
     awlenv* e = setup_test();
 
@@ -343,6 +363,7 @@ void suite_builtin(void) {
     pt_add_test(test_builtin_tail, "Test Tail", "Suite Builtin");
     pt_add_test(test_builtin_first, "Test First", "Suite Builtin");
     pt_add_test(test_builtin_last, "Test Last", "Suite Builtin");
+    pt_add_test(test_builtin_last, "Test ExceptLast", "Suite Builtin");
     pt_add_test(test_builtin_list, "Test List", "Suite Builtin");
     pt_add_test(test_builtin_slice, "Test Slice", "Suite Builtin");
 }
