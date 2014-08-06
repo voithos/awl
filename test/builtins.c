@@ -283,17 +283,17 @@ void test_builtin_last(void) {
 void test_builtin_exceptlast(void) {
     awlenv* e = setup_test();
 
-    AWL_ASSERT_TYPE(e, "(exceptlast 20)", AWLVAL_ERR);
-    AWL_ASSERT_TYPE(e, "(exceptlast {})", AWLVAL_ERR);
-    AWL_ASSERT_TYPE(e, "(exceptlast {1 2} {3 4})", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(except-last 20)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(except-last {})", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(except-last {1 2} {3 4})", AWLVAL_ERR);
 
-    AWL_ASSERT_CHAINED(e, "(exceptlast {1 2 3 4})",
+    AWL_ASSERT_CHAINED(e, "(except-last {1 2 3 4})",
             AWL_IASSERT(v->type == AWLVAL_QEXPR)
             AWL_IASSERT(v->count == 3)
             AWL_IASSERT(v->cell[2]->type == AWLVAL_INT)
             AWL_IASSERT(v->cell[2]->lng == 3L));
 
-    AWL_ASSERT_CHAINED(e, "(exceptlast {1})",
+    AWL_ASSERT_CHAINED(e, "(except-last {1})",
             AWL_IASSERT(v->type == AWLVAL_QEXPR)
             AWL_IASSERT(v->count == 0));
 
@@ -312,6 +312,119 @@ void test_builtin_list(void) {
     AWL_ASSERT_CHAINED(e, "(list 1 3 24 {21 32} :foo)",
             AWL_IASSERT(v->type == AWLVAL_QEXPR)
             AWL_IASSERT(v->count == 5));
+
+    teardown_test(e);
+}
+
+void test_builtin_append(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "(append)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(append {})", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(append {1 2} 3)", AWLVAL_ERR);
+
+    AWL_ASSERT_CHAINED(e, "(append {1 2} {3 4})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 4)
+            AWL_IASSERT(v->cell[0]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[0]->lng == 1L)
+            AWL_IASSERT(v->cell[1]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[1]->lng == 2L)
+            AWL_IASSERT(v->cell[2]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[2]->lng == 3L)
+            AWL_IASSERT(v->cell[3]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[3]->lng == 4L));
+
+    AWL_ASSERT_CHAINED(e, "(append {} {5} {} {9} {})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 2)
+            AWL_IASSERT(v->cell[0]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[0]->lng == 5L)
+            AWL_IASSERT(v->cell[1]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[1]->lng == 9L));
+
+    teardown_test(e);
+}
+
+void test_builtin_cons(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "(cons)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(cons {})", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(cons 2 3)", AWLVAL_ERR);
+
+    AWL_ASSERT_CHAINED(e, "(cons 9 {})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 1)
+            AWL_IASSERT(v->cell[0]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[0]->lng == 9L));
+
+    AWL_ASSERT_CHAINED(e, "(cons {} {1 2})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 3)
+            AWL_IASSERT(v->cell[0]->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->cell[0]->count == 0));
+
+    teardown_test(e);
+}
+
+void test_builtin_len(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "(len)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(len 5)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(len {1} {2 3})", AWLVAL_ERR);
+
+    AWL_ASSERT_CHAINED(e, "(len {})",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == 0));
+
+    AWL_ASSERT_CHAINED(e, "(len {1 2 3})",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == 3));
+
+    AWL_ASSERT_CHAINED(e, "(len '')",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == 0));
+
+    AWL_ASSERT_CHAINED(e, "(len 'hello world')",
+            AWL_IASSERT(v->type == AWLVAL_INT)
+            AWL_IASSERT(v->lng == 11));
+
+    teardown_test(e);
+}
+
+void test_builtin_reverse(void) {
+    awlenv* e = setup_test();
+
+    AWL_ASSERT_TYPE(e, "(reverse)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(reverse 5)", AWLVAL_ERR);
+    AWL_ASSERT_TYPE(e, "(reverse {1} {2 3})", AWLVAL_ERR);
+
+    AWL_ASSERT_CHAINED(e, "(reverse {})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 0));
+
+    AWL_ASSERT_CHAINED(e, "(reverse {1 2 3})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 3)
+            AWL_IASSERT(v->cell[0]->type == AWLVAL_INT)
+            AWL_IASSERT(v->cell[0]->lng == 3L));
+
+    AWL_ASSERT_CHAINED(e, "(reverse {'foo' 9 {x}})",
+            AWL_IASSERT(v->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->count == 3)
+            AWL_IASSERT(v->cell[0]->type == AWLVAL_QEXPR)
+            AWL_IASSERT(v->cell[0]->count == 1));
+
+    AWL_ASSERT_CHAINED(e, "(reverse '')",
+            AWL_IASSERT(v->type == AWLVAL_STR)
+            AWL_IASSERT(v->length == 0));
+
+    AWL_ASSERT_CHAINED(e, "(reverse 'hello world')",
+            AWL_IASSERT(v->type == AWLVAL_STR)
+            AWL_IASSERT(v->length == 11)
+            AWL_IASSERT(v->str[0] == 'd'));
 
     teardown_test(e);
 }
@@ -363,7 +476,11 @@ void suite_builtin(void) {
     pt_add_test(test_builtin_tail, "Test Tail", "Suite Builtin");
     pt_add_test(test_builtin_first, "Test First", "Suite Builtin");
     pt_add_test(test_builtin_last, "Test Last", "Suite Builtin");
-    pt_add_test(test_builtin_last, "Test ExceptLast", "Suite Builtin");
+    pt_add_test(test_builtin_exceptlast, "Test ExceptLast", "Suite Builtin");
     pt_add_test(test_builtin_list, "Test List", "Suite Builtin");
+    pt_add_test(test_builtin_append, "Test Append", "Suite Builtin");
+    pt_add_test(test_builtin_cons, "Test Cons", "Suite Builtin");
+    pt_add_test(test_builtin_len, "Test Len", "Suite Builtin");
+    pt_add_test(test_builtin_reverse, "Test Reverse", "Suite Builtin");
     pt_add_test(test_builtin_slice, "Test Slice", "Suite Builtin");
 }
