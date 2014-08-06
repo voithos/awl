@@ -12,10 +12,25 @@
     } \
 }
 
+static bool eval_aborted = false;
+
+void awlval_eval_abort(void) {
+    eval_aborted = true;
+}
+
 awlval* awlval_eval(awlenv* e, awlval* v) {
     bool recursing = false;
 
     while (true) {
+        // Handle abort
+        if (eval_aborted) {
+            AWLENV_DEL_RECURSING(e);
+            awlval_del(v);
+
+            eval_aborted = false;
+            return awlval_err("eval aborted");
+        }
+
         switch (v->type) {
             case AWLVAL_SYM:
             {

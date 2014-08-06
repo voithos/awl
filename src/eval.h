@@ -17,6 +17,8 @@
 
 #include "types.h"
 
+void awlval_eval_abort(void);
+
 /* eval functions */
 awlval* awlval_eval(awlenv* e, awlval* v);
 awlval* awlval_eval_arg(awlenv* e, awlval* v, int arg);

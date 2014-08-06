@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <errno.h>
 
 #include "awl.h"
@@ -68,7 +69,7 @@ awlval* eval_repl(awlenv* e, awlval* v) {
     return awlval_eval(e, awlval_take(v, 0));
 }
 
-void eval_repl_str(awlenv* e, char* input) {
+void eval_repl_str(awlenv* e, const char* input) {
     awlval* v;
     char* err;
     if (awlval_parse(input, &v, &err)) {
@@ -81,7 +82,17 @@ void eval_repl_str(awlenv* e, char* input) {
     }
 }
 
+static void sigint_handler(int ignore) {
+    awlval_eval_abort();
+}
+
+static void setup_sigint_handler(void) {
+    signal(SIGINT, sigint_handler);
+}
+
 void run_repl(awlenv* e) {
+    setup_sigint_handler();
+
     awl_printf("awl " AWL_VERSION "\n");
     awl_printf("Ctrl+D to exit\n\n");
 
