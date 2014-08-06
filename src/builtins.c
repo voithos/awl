@@ -412,6 +412,7 @@ awlval* builtin_eval(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_append(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 2, "append");
     EVAL_ARGS(e, a);
 
     for (int i = 0; i < a->count; i++) {
