@@ -10,24 +10,30 @@
 #include "../src/print.h"
 #include "../src/util.h"
 
-#define AWL_ASSERT(a, v) { \
+#define TEST_EVAL(e, s) { \
+    { \
+        awlval_del(eval_string(e, s)); \
+    } \
+}
+
+#define TEST_ASSERT(a, v) { \
     PT_ASSERT(a); \
     if (!(a)) { \
         putchar('('); awlval_print(v); putchar(')'); putchar(' '); \
     } \
 }
 
-#define AWL_ASSERT_EQ(e, s, expected) { \
+#define TEST_ASSERT_EQ(e, s, expected) { \
     { \
         awlval* v = eval_string(e, s); \
         awlval* v_expected = eval_string(e, expected); \
-        AWL_ASSERT(awlval_eq(v, v_expected), v); \
+        TEST_ASSERT(awlval_eq(v, v_expected), v); \
         awlval_del(v); \
         awlval_del(v_expected); \
     } \
 }
 
-#define AWL_ASSERT_CHAINED(e, s, chain) { \
+#define TEST_ASSERT_CHAINED(e, s, chain) { \
     { \
         awlval* v = eval_string(e, s); \
         { chain } \
@@ -36,23 +42,23 @@
 }
 
 /* Inner-assertions */
-#define AWL_IASSERT(a) { \
-    AWL_ASSERT(a, v); \
+#define TEST_IASSERT(a) { \
+    TEST_ASSERT(a, v); \
 }
 
-#define AWL_IASSERT_TYPE(t) { \
-    AWL_IASSERT(v->type == t); \
+#define TEST_IASSERT_TYPE(t) { \
+    TEST_IASSERT(v->type == t); \
 }
 
-#define AWL_IASSERT_COUNT(n) { \
-    AWL_IASSERT(v->count == n); \
+#define TEST_IASSERT_COUNT(n) { \
+    TEST_IASSERT(v->count == n); \
 }
 
 /* Special case assertions */
-#define AWL_ASSERT_TYPE(e, s, t) { \
+#define TEST_ASSERT_TYPE(e, s, t) { \
     { \
         awlval* v = eval_string(e, s); \
-        AWL_ASSERT(v->type == t, v); \
+        TEST_ASSERT(v->type == t, v); \
         awlval_del(v); \
     } \
 }
