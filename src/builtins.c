@@ -456,11 +456,7 @@ awlval* builtin_reverse(awlenv* e, awlval* a) {
 
     awlval* collection = awlval_take(a, 0);
 
-    if (collection->type == AWLVAL_QEXPR) {
-        return awlval_reverse(collection);
-    } else {
-        return awlval_reverse_str(collection);
-    }
+    return awlval_reverse(collection);
 }
 
 awlval* builtin_slice(awlenv* e, awlval* a) {
@@ -521,13 +517,8 @@ awlval* builtin_slice(awlenv* e, awlval* a) {
     end = end < 0 ? 0 :
         (end > collection->length ? collection->length : end);
 
-    if (collection->type == AWLVAL_QEXPR) {
-        collection = awlval_slice_step(collection, start, end, step);
-        return reverse_slice ? awlval_reverse(collection) : collection;
-    } else {
-        collection = awlval_slice_step_str(collection, start, end, step);
-        return reverse_slice ? awlval_reverse_str(collection) : collection;
-    }
+    collection = awlval_slice_step(collection, start, end, step);
+    return reverse_slice ? awlval_reverse(collection) : collection;
 }
 
 awlval* builtin_if(awlenv* e, awlval* a) {

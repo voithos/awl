@@ -30,7 +30,7 @@ typedef enum {
 } awlval_type_t;
 
 #define ISNUMERIC(t) (t == AWLVAL_INT || t == AWLVAL_FLOAT)
-#define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR)
+#define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR || t == AWLVAL_QSYM)
 #define ISEXPR(t) (t == AWLVAL_QEXPR || t == AWLVAL_SEXPR)
 #define ISCALLABLE(t) (t == AWLVAL_BUILTIN || t == AWLVAL_FUNC || t == AWLVAL_MACRO)
 
@@ -108,11 +108,8 @@ awlval* awlval_join(awlval* x, awlval* y);
 awlval* awlval_insert(awlval* x, awlval* y, int i);
 awlval* awlval_shift(awlval* x, awlval* y, int i);
 awlval* awlval_reverse(awlval* x);
-awlval* awlval_reverse_str(awlval* x);
 awlval* awlval_slice(awlval* x, int start, int end);
-awlval* awlval_slice_str(awlval* x, int start, int end);
 awlval* awlval_slice_step(awlval* x, int start, int end, int step);
-awlval* awlval_slice_step_str(awlval* x, int start, int end, int step);
 void awlval_maybe_promote_numeric(awlval* a, awlval* b);
 void awlval_promote_numeric(awlval* a);
 void awlval_demote_numeric(awlval* a);

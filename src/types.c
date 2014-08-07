@@ -90,6 +90,7 @@ awlval* awlval_float(double x) {
 
 static awlval* awlval_sym_base(const char* s) {
     awlval* v = malloc(sizeof(awlval));
+    v->length = strlen(s);
     v->sym = malloc(strlen(s) + 1);
     strcpy(v->sym, s);
     return v;
@@ -298,7 +299,7 @@ awlval* awlval_shift(awlval* x, awlval* y, int i) {
     return x;
 }
 
-awlval* awlval_reverse(awlval* x) {
+static awlval* awlval_reverse_qexpr(awlval* x) {
     awlval* y = awlval_qexpr();
     while (x->count) {
         y = awlval_add(y, awlval_pop(x, x->count - 1));
@@ -307,22 +308,31 @@ awlval* awlval_reverse(awlval* x) {
     return y;
 }
 
-awlval* awlval_reverse_str(awlval* x) {
+static awlval* awlval_reverse_qsym(awlval* x) {
+    char* reversed = strrev(x->sym);
+    free(x->sym);
+    x->sym = reversed;
+    return x;
+}
+
+static awlval* awlval_reverse_str(awlval* x) {
     char* reversed = strrev(x->str);
     free(x->str);
     x->str = reversed;
     return x;
 }
 
-awlval* awlval_slice(awlval* x, int start, int end) {
-    return awlval_slice_step(x, start, end, 1);
+awlval* awlval_reverse(awlval* x) {
+    if (x->type == AWLVAL_QEXPR) {
+        return awlval_reverse_qexpr(x);
+    } else if (x->type == AWLVAL_STR) {
+        return awlval_reverse_str(x);
+    } else {
+        return awlval_reverse_qsym(x);
+    }
 }
 
-awlval* awlval_slice_str(awlval* x, int start, int end) {
-    return awlval_slice_step_str(x, start, end, 1);
-}
-
-awlval* awlval_slice_step(awlval* x, int start, int end, int step) {
+static awlval* awlval_slice_step_qexpr(awlval* x, int start, int end, int step) {
     /* Remove from front */
     while (start) {
         awlval_del(awlval_pop(x, 0));
@@ -350,7 +360,7 @@ awlval* awlval_slice_step(awlval* x, int start, int end, int step) {
     return x;
 }
 
-awlval* awlval_slice_step_str(awlval* x, int start, int end, int step) {
+static awlval* awlval_slice_step_str(awlval* x, int start, int end, int step) {
     char* sliced = strsubstr(x->str, start, end);
     if (step > 1 && strlen(sliced)) {
         char* stepped = strstep(sliced, step);
@@ -360,6 +370,32 @@ awlval* awlval_slice_step_str(awlval* x, int start, int end, int step) {
     free(x->str);
     x->str = sliced;
     return x;
+}
+
+static awlval* awlval_slice_step_qsym(awlval* x, int start, int end, int step) {
+    char* sliced = strsubstr(x->sym, start, end);
+    if (step > 1 && strlen(sliced)) {
+        char* stepped = strstep(sliced, step);
+        free(sliced);
+        sliced = stepped;
+    }
+    free(x->sym);
+    x->sym = sliced;
+    return x;
+}
+
+awlval* awlval_slice_step(awlval* x, int start, int end, int step) {
+    if (x->type == AWLVAL_QEXPR) {
+        return awlval_slice_step_qexpr(x, start, end, step);
+    } else if (x->type == AWLVAL_STR) {
+        return awlval_slice_step_str(x, start, end, step);
+    } else {
+        return awlval_slice_step_qsym(x, start, end, step);
+    }
+}
+
+awlval* awlval_slice(awlval* x, int start, int end) {
+    return awlval_slice_step(x, start, end, 1);
 }
 
 void awlval_maybe_promote_numeric(awlval* a, awlval* b) {
@@ -420,11 +456,13 @@ awlval* awlval_copy(const awlval* v) {
 
         case AWLVAL_SYM:
         case AWLVAL_QSYM:
+            x->length = v->length;
             x->sym = malloc(strlen(v->sym) + 1);
             strcpy(x->sym, v->sym);
             break;
 
         case AWLVAL_STR:
+            x->length = v->length;
             x->str = malloc(strlen(v->str) + 1);
             strcpy(x->str, v->str);
             break;
@@ -479,7 +517,7 @@ bool awlval_eq(awlval* x, awlval* y) {
 
         case AWLVAL_SYM:
         case AWLVAL_QSYM:
-            return streq(x->sym, y->sym);
+            return x->length == y->length && streq(x->sym, y->sym);
             break;
 
         case AWLVAL_STR:
