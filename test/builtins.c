@@ -514,6 +514,36 @@ void test_builtin_var(void) {
     teardown_test(e);
 }
 
+void test_builtin_let(void) {
+    awlenv* e = setup_test();
+
+    TEST_ASSERT_EQ(e, "(let ((x 5)) x)", "5");
+    TEST_ASSERT_TYPE(e, "x", AWLVAL_ERR);
+
+    TEST_ASSERT_EQ(e, "(let ((a 5) (b (+ 2 a)) (c ((fn () b)))) c)", "7");
+    TEST_ASSERT_TYPE(e, "(let ((a (+ 1 x)) (x 5)) a)", AWLVAL_ERR);
+
+    teardown_test(e);
+}
+
+void test_builtin_lambda(void) {
+    awlenv* e = setup_test();
+
+    TEST_ASSERT_TYPE(e, "(fn () 5)", AWLVAL_FUNC);
+    TEST_ASSERT_TYPE(e, "(fn () x)", AWLVAL_FUNC);
+    TEST_ASSERT_TYPE(e, "((fn () x))", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "((fn () 5) 10)", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "((fn (a b c) c) 1)", AWLVAL_FUNC);
+    TEST_ASSERT_TYPE(e, "((fn (a b c) c) 1 2)", AWLVAL_FUNC);
+    TEST_ASSERT_EQ(e, "((fn (a b c) c) 1 2 3)", "3");
+
+    /* First class functions */
+    TEST_ASSERT_EQ(e, "((fn (f) (f 10)) (fn (x) (+ x 10)))", "20");
+    TEST_ASSERT_EQ(e, "(((fn (f) (fn (x) (f x))) (fn (z) (let ((x z)) x))) 90)", "90");
+
+    teardown_test(e);
+}
+
 void suite_builtin(void) {
     pt_add_test(test_builtin_arithmetic, "Test Arithmetic", "Suite Builtin");
     pt_add_test(test_builtin_div, "Test Div", "Suite Builtin");
@@ -534,4 +564,6 @@ void suite_builtin(void) {
     pt_add_test(test_builtin_slice, "Test Slice", "Suite Builtin");
     pt_add_test(test_builtin_if, "Test If", "Suite Builtin");
     pt_add_test(test_builtin_var, "Test Var", "Suite Builtin");
+    pt_add_test(test_builtin_let, "Test Let", "Suite Builtin");
+    pt_add_test(test_builtin_lambda, "Test Lambda", "Suite Builtin");
 }
