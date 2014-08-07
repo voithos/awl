@@ -73,6 +73,8 @@ double fmodulo(double x, double y) {
 }
 
 awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
+    /* Argcount must be checked in calling function, because
+     * different operators have different requirements */
     EVAL_ARGS(e, a);
 
     for (int i = 0; i < a->count; i++) {
@@ -163,30 +165,37 @@ awlval* builtin_num_op(awlenv* e, awlval* a, char* op) {
 }
 
 awlval* builtin_add(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 2, "+");
     return builtin_num_op(e, a, "+");
 }
 
 awlval* builtin_sub(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 1, "-");
     return builtin_num_op(e, a, "-");
 }
 
 awlval* builtin_mul(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 2, "*");
     return builtin_num_op(e, a, "*");
 }
 
 awlval* builtin_div(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 2, "/");
     return builtin_num_op(e, a, "/");
 }
 
 awlval* builtin_trunc_div(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 2, "//");
     return builtin_num_op(e, a, "//");
 }
 
 awlval* builtin_mod(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 2, "%");
     return builtin_num_op(e, a, "%");
 }
 
 awlval* builtin_pow(awlenv* e, awlval* a) {
+    AWLASSERT_MINARGCOUNT(a, 2, "^");
     return builtin_num_op(e, a, "^");
 }
 
@@ -542,10 +551,18 @@ awlval* builtin_if(awlenv* e, awlval* a) {
 
 awlval* builtin_var(awlenv* e, awlval* a, bool global) {
     char* op = global ? "global" : "define";
+    AWLASSERT_MINARGCOUNT(a, 2, op);
 
     /* Special case when there is a single symbol to be defined */
     if (a->cell[0]->type == AWLVAL_SYM) {
         AWLASSERT_ARGCOUNT(a, 2, op);
+
+        int index = awlenv_index(e, a->cell[0]);
+        if (index != -1) {
+            AWLASSERT(a, !(e->locked[index]),
+                    "cannot redefine builtin function '%s'", e->syms[index]);
+        }
+
         EVAL_SINGLE_ARG(e, a, 1);
 
         if (global) {
@@ -557,7 +574,6 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
         return awlval_qexpr();
     }
 
-    AWLASSERT_MINARGCOUNT(a, 2, op);
     AWLASSERT_TYPE(a, 0, AWLVAL_SEXPR, op);
 
     awlval* syms = a->cell[0];
@@ -604,10 +620,7 @@ awlval* builtin_global(awlenv* e, awlval* a) {
 }
 
 awlval* builtin_let(awlenv* e, awlval* a) {
-    awlenv* lenv = awlenv_new();
-    lenv->parent = e;
-
-    /* maybe fix DEFINE and GLOBAL to work like this too... */
+    /* TODO: maybe fix DEFINE and GLOBAL to work like this too... */
     AWLASSERT_ARGCOUNT(a, 2, "let");
     AWLASSERT_TYPE(a, 0, AWLVAL_SEXPR, "let");
 
@@ -624,12 +637,15 @@ awlval* builtin_let(awlenv* e, awlval* a) {
     }
 
     for (int i = 0; i < bindings->count; i++) {
-        int index = awlenv_index(lenv, bindings->cell[i]->cell[0]);
+        int index = awlenv_index(e, bindings->cell[i]->cell[0]);
         if (index != -1) {
-            AWLASSERT(a, !(lenv->locked[index]),
-                    "cannot redefine builtin function '%s'", lenv->syms[index]);
+            AWLASSERT(a, !(e->locked[index]),
+                    "cannot redefine builtin function '%s'", e->syms[index]);
         }
     }
+
+    awlenv* lenv = awlenv_new();
+    lenv->parent = e;
 
     /* Evaluate value arguments (but not the symbols) */
     for (int i = 0; i < bindings->count; i++) {
@@ -638,6 +654,8 @@ awlval* builtin_let(awlenv* e, awlval* a) {
         if (bindings->cell[i]->type == AWLVAL_ERR) {
             awlval* err = awlval_pop(bindings, i);
             awlval_del(a);
+            lenv->parent = NULL;
+            awlenv_del(lenv);
             return err;
         }
 
