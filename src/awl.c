@@ -30,3 +30,7 @@ void setup_awl(void) {
 void teardown_awl(void) {
     teardown_parser();
 }
+
+char* get_awl_version(void) {
+    return AWL_VERSION;
+}

@@ -93,7 +93,7 @@ static void setup_sigint_handler(void) {
 void run_repl(awlenv* e) {
     setup_sigint_handler();
 
-    awl_printf("awl " AWL_VERSION "\n");
+    awl_printf("awl %s\n", get_awl_version());
     awl_printf("Ctrl+D to exit\n\n");
 
     load_history();

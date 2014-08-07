@@ -30,16 +30,19 @@ if (typeof Module !== 'undefined') {
                 // Wrap exported functions
                 var setupAwl = Module.cwrap('setup_awl', null, []);
                 var teardownAwl = Module.cwrap('teardown_awl', null, []);
+                var getAwlVersion = Module.cwrap('get_awl_version', null, []);
                 var registerPrintFn = Module.cwrap('register_print_fn', null, ['number']);
                 var awlenvNewTopLevel = Module.cwrap('awlenv_new_top_level', 'number', []);
                 var evalReplStr = Module.cwrap('eval_repl_str', 'void', ['number', 'string']);
 
                 // Initialize
                 setupAwl();
+                var version = extractString(getAwlVersion());
                 var env = awlenvNewTopLevel();
 
                 // Return awl API
                 return {
+                    version: version,
                     eval: function(s) {
                         evalReplStr(env, s);
                     },
@@ -60,7 +63,7 @@ if (typeof Module !== 'undefined') {
                     var term = $('#interpreter').terminal(function(command, term) {
                         awl.eval(command);
                     }, {
-                        greetings: 'awl v0.2.0\n',
+                        greetings: 'awl ' + awl.version + '\n',
                         name: 'awl',
                         height: 300,
                         prompt: 'awl> '

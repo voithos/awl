@@ -24,7 +24,7 @@ TARGET = $(BINDIR)/$(BINARY)
 BITCODE = $(TARGET).bc
 WEBTARGET = $(WEBDIR)/$(BINARY).js
 WEBMAP = $(WEBTARGET).map
-WEBFUNCS = "['_setup_awl','_teardown_awl','_register_print_fn','_awlenv_new_top_level','_eval_repl_str']"
+WEBFUNCS = "['_setup_awl','_teardown_awl','_get_awl_version','_register_print_fn','_awlenv_new_top_level','_eval_repl_str']"
 CODE := $(wildcard $(SRCDIR)/*.c)
 HEADERS := $(wildcard $(SRCDIR)/*.h)
 ifneq ($(UNAME), Linux)
