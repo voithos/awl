@@ -90,6 +90,12 @@ static void setup_sigint_handler(void) {
     signal(SIGINT, sigint_handler);
 }
 
+static bool repl_aborted = false;
+
+void abort_repl(void) {
+    repl_aborted = true;
+}
+
 void run_repl(awlenv* e) {
     setup_sigint_handler();
 
@@ -98,7 +104,7 @@ void run_repl(awlenv* e) {
 
     load_history();
 
-    while (true) {
+    while (!repl_aborted) {
         char* input = get_input("awl> ");
         if (!input) {
             if (errno == EAGAIN) {

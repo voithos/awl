@@ -12,6 +12,7 @@
 #include "eval.h"
 #include "parser.h"
 #include "print.h"
+#include "repl.h"
 #include "util.h"
 
 #define UNARY_OP(a, op) { \
@@ -827,6 +828,6 @@ awlval* builtin_error(awlenv* e, awlval* a) {
 
 awlval* builtin_exit(awlenv* e, awlval* a) {
     awlval_del(a);
-    raise(SIGINT);
+    abort_repl();
     return awlval_qexpr();
 }
