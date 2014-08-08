@@ -83,7 +83,7 @@
           false
           (if (== x (head l))
               true
-              (elem-of x (tail l)))))
+              (member? (tail l)))))
 
 (func (range s e)
       (if (>= s e)
