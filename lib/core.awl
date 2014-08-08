@@ -13,7 +13,7 @@
 (func (int? x) (== (typeof x) 'integer'))
 (func (float? x) (== (typeof x) 'float'))
 (func (string? x) (== (typeof x) 'string'))
-(func (func? x) (== (typeof x) 'function'))
+(func (fn? x) (== (typeof x) 'function'))
 (func (bool? x) (== (typeof x) 'boolean'))
 (func (qexpr? x) (== (typeof x) 'qexpr'))
 (global list? qexpr?)
@@ -30,6 +30,9 @@
 (func (compose f g & x)
       (f (g x)))
 
+(func (flip f x y)
+      (f y x))
+
 (func (reduce f l acc)
     (if (nil? l)
         acc
@@ -38,7 +41,7 @@
 (func (reduce-left f l acc)
     (if (nil? l)
         acc
-        (reduce f (tail l) (f acc (head l)))))
+        (reduce-left f (tail l) (f acc (head l)))))
 
 (func (map f l)
     (reduce (fn (acc v)
@@ -62,9 +65,6 @@
 
 (func (unpack f xs)
       (eval (cons f xs)))
-
-(global curry pack)
-(global uncurry unpack)
 
 (func (nth n l)
       (let ((s (slice l n (+ n 1))))
