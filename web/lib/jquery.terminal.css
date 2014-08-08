@@ -22,6 +22,7 @@
     position: fixed;
 }
 .terminal {
+    border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 10px;
     position: relative;
     overflow: hidden;
@@ -88,9 +89,9 @@
 }
 .terminal, .cmd {
     font-family: FreeMono, monospace;
-    color: #aaa;
+    color: #b5e853;
     background-color: #000;
-    font-size: 12px;
+    font-size: 15px;
     line-height: 14px;
 }
 .terminal-output > div {
