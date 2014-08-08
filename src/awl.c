@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "assert.h"
 #include "builtins.h"
@@ -23,6 +24,7 @@ void run_scripts(awlenv* e, int argc, char** argv) {
 }
 
 void setup_awl(void) {
+    srand(time(NULL));
     register_default_print_fn();
     setup_parser();
 }

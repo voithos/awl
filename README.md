@@ -190,8 +190,8 @@ Lisp).
     foo
 
 When evaluating user-defined functions, partial application is done
-automatically for any unfilled arguments (this is currently not done for builtins).
-This makes it easy to use higher-order functions quickly:
+automatically for any unfilled arguments (this is currently not done for
+builtins).  This makes it easy to use higher-order functions quickly:
 
     awl> (define xs {1 2 3 4})
     awl> (define square (map (fn (x))))
@@ -503,6 +503,12 @@ function also retains the current environment as a closure</td>
 </tr>
 
 <tr>
+<td><code>random</code></td>
+<td><code>(random)</code></td>
+<td>Returns a floating point random number between 0 and 1</td>
+</tr>
+
+<tr>
 <td><code>error</code></td>
 <td><code>(error [arg1])</code></td>
 <td>  </td>
@@ -691,6 +697,13 @@ left</td>
 <td><code>range</code></td>
 <td><code>(range [s] [e])</code></td>
 <td>Returns a list of integers starting with <code>s</code> and going up to
+<code>e</code></td>
+</tr>
+
+<tr>
+<td><code>random-between</code></td>
+<td><code>(random-between [s] [e])</code></td>
+<td>Returns a random floating point between <code>s</code> and
 <code>e</code></td>
 </tr>
 

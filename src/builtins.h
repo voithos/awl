@@ -57,6 +57,7 @@ awlval* builtin_typeof(awlenv* e, awlval* a);
 awlval* builtin_import(awlenv* e, awlval* a);
 awlval* builtin_print(awlenv* e, awlval* a);
 awlval* builtin_println(awlenv* e, awlval* a);
+awlval* builtin_random(awlenv* e, awlval* a);
 awlval* builtin_error(awlenv* e, awlval* a);
 awlval* builtin_exit(awlenv* e, awlval* a);
 

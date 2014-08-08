@@ -816,6 +816,12 @@ awlval* builtin_println(awlenv* e, awlval* a) {
     return x;
 }
 
+awlval* builtin_random(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 0, "random");
+    double r = (double)rand() / (double)RAND_MAX;
+    return awlval_float(r);
+}
+
 awlval* builtin_error(awlenv* e, awlval* a) {
     AWLASSERT_ARGCOUNT(a, 1, "error");
     EVAL_ARGS(e, a);

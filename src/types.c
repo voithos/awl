@@ -771,6 +771,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "import", builtin_import);
     awlenv_add_builtin(e, "print", builtin_print);
     awlenv_add_builtin(e, "println", builtin_println);
+    awlenv_add_builtin(e, "random", builtin_random);
     awlenv_add_builtin(e, "error", builtin_error);
     awlenv_add_builtin(e, "exit", builtin_exit);
 }

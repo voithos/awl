@@ -89,3 +89,10 @@
       (if (>= s e)
           nil
           (cons s (range (+ s 1) e))))
+
+; Math functions
+(func (random-between s e)
+      (let ((r (random))
+            (ev (* r (- e s)))
+            (v (+ ev s)))
+                v))
