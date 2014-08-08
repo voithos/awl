@@ -6,9 +6,9 @@
 
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" type="text/css" href="stylesheets/jquery.terminal.css" media="screen">
 
-    <title>Awl by voithos</title>
+    <title>Awl</title>
   </head>
 
   <body>
@@ -33,8 +33,12 @@
 
 <p><em>Lisp</em>: from late Old English <em>awlyspian</em>, meaning "to lisp."</p>
 
-<hr><p>Awl is an experimental mini-language based on the Lisp family of programming
+<hr>
+
+<p>Awl is an experimental mini-language based on the Lisp family of programming
 languages.</p>
+
+<div id="interpreter" class="terminal" style="height: 300px;"></div>
 
 <p>It was written for fun and <del>profit</del> to learn more about interpreter design,
 programming in C, and using <a href="https://github.com/kripken/emscripten">emscripten</a>
@@ -692,6 +696,11 @@ and their creators:</p>
       </section>
     </div>
 
-    
+    <script src="javascripts/lib/jquery.min.js"></script>
+    <script src="javascripts/lib/jquery.mousewheel.min.js"></script>
+    <script src="javascripts/lib/jquery.terminal.min.js"></script>
+
+    <script src="javascripts/awl.js"></script>
+    <script src="javascripts/webawl.js"></script>
   </body>
 </html>
