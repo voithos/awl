@@ -194,13 +194,14 @@ being defined):
 
 The primitive types evaluate to themselves.
 
-Q-Expressions (quoted expressions) are particularly important. They are
-enclosed inside curly braces `{}`. They are a collection type and behave
-similar to lists. They can store any number and mixture of primitive types. And
-they have one more important ability: expressions that they contain which would
-normally be evaluated, such as symbols and S-Expressions, are left unevaluated
-(i.e. they are "quoted"). This allows them to contain arbitrary code, and then
-be converted and evaluated as S-Expressions:
+Q-Expressions (quoted expressions, often referred to simply as 'lists') are
+particularly important. They are enclosed inside curly braces `{}`. They are a
+collection type and behave similar to lists. They can store any number and
+mixture of primitive types. And they have one more important ability:
+expressions that they contain which would normally be evaluated, such as
+symbols and S-Expressions, are left unevaluated (i.e. they are "quoted"). This
+allows them to contain arbitrary code, and then be converted and evaluated as
+S-Expressions:
 
     awl> (head {1 2 3})
     1
@@ -346,6 +347,157 @@ builtins - they are simply named differently.
 <td><code>not</code></td>
 <td><code>(not [arg1])</code></td>
 <td>Logical 'not'. Takes 1 argument</td>
+</tr>
+
+<tr>
+<td><code>head</code></td>
+<td><code>(head [arg1])</code></td>
+<td>Returns the extracted first element (head) of a list</td>
+</tr>
+
+<tr>
+<td><code>qhead</code></td>
+<td><code>(qhead [arg1])</code></td>
+<td>Like <code>head</code>, except quotes symbols and S-Exprs</td>
+</tr>
+
+<tr>
+<td><code>tail</code></td>
+<td><code>(tail [arg1])</code></td>
+<td>Returns the tail of a list, excluding the first element</td>
+</tr>
+
+<tr>
+<td><code>first</code></td>
+<td><code>(first [arg1])</code></td>
+<td>Similar to <code>head</code>, but doesn't extract</td>
+</tr>
+
+<tr>
+<td><code>last</code></td>
+<td><code>(last [arg1])</code></td>
+<td>Returns the last element of a list, unextracted</td>
+</tr>
+
+<tr>
+<td><code>except-last</code></td>
+<td><code>(except-last [arg1])</code></td>
+<td>Returns the first section of a list, excluding the last element</td>
+</tr>
+
+<tr>
+<td><code>list</code></td>
+<td><code>(list [args...])</code></td>
+<td>Returns a list containing the evaluated arguments</td>
+</tr>
+
+<tr>
+<td><code>eval</code></td>
+<td><code>(eval [arg1])</code></td>
+<td>Evaluates a list as if it were an S-Expression</td>
+</tr>
+
+<tr>
+<td><code>append</code></td>
+<td><code>(append [args...])</code></td>
+<td>Concatenates two or more lists</td>
+</tr>
+
+<tr>
+<td><code>cons</code></td>
+<td><code>(cons [arg1] [arg2])</code></td>
+<td>Attaches a primitive type to the head of a list</td>
+</tr>
+
+<tr>
+<td><code>len</code></td>
+<td><code>(len [arg1])</code></td>
+<td>Returns the length of a collection</td>
+</tr>
+
+<tr>
+<td><code>reverse</code></td>
+<td><code>(reverse [arg1])</code></td>
+<td>Reverses a collection</td>
+</tr>
+
+<tr>
+<td><code>slice</code></td>
+<td><code>(slice [c] [start] [end] [step])</code></td>
+<td>Returns a slice of a collection based on start, stop, and step numbers</td>
+</tr>
+
+<tr>
+<td><code>if</code></td>
+<td><code>(if [pred] [then-branch] [else-branch])</code></td>
+<td>If expression. Evaluates a predicate, and one of two branches based on the result</td>
+</tr>
+
+<tr>
+<td><code>define</code></td>
+<td><code>(define [sym] [value])</code></td>
+<td>Defines a variable in the local environment</td>
+</tr>
+
+<tr>
+<td><code>global</code></td>
+<td><code>(global [sym] [value])</code></td>
+<td>Defines a variable in the global environment</td>
+</tr>
+
+<tr>
+<td><code>let</code></td>
+<td><code>(let (([sym1] [val1])...) [expr])</code></td>
+<td>Creates a local environment and defines variables within</td>
+</tr>
+
+<tr>
+<td><code>fn</code></td>
+<td><code>(fn ([args...]) [body])</code></td>
+<td>Defines an anonymous function with the specified arguments and body. The
+function also retains the current environment as a closure</td>
+</tr>
+
+<tr>
+<td><code>macro</code></td>
+<td><code>(macro [name] ([args...]) [body])</code></td>
+<td>Defines a macro that can operate on code before it is evaluated</td>
+</tr>
+
+<tr>
+<td><code>typeof</code></td>
+<td><code>(typeof [arg1])</code></td>
+<td>Returns a string representing the type of the argument</td>
+</tr>
+
+<tr>
+<td><code>import</code></td>
+<td><code>(import [path])</code></td>
+<td>Attempts to import the <code>awl</code> file at the given path</td>
+</tr>
+
+<tr>
+<td><code>print</code></td>
+<td><code>(print [arg1])</code></td>
+<td>Prints to standard output</td>
+</tr>
+
+<tr>
+<td><code>println</code></td>
+<td><code>(println [arg1])</code></td>
+<td>Prints to standard output, adding a newline</td>
+</tr>
+
+<tr>
+<td><code>error</code></td>
+<td><code>(error [arg1])</code></td>
+<td>  </td>
+</tr>
+
+<tr>
+<td><code>exit</code></td>
+<td><code>(exit [arg1])</code></td>
+<td>Exits the interactive REPL</td>
 </tr>
 
 </tbody>
