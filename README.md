@@ -71,6 +71,7 @@ it shares most of its features with Lisp and Scheme. These include:
   functions](http://en.wikipedia.org/wiki/Anonymous_function)
 - Function
   [closures](http://en.wikipedia.org/wiki/Closure_(computer_programming))
+- [Partial application](http://en.wikipedia.org/wiki/Partial_application)
 - [Tail-call optimization](http://en.wikipedia.org/wiki/Tail_recursion)
 - Data immutability (although variables can be redefined currently)
 - Lists as the primary data structure
@@ -91,7 +92,9 @@ expressions.
 
 Awl supports inline comments in the form of Lisp's semicolon `;`:
 
-    (* 5 4 3 2 1) ; 5 factorial
+    ; Can go on its own line
+    (func (plus-one x)
+        (+ x 1)) ; Or at the end of a line
 
 Printing to standard output can be done using `print` and `println`:
 
@@ -183,6 +186,15 @@ Lisp).
     11
     awl> (println 'foo')
     foo
+
+When evaluating user-defined functions, partial application is done
+automatically for any unfilled arguments (this is currently not done for builtins).
+This makes it easy to use higher-order functions quickly:
+
+    awl> (define xs {1 2 3 4})
+    awl> (define square (map (fn (x))))
+    awl> (square xs)
+    {1 4 9 16}
 
 Variable and function identifiers, called "symbols," are evaluated to the
 values that they map to, except in certain special forms (e.g. when they are
