@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Awl by voithos</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Awl</h1>
+        <h2>Experimental Lispy mini-language</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/voithos/awl/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/voithos/awl/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/voithos/awl" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="awl" class="anchor" href="#awl"><span class="octicon octicon-link"></span></a>Awl</h1>
+
+<p><em>Lisp</em>: from late Old English <em>awlyspian</em>, meaning "to lisp."</p>
+
+<hr><p>Awl is an experimental mini-language based on the Lisp family of programming
+languages.</p>
+
+<p>It was written for fun and <del>profit</del> to learn more about interpreter design,
+programming in C, and using <a href="https://github.com/kripken/emscripten">emscripten</a>
+to transpile to JavaScript.</p>
+
+<p><strong>Note</strong>: This naturally goes without saying, but Awl is just an experimental
+learning project. It should <em>not</em> be used for production code. That being said,
+experimenting and hacking on non-production-ready code just for fun is usually
+worthwhile!</p>
+
+<h2>
+<a name="compiling" class="anchor" href="#compiling"><span class="octicon octicon-link"></span></a>Compiling</h2>
+
+<p>Most of awl's dependencies are included in the repository, so you shouldn't
+need to install anything other than the build tools. Awl takes advantage of
+some new features in C11, so you will need a fairly recent C compiler.</p>
+
+<ul>
+<li>Both <code>clang</code> (tested with version 3.5.0) and <code>gcc</code> (tested with version
+4.7.2) are known to successfully compile</li>
+<li>To transpile to JavaScript, you'll need the emscripten toolkit, including
+<code>emcc</code>.</li>
+<li>You'll also need <code>make</code>
+</li>
+</ul><p>First, clone the repository, and then compile using <code>make</code>:</p>
+
+<pre><code>$ git clone https://github.com/voithos/awl.git
+$ cd awl
+$ make
+</code></pre>
+
+<p>This will create an <code>awl</code> binary under <code>bin/</code>.</p>
+
+<p>You can also compile and execute tests:</p>
+
+<pre><code>$ make test
+</code></pre>
+
+<p>Or transpile to JavaScript (<code>emcc</code> will need to be in your <code>$PATH</code>):</p>
+
+<pre><code>$ make web
+</code></pre>
+
+<p>You can also clean up:</p>
+
+<pre><code>$ make clean
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The <code>awl</code> binary can take a single argument - a path to a file to execute.</p>
+
+<pre><code>$ ./bin/awl [file]
+</code></pre>
+
+<p>If no argument is given, then it will drop into an interactive interpreter
+(<a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a>):</p>
+
+<pre><code>$ ./bin/awl
+awl v0.x.y
+Ctrl+D to exit
+
+awl&gt;
+</code></pre>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<p>Awl is a mini-language that is inspired by the Lisp family of languages. Thus,
+it shares most of its features with Lisp and Scheme. These include:</p>
+
+<ul>
+<li>Dynamic typing</li>
+<li>First-class functions, including <a href="http://en.wikipedia.org/wiki/Anonymous_function">anonymous (lambda)
+functions</a>
+</li>
+<li>Function
+<a href="http://en.wikipedia.org/wiki/Closure_(computer_programming)">closures</a>
+</li>
+<li><a href="http://en.wikipedia.org/wiki/Partial_application">Partial application</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Tail_recursion">Tail-call optimization</a></li>
+<li>Data immutability (although variables can be redefined currently)</li>
+<li>Lists as the primary data structure</li>
+<li>
+<a href="http://en.wikipedia.org/wiki/Homoiconicity">Homoiconicity</a> - that is,
+similar representations of code and data</li>
+<li>Metaprogramming in the form of simple macros</li>
+</ul><p>Currently, Awl's data definition and manipulation capabilities are lacking, but
+this will hopefully be changed in the future.</p>
+
+<h2>
+<a name="language-reference" class="anchor" href="#language-reference"><span class="octicon octicon-link"></span></a>Language Reference</h2>
+
+<p>Awl is an expression-based language. Basically everything is an expression, and
+can be arbitrarily nested. A program consists of a sequence of such
+expressions.</p>
+
+<h3>
+<a name="basic-features" class="anchor" href="#basic-features"><span class="octicon octicon-link"></span></a>Basic Features</h3>
+
+<p>Awl supports inline comments in the form of Lisp's semicolon <code>;</code>:</p>
+
+<pre><code>; Can go on its own line
+(func (plus-one x)
+    (+ x 1)) ; Or at the end of a line
+</code></pre>
+
+<p>Printing to standard output can be done using <code>print</code> and <code>println</code>:</p>
+
+<pre><code>awl&gt; (println "Hello sekai!")
+Hello sekai!
+</code></pre>
+
+<p>Variables are defined with <code>define</code> (which is affects the local environment)
+and <code>global</code> (which, as the name suggests, affects the global environment):</p>
+
+<pre><code>awl&gt; (define foo 'bar')
+awl&gt; (println foo)
+bar
+</code></pre>
+
+<h3>
+<a name="primitive-data-types" class="anchor" href="#primitive-data-types"><span class="octicon octicon-link"></span></a>Primitive Data Types</h3>
+
+<table>
+<thead>
+<th>Type</th>
+<th>Example</th>
+<th>Description</th>
+</thead>
+<tbody>
+<tr>
+<td>Integer</td>
+<td>
+<code>5</code>, <code>-9</code>
+</td>
+<td>A standard integer (<code>long</code>)</td>
+</tr>
+<tr>
+<td>Floating point</td>
+<td>
+<code>3.14</code>, <code>-5.</code>
+</td>
+<td>A standard floating point (<code>double</code>)</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>
+<code>true</code>, <code>false</code>
+</td>
+<td>A standard... boolean</td>
+</tr>
+<tr>
+<td>String</td>
+<td>
+<code>'foobar'</code>, <code>"\"escapes\" OK"</code>
+</td>
+<td>A string type - either single or double quotes</td>
+</tr>
+<tr>
+<td>Q-Symbol</td>
+<td>
+<code>:like-in-ruby</code>, <code>:foo</code>
+</td>
+<td>A quoted symbol (identifier), mostly used in macros</td>
+</tr>
+<tr>
+<td>Q-Expr</td>
+<td><code>{1 'b' (+ 1 2) x y}</code></td>
+<td>A quoted expression. The basic data structure - acts like a list</td>
+</tr>
+<tr>
+<td>Function</td>
+<td><code>(fn (x) (/ 1 x))</code></td>
+<td>An anonymous function. The basic mechanism of function definition</td>
+</tr>
+<tr>
+<td>Error</td>
+<td><code>(error 'somebody set up us the bomb')</code></td>
+<td>An error. Stops evaluation</td>
+</tr>
+</tbody>
+</table><h3>
+<a name="expressions" class="anchor" href="#expressions"><span class="octicon octicon-link"></span></a>Expressions</h3>
+
+<p>Operations in Awl are defined as
+<a href="http://en.wikipedia.org/wiki/S_expression">S-Expressions</a> (symbolic
+expressions). They are syntactically enclosed in parentheses <code>()</code>. The first
+argument of the expression must be a callable, and is evaluated in the current
+environment with any following arguments as parameters (the result is the
+iconic "<a href="http://en.wikipedia.org/wiki/Polish_notation">Polish notation</a>" of
+Lisp).</p>
+
+<pre><code>awl&gt; (+ 5 6)
+11
+awl&gt; (println 'foo')
+foo
+</code></pre>
+
+<p>When evaluating user-defined functions, partial application is done
+automatically for any unfilled arguments (this is currently not done for builtins).
+This makes it easy to use higher-order functions quickly:</p>
+
+<pre><code>awl&gt; (define xs {1 2 3 4})
+awl&gt; (define square (map (fn (x))))
+awl&gt; (square xs)
+{1 4 9 16}
+</code></pre>
+
+<p>Variable and function identifiers, called "symbols," are evaluated to the
+values that they map to, except in certain special forms (e.g. when they are
+being defined):</p>
+
+<pre><code>awl&gt; (define x 5)
+awl&gt; (+ x 6)
+11
+</code></pre>
+
+<p>The primitive types evaluate to themselves.</p>
+
+<p>Q-Expressions (quoted expressions, often referred to simply as 'lists') are
+particularly important. They are enclosed inside curly braces <code>{}</code>. They are a
+collection type and behave similar to lists. They can store any number and
+mixture of primitive types. And they have one more important ability:
+expressions that they contain which would normally be evaluated, such as
+symbols and S-Expressions, are left unevaluated (i.e. they are "quoted"). This
+allows them to contain arbitrary code, and then be converted and evaluated as
+S-Expressions:</p>
+
+<pre><code>awl&gt; (head {1 2 3})
+1
+awl&gt; (tail {1 2 3})
+{2 3}
+awl&gt; (define x {* 3 (+ 2 2)})
+awl&gt; x
+{* 3 (+ 2 2)}
+awl&gt; (eval x)
+12
+</code></pre>
+
+<p>There are a few more expression types that are useful in special cases.</p>
+
+<p>E-Expressions (escaped expressions) are denoted with a preceding backslash <code>\</code>,
+and can be used to specifically evaluate a section within a Q-Expression
+literal:</p>
+
+<pre><code>awl&gt; {1 2 (+ 2 1)}
+{1 2 (+ 2 1)}
+awl&gt; {1 2 \(+ 2 1)}
+{1 2 3}
+</code></pre>
+
+<p>C-Expressions (concatenating expressions) are denoted with a preceding at-sign
+<code>@</code>.  They behave similarly to E-Expressions, with the exception that, when
+given a list (Q-Expression), they "extract" the contents and include it
+directly in the outer list:</p>
+
+<pre><code>awl&gt; {1 2 \{3 4}}
+{1 2 {3 4}}
+awl&gt; {1 2 @{3 4}}
+{1 2 3 4}
+</code></pre>
+
+<h3>
+<a name="builtins" class="anchor" href="#builtins"><span class="octicon octicon-link"></span></a>Builtins</h3>
+
+<p>Builtins usually behave like normal functions, but they also have the special
+role of enabling some of Awl's basic features, since they are written in C (for
+example, the <code>fn</code> builtin creates a new anonymous function).</p>
+
+<p>Awl makes no distinction between "operators" (<code>+</code>, <code>-</code>, <code>*</code>) and other kinds of
+builtins - they are simply named differently.</p>
+
+<table>
+<thead>
+<th>Builtin</th>
+<th>Signature</th>
+<th>Description</th>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td><code>(+ [args...])</code></td>
+<td>Addition. Takes 2 or more arguments</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>(- [args...])</code></td>
+<td>Subtraction. Takes 2 or more arguments</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td><code>(* [args...])</code></td>
+<td>Multiplication. Takes 2 or more arguments</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td><code>(/ [args...])</code></td>
+<td>Division. Promotes integers to floats if necessary. Takes 2 or more arguments</td>
+</tr>
+<tr>
+<td><code>//</code></td>
+<td><code>(// [args...])</code></td>
+<td>Truncating division. Removes decimal remainder. Takes 2 or more arguments</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td><code>(% [args...])</code></td>
+<td>Modulo. Takes 2 or more arguments</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td><code>(^ [args...])</code></td>
+<td>Power operator. Takes 2 or more arguments</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td><code>(&gt; [arg1] [arg2])</code></td>
+<td>Greater than. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td><code>(&gt;= [arg1] [arg2])</code></td>
+<td>Greater than or equal to. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td><code>(&lt; [arg1] [arg2])</code></td>
+<td>Less than. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td><code>(&lt;= [arg1] [arg2])</code></td>
+<td>Less than or equal to. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>==</code></td>
+<td><code>(== [arg1] [arg2])</code></td>
+<td>Equal to. Tests deep equality. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td><code>(!= [arg1] [arg2])</code></td>
+<td>Unequal to. Tests deep equality. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>and</code></td>
+<td><code>(and [arg1] [arg2])</code></td>
+<td>Logical 'and'. Short circuiting. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>or</code></td>
+<td><code>(or [arg1] [arg2])</code></td>
+<td>Logical 'or'. Short circuiting. Takes 2 arguments</td>
+</tr>
+<tr>
+<td><code>not</code></td>
+<td><code>(not [arg1])</code></td>
+<td>Logical 'not'. Takes 1 argument</td>
+</tr>
+<tr>
+<td><code>head</code></td>
+<td><code>(head [arg1])</code></td>
+<td>Returns the extracted first element (head) of a list</td>
+</tr>
+<tr>
+<td><code>qhead</code></td>
+<td><code>(qhead [arg1])</code></td>
+<td>Like <code>head</code>, except quotes symbols and S-Exprs</td>
+</tr>
+<tr>
+<td><code>tail</code></td>
+<td><code>(tail [arg1])</code></td>
+<td>Returns the tail of a list, excluding the first element</td>
+</tr>
+<tr>
+<td><code>first</code></td>
+<td><code>(first [arg1])</code></td>
+<td>Similar to <code>head</code>, but doesn't extract</td>
+</tr>
+<tr>
+<td><code>last</code></td>
+<td><code>(last [arg1])</code></td>
+<td>Returns the last element of a list, unextracted</td>
+</tr>
+<tr>
+<td><code>except-last</code></td>
+<td><code>(except-last [arg1])</code></td>
+<td>Returns the first section of a list, excluding the last element</td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td><code>(list [args...])</code></td>
+<td>Returns a list containing the evaluated arguments</td>
+</tr>
+<tr>
+<td><code>eval</code></td>
+<td><code>(eval [arg1])</code></td>
+<td>Evaluates a list as if it were an S-Expression</td>
+</tr>
+<tr>
+<td><code>append</code></td>
+<td><code>(append [args...])</code></td>
+<td>Concatenates two or more lists</td>
+</tr>
+<tr>
+<td><code>cons</code></td>
+<td><code>(cons [arg1] [arg2])</code></td>
+<td>Attaches a primitive type to the head of a list</td>
+</tr>
+<tr>
+<td><code>len</code></td>
+<td><code>(len [arg1])</code></td>
+<td>Returns the length of a collection</td>
+</tr>
+<tr>
+<td><code>reverse</code></td>
+<td><code>(reverse [arg1])</code></td>
+<td>Reverses a collection</td>
+</tr>
+<tr>
+<td><code>slice</code></td>
+<td><code>(slice [c] [start] [end] [step])</code></td>
+<td>Returns a slice of a collection based on start, stop, and step numbers</td>
+</tr>
+<tr>
+<td><code>if</code></td>
+<td><code>(if [pred] [then-branch] [else-branch])</code></td>
+<td>If expression. Evaluates a predicate, and one of two branches based on the result</td>
+</tr>
+<tr>
+<td><code>define</code></td>
+<td><code>(define [sym] [value])</code></td>
+<td>Defines a variable in the local environment</td>
+</tr>
+<tr>
+<td><code>global</code></td>
+<td><code>(global [sym] [value])</code></td>
+<td>Defines a variable in the global environment</td>
+</tr>
+<tr>
+<td><code>let</code></td>
+<td><code>(let (([sym1] [val1])...) [expr])</code></td>
+<td>Creates a local environment and defines variables within</td>
+</tr>
+<tr>
+<td><code>fn</code></td>
+<td><code>(fn ([args...]) [body])</code></td>
+<td>Defines an anonymous function with the specified arguments and body. The
+function also retains the current environment as a closure</td>
+</tr>
+<tr>
+<td><code>macro</code></td>
+<td><code>(macro [name] ([args...]) [body])</code></td>
+<td>Defines a macro that can operate on code before it is evaluated</td>
+</tr>
+<tr>
+<td><code>typeof</code></td>
+<td><code>(typeof [arg1])</code></td>
+<td>Returns a string representing the type of the argument</td>
+</tr>
+<tr>
+<td><code>import</code></td>
+<td><code>(import [path])</code></td>
+<td>Attempts to import the <code>awl</code> file at the given path</td>
+</tr>
+<tr>
+<td><code>print</code></td>
+<td><code>(print [arg1])</code></td>
+<td>Prints to standard output</td>
+</tr>
+<tr>
+<td><code>println</code></td>
+<td><code>(println [arg1])</code></td>
+<td>Prints to standard output, adding a newline</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>(error [arg1])</code></td>
+<td>  </td>
+</tr>
+<tr>
+<td><code>exit</code></td>
+<td><code>(exit [arg1])</code></td>
+<td>Exits the interactive REPL</td>
+</tr>
+</tbody>
+</table><h3>
+<a name="core-library" class="anchor" href="#core-library"><span class="octicon octicon-link"></span></a>Core Library</h3>
+
+<p>In addition to builtins, there exists a core library that Awl imports on
+startup. Among other things, this library aims to exercise some of Awl's
+features, as well as provide some basic functional tools.</p>
+
+<table>
+<thead>
+<th>Symbol</th>
+<th>Signature</th>
+<th>Description</th>
+</thead>
+<tbody>
+<tr>
+<td><code>nil</code></td>
+<td></td>
+<td>Alias for <code>{}</code>
+</td>
+</tr>
+<tr>
+<td><code>func</code></td>
+<td><code>(func ([name] [args]) [body])</code></td>
+<td>Macro that defines a named function</td>
+</tr>
+<tr>
+<td><code>int?</code></td>
+<td><code>(int? [arg1])</code></td>
+<td>Checks that argument is an integer</td>
+</tr>
+<tr>
+<td><code>float?</code></td>
+<td><code>(float? [arg1])</code></td>
+<td>Checks that argument is a floating point</td>
+</tr>
+<tr>
+<td><code>string?</code></td>
+<td><code>(string? [arg1])</code></td>
+<td>Checks that argument is a string</td>
+</tr>
+<tr>
+<td><code>fn?</code></td>
+<td><code>(fn? [arg1])</code></td>
+<td>Checks that argument is a function</td>
+</tr>
+<tr>
+<td><code>bool?</code></td>
+<td><code>(bool? [arg1])</code></td>
+<td>Checks that argument is a boolean</td>
+</tr>
+<tr>
+<td><code>qexpr?</code></td>
+<td><code>(qexpr? [arg1])</code></td>
+<td>Checks that argument is a Q-Expression</td>
+</tr>
+<tr>
+<td><code>list?</code></td>
+<td><code>(list? [arg1])</code></td>
+<td>Alias for <code>qexpr?</code>
+</td>
+</tr>
+<tr>
+<td><code>nil?</code></td>
+<td><code>(nil? [arg1])</code></td>
+<td>Checks that argument is <code>nil</code>
+</td>
+</tr>
+<tr>
+<td><code>do</code></td>
+<td><code>(do [expr1] [expr2] ... [exprn])</code></td>
+<td>Evaluates its arguments one by one, and returns the result of the last
+argument</td>
+</tr>
+<tr>
+<td><code>compose</code></td>
+<td><code>(compose [f] [g] [xs...])</code></td>
+<td>Composes two functions</td>
+</tr>
+<tr>
+<td><code>flip</code></td>
+<td><code>(flip [f] [x] [y])</code></td>
+<td>Takes a function and two argument, and flip the ordering of the arguments</td>
+</tr>
+<tr>
+<td><code>reduce</code></td>
+<td><code>(reduce [f] [l] [acc])</code></td>
+<td>Reduces a list to a single value using a reducer function</td>
+</tr>
+<tr>
+<td><code>reduce-left</code></td>
+<td><code>(reduce-left [f] [l] [acc])</code></td>
+<td>Like <code>reduce</code>, but traverses the list in the opposite direction</td>
+</tr>
+<tr>
+<td><code>map</code></td>
+<td><code>(map [f] [l])</code></td>
+<td>Applies a function to each element of a list</td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td><code>(filter [f] [l])</code></td>
+<td>Uses a predicate function to filter out elements from a list</td>
+</tr>
+<tr>
+<td><code>sum</code></td>
+<td><code>(sum [l])</code></td>
+<td>Sums elements of a list</td>
+</tr>
+<tr>
+<td><code>product</code></td>
+<td><code>(product [l])</code></td>
+<td>Multiplies together elements of a list</td>
+</tr>
+<tr>
+<td><code>pack</code></td>
+<td><code>(pack [f] [args...])</code></td>
+<td>Takes multiple argument and feeds it to a function as a single list
+argument</td>
+</tr>
+<tr>
+<td><code>unpack</code></td>
+<td><code>(unpack [f] [l])</code></td>
+<td>Evaluates a function using a list of arguments</td>
+</tr>
+<tr>
+<td><code>nth</code></td>
+<td><code>(nth [n] [l])</code></td>
+<td>Returns the <code>nth</code> element of a list</td>
+</tr>
+<tr>
+<td><code>take</code></td>
+<td><code>(take [n] [l])</code></td>
+<td>Takes the first <code>n</code> elements of a list</td>
+</tr>
+<tr>
+<td><code>drop</code></td>
+<td><code>(drop [n] [l])</code></td>
+<td>Drops the first <code>n</code> elements of a list, returning what's
+left</td>
+</tr>
+<tr>
+<td><code>member?</code></td>
+<td><code>(member? [x] [l])</code></td>
+<td>Checks if an element is a member of a list</td>
+</tr>
+<tr>
+<td><code>range</code></td>
+<td><code>(range [s] [e])</code></td>
+<td>Returns a list of integers starting with <code>s</code> and going up to
+<code>e</code>
+</td>
+</tr>
+</tbody>
+</table><h2>
+<a name="open-source" class="anchor" href="#open-source"><span class="octicon octicon-link"></span></a>Open Source</h2>
+
+<p>Many thanks goes to the following awesome libraries and open source projects,
+and their creators:</p>
+
+<ul>
+<li>mpc.c</li>
+<li>ptest.c</li>
+<li>linenoise</li>
+<li>clang / LLVM</li>
+<li>emscripten</li>
+</ul>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
