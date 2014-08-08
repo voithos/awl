@@ -2,6 +2,8 @@
 
 _Lisp_: from late Old English _awlyspian_, meaning "to lisp."
 
+---
+
 Awl is an experimental mini-language based on the Lisp family of programming
 languages.
 
