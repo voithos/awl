@@ -516,6 +516,186 @@ function also retains the current environment as a closure</td>
 
 </table>
 
+### Core Library
+
+In addition to builtins, there exists a core library that Awl imports on
+startup. Among other things, this library aims to exercise some of Awl's
+features, as well as provide some basic functional tools.
+
+<table>
+
+<thead>
+<th>Symbol</th>
+<th>Signature</th>
+<th>Description</th>
+</thead>
+
+<tbody>
+
+<tr>
+<td><code>nil</code></td>
+<td></td>
+<td>Alias for <code>{}</code></td>
+</tr>
+
+<tr>
+<td><code>func</code></td>
+<td><code>(func ([name] [args]) [body])</code></td>
+<td>Macro that defines a named function</td>
+</tr>
+
+<tr>
+<td><code>int?</code></td>
+<td><code>(int? [arg1])</code></td>
+<td>Checks that argument is an integer</td>
+</tr>
+
+<tr>
+<td><code>float?</code></td>
+<td><code>(float? [arg1])</code></td>
+<td>Checks that argument is a floating point</td>
+</tr>
+
+<tr>
+<td><code>string?</code></td>
+<td><code>(string? [arg1])</code></td>
+<td>Checks that argument is a string</td>
+</tr>
+
+<tr>
+<td><code>fn?</code></td>
+<td><code>(fn? [arg1])</code></td>
+<td>Checks that argument is a function</td>
+</tr>
+
+<tr>
+<td><code>bool?</code></td>
+<td><code>(bool? [arg1])</code></td>
+<td>Checks that argument is a boolean</td>
+</tr>
+
+<tr>
+<td><code>qexpr?</code></td>
+<td><code>(qexpr? [arg1])</code></td>
+<td>Checks that argument is a Q-Expression</td>
+</tr>
+
+<tr>
+<td><code>list?</code></td>
+<td><code>(list? [arg1])</code></td>
+<td>Alias for <code>qexpr?</code></td>
+</tr>
+
+<tr>
+<td><code>nil?</code></td>
+<td><code>(nil? [arg1])</code></td>
+<td>Checks that argument is <code>nil</code></td>
+</tr>
+
+<tr>
+<td><code>do</code></td>
+<td><code>(do [expr1] [expr2] ... [exprn])</code></td>
+<td>Evaluates its arguments one by one, and returns the result of the last
+argument</td>
+</tr>
+
+<tr>
+<td><code>compose</code></td>
+<td><code>(compose [f] [g] [xs...])</code></td>
+<td>Composes two functions</td>
+</tr>
+
+<tr>
+<td><code>flip</code></td>
+<td><code>(flip [f] [x] [y])</code></td>
+<td>Takes a function and two argument, and flip the ordering of the arguments</td>
+</tr>
+
+<tr>
+<td><code>reduce</code></td>
+<td><code>(reduce [f] [l] [acc])</code></td>
+<td>Reduces a list to a single value using a reducer function</td>
+</tr>
+
+<tr>
+<td><code>reduce-left</code></td>
+<td><code>(reduce-left [f] [l] [acc])</code></td>
+<td>Like <code>reduce</code>, but traverses the list in the opposite direction</td>
+</tr>
+
+<tr>
+<td><code>map</code></td>
+<td><code>(map [f] [l])</code></td>
+<td>Applies a function to each element of a list</td>
+</tr>
+
+<tr>
+<td><code>filter</code></td>
+<td><code>(filter [f] [l])</code></td>
+<td>Uses a predicate function to filter out elements from a list</td>
+</tr>
+
+<tr>
+<td><code>sum</code></td>
+<td><code>(sum [l])</code></td>
+<td>Sums elements of a list</td>
+</tr>
+
+<tr>
+<td><code>product</code></td>
+<td><code>(product [l])</code></td>
+<td>Multiplies together elements of a list</td>
+</tr>
+
+<tr>
+<td><code>pack</code></td>
+<td><code>(pack [f] [args...])</code></td>
+<td>Takes multiple argument and feeds it to a function as a single list
+argument</td>
+</tr>
+
+<tr>
+<td><code>unpack</code></td>
+<td><code>(unpack [f] [l])</code></td>
+<td>Evaluates a function using a list of arguments</td>
+</tr>
+
+<tr>
+<td><code>nth</code></td>
+<td><code>(nth [n] [l])</code></td>
+<td>Returns the <code>nth</code> element of a list</td>
+</tr>
+
+<tr>
+<td><code>take</code></td>
+<td><code>(take [n] [l])</code></td>
+<td>Takes the first <code>n</code> elements of a list</td>
+</tr>
+
+<tr>
+<td><code>drop</code></td>
+<td><code>(drop [n] [l])</code></td>
+<td>Drops the first <code>n</code> elements of a list, returning what's
+left</td>
+</tr>
+
+<tr>
+<td><code>member?</code></td>
+<td><code>(member? [x] [l])</code></td>
+<td>Checks if an element is a member of a list</td>
+</tr>
+
+<tr>
+<td><code>range</code></td>
+<td><code>(range [s] [e])</code></td>
+<td>Returns a list of integers starting with <code>s</code> and going up to
+<code>e</code></td>
+</tr>
+
+</tbody>
+
+</table>
+
 ## Open Source
 
 Many thanks goes to the following awesome libraries and open source projects,
