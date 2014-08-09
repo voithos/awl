@@ -123,6 +123,12 @@ Variables are created with `define` (which affects the local environment) and
 
 <table>
 
+<colgroup>
+<col style="width: 15%;">
+<col style="width: 35%;">
+<col style="width: 50%;">
+</colgroup>
+
 <thead>
 <th>Type</th>
 <th>Example</th>
@@ -139,7 +145,7 @@ Variables are created with `define` (which affects the local environment) and
 
 <tr>
 <td>Floating point</td>
-<td><code>3.14</code>, <code>-5.</code></td>
+<td><code>-5.</code>, <code>3.14</code></td>
 <td>A standard floating point (<code>double</code>)</td>
 </tr>
 
@@ -151,7 +157,7 @@ Variables are created with `define` (which affects the local environment) and
 
 <tr>
 <td>String</td>
-<td><code>'foobar'</code>, <code>"\"escapes\" OK"</code></td>
+<td><code>"\"escapes\" OK"</code>, <code>'foobar'</code></td>
 <td>A string type - either single or double quotes</td>
 </tr>
 
@@ -266,6 +272,12 @@ Awl makes no distinction between "operators" (`+`, `-`, `*`) and other kinds of
 builtins - they are simply named differently.
 
 <table>
+
+<colgroup>
+<col style="width: 15%;">
+<col style="width: 35%;">
+<col style="width: 50%;">
+</colgroup>
 
 <thead>
 <th>Builtin</th>
@@ -546,6 +558,12 @@ startup. Among other things, this library aims to exercise some of Awl's
 features, as well as provide some basic functional tools.
 
 <table>
+
+<colgroup>
+<col style="width: 15%;">
+<col style="width: 35%;">
+<col style="width: 50%;">
+</colgroup>
 
 <thead>
 <th>Symbol</th>
