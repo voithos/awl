@@ -3,6 +3,7 @@ obj/
 web/awl.js
 web/awl.data
 web/awl.js.map
+_site/
 tags
 awl
 *.hist

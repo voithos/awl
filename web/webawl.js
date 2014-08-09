@@ -60,7 +60,19 @@ if (typeof Module !== 'undefined') {
              */
             function initializeConsole(awl) {
                 $(function() {
-                    var term = $('#interpreter').terminal(function(command, term) {
+                    var dom = $('#interpreter');
+
+                    if (!dom.length) {
+                        var marker = $('h3').first();
+
+                        dom = $('<div />').
+                            attr('id', 'interpreter').
+                            addClass('terminal').
+                            css({ height: 300, marginBottom: '1em' }).
+                            insertBefore(marker);
+                    }
+
+                    var term = dom.terminal(function(command, term) {
                         awl.eval(command);
                     }, {
                         greetings: 'awl ' + awl.version + '\n',

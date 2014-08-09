@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ "$(git rev-parse --abbrev-ref HEAD)" == "master" ]; then
+
+    LAYOUT_PREFIX='---\nlayout: index\n---\n'
+
+    make web
+
+    git checkout gh-pages
+
+    git checkout master -- README.md
+    echo -e $LAYOUT_PREFIX > index.md
+    cat README.md >> index.md
+    rm README.md
+
+    git checkout master -- web
+    rm -rf javascripts
+    rm web/index.html
+    mv web/awl.data .
+    mv web/lib/jquery.terminal.css stylesheets
+    mv web javascripts
+
+    git add -A
+    git commit -m "Sync gh-pages with README.md in master"
+
+    git checkout master
+fi
