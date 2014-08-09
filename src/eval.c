@@ -46,7 +46,7 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
                 awlval* x = awlval_eval_sexpr(e, v);
 
                 /* recursively evaluate results */
-                if (x->type == AWLVAL_FUNC && x->called) {
+                if (x->type == AWLVAL_FN && x->called) {
                     AWLENV_DEL_RECURSING(e);
                     recursing = true;
 

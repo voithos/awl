@@ -20,7 +20,7 @@ typedef enum {
     AWLVAL_STR,
     AWLVAL_BOOL,
     AWLVAL_BUILTIN,
-    AWLVAL_FUNC,
+    AWLVAL_FN,
     AWLVAL_MACRO,
 
     AWLVAL_SEXPR,
@@ -32,10 +32,11 @@ typedef enum {
 #define ISNUMERIC(t) (t == AWLVAL_INT || t == AWLVAL_FLOAT)
 #define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR || t == AWLVAL_QSYM)
 #define ISEXPR(t) (t == AWLVAL_QEXPR || t == AWLVAL_SEXPR)
-#define ISCALLABLE(t) (t == AWLVAL_BUILTIN || t == AWLVAL_FUNC || t == AWLVAL_MACRO)
+#define ISCALLABLE(t) (t == AWLVAL_BUILTIN || t == AWLVAL_FN || t == AWLVAL_MACRO)
 
 char* awlval_type_name(awlval_type_t t);
 char* awlval_type_sysname(awlval_type_t t);
+awlval_type_t awlval_parse_sysname(const char* sysname);
 
 /* function pointer */
 typedef awlval*(*awlbuiltin)(awlenv*, awlval*);
@@ -84,7 +85,7 @@ struct awlenv {
 
 /* awlval instantiation functions */
 awlval* awlval_err(const char* fmt, ...);
-awlval* awlval_num(long x);
+awlval* awlval_int(long x);
 awlval* awlval_float(double x);
 awlval* awlval_sym(const char* s);
 awlval* awlval_qsym(const char* s);
@@ -114,6 +115,7 @@ void awlval_maybe_promote_numeric(awlval* a, awlval* b);
 void awlval_promote_numeric(awlval* a);
 void awlval_demote_numeric(awlval* a);
 awlval* awlval_copy(const awlval* v);
+awlval* awlval_convert(awlval_type_t t, const awlval* v);
 bool awlval_eq(awlval* x, awlval* y);
 
 /* awlenv functions */

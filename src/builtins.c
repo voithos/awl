@@ -454,7 +454,7 @@ awlval* builtin_len(awlenv* e, awlval* a) {
     EVAL_ARGS(e, a);
     AWLASSERT_ISCOLLECTION(a, 0, "len");
 
-    awlval* x = awlval_num(a->cell[0]->length);
+    awlval* x = awlval_int(a->cell[0]->length);
     awlval_del(a);
     return x;
 }
@@ -718,8 +718,30 @@ awlval* builtin_typeof(awlenv* e, awlval* a) {
     EVAL_ARGS(e, a);
 
     awlval* arg = awlval_take(a, 0);
-    awlval* res = awlval_str(awlval_type_sysname(arg->type));
+    awlval* res = awlval_qsym(awlval_type_sysname(arg->type));
     awlval_del(arg);
+    return res;
+}
+
+awlval* builtin_convert(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 2, "convert");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_QSYM, "convert");
+
+    awlval* tsym = awlval_pop(a, 0);
+    awlval* v = awlval_take(a, 0);
+
+    awlval* res;
+    awlval_type_t type = awlval_parse_sysname(tsym->sym);
+    if (errno != EINVAL) {
+        res = awlval_convert(type, v);
+    } else {
+        res = awlval_err("no such type: %s", tsym->sym);
+    }
+
+    awlval_del(tsym);
+    awlval_del(v);
+
     return res;
 }
 
@@ -736,6 +758,7 @@ awlval* builtin_import(awlenv* e, awlval* a) {
     // Attempt twice: once with the .awl extension, and once with the raw path
     for (int attempt = 0; attempt < 2; attempt++) {
         struct stat s;
+        errno = 0;
         int statErr = stat(importPath, &s);
 
         bool hasError = statErr || !S_ISREG(s.st_mode);

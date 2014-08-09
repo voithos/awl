@@ -7,6 +7,59 @@
 #include <unistd.h>
 
 #define BUFSIZE 4096
+#define SB_START_SIZE 1024
+#define SB_GROWTH_FACTOR 2
+
+stringbuilder_t* stringbuilder_new(void) {
+    stringbuilder_t* sb = malloc(sizeof(stringbuilder_t));
+    sb->length = 0;
+    sb->size = SB_START_SIZE;
+    sb->str = malloc(SB_START_SIZE);
+    return sb;
+}
+
+static void stringbuilder_resize(stringbuilder_t* sb) {
+    sb->size = sb->size * SB_GROWTH_FACTOR;
+    char* str = sb->str;
+
+    sb->str = malloc(sb->size);
+    memcpy(sb->str, str, sb->length);
+
+    free(str);
+}
+
+void stringbuilder_write(stringbuilder_t* sb, const char* format, ...) {
+    va_list arguments1;
+    va_list arguments2;
+    va_start(arguments1, format);
+    va_copy(arguments2, arguments1);
+
+    /* First use vsnprintf to check how large the printed result would be */
+    int count = vsnprintf(NULL, 0, format, arguments1);
+
+    /* If there isn't enough room, keep resizing until there is */
+    int required_size = sb->length + count + 1;
+    while (sb->size < required_size) {
+        stringbuilder_resize(sb);
+    }
+
+    vsnprintf((sb->str + sb->length), count + 1, format, arguments2);
+    sb->length += count;
+
+    va_end(arguments1);
+    va_end(arguments2);
+}
+
+char* stringbuilder_to_str(stringbuilder_t* sb) {
+    char* buffer = malloc(sb->length + 1);
+    memcpy(buffer, sb->str, sb->length + 1);
+    return buffer;
+}
+
+void stringbuilder_del(stringbuilder_t* sb) {
+    free(sb->str);
+    free(sb);
+}
 
 bool streq(const char* a, const char* b) {
     return strcmp(a, b) == 0;

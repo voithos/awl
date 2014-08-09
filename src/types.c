@@ -5,9 +5,11 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <errno.h>
 
 #include "assert.h"
 #include "builtins.h"
+#include "print.h"
 #include "util.h"
 
 #define AWLENV_INITIAL_SIZE 16
@@ -21,7 +23,7 @@ char* awlval_type_name(awlval_type_t t) {
         case AWLVAL_INT: return "Integer";
         case AWLVAL_FLOAT: return "Float";
         case AWLVAL_BUILTIN: return "Builtin";
-        case AWLVAL_FUNC: return "Function";
+        case AWLVAL_FN: return "Function";
         case AWLVAL_MACRO: return "Macro";
         case AWLVAL_SYM: return "Symbol";
         case AWLVAL_QSYM: return "Q-Symbol";
@@ -37,21 +39,57 @@ char* awlval_type_name(awlval_type_t t) {
 
 char* awlval_type_sysname(awlval_type_t t) {
     switch (t) {
-        case AWLVAL_ERR: return "error";
-        case AWLVAL_INT: return "integer";
+        case AWLVAL_ERR: return "err";
+        case AWLVAL_INT: return "int";
         case AWLVAL_FLOAT: return "float";
-        case AWLVAL_BUILTIN: return "function";
-        case AWLVAL_FUNC: return "function";
+        case AWLVAL_BUILTIN: return "builtin";
+        case AWLVAL_FN: return "fn";
         case AWLVAL_MACRO: return "macro";
-        case AWLVAL_SYM: return "symbol";
-        case AWLVAL_QSYM: return "qsymbol";
-        case AWLVAL_STR: return "string";
-        case AWLVAL_BOOL: return "boolean";
+        case AWLVAL_SYM: return "sym";
+        case AWLVAL_QSYM: return "qsym";
+        case AWLVAL_STR: return "str";
+        case AWLVAL_BOOL: return "bool";
         case AWLVAL_SEXPR: return "sexpr";
         case AWLVAL_QEXPR: return "qexpr";
         case AWLVAL_EEXPR: return "eexpr";
         case AWLVAL_CEXPR: return "cexpr";
         default: return "unknown";
+    }
+}
+
+awlval_type_t awlval_parse_sysname(const char* sysname) {
+    /* Ordering reflects most common types first */
+    if (streq(sysname, "int")) {
+        return AWLVAL_INT;
+    } else if (streq(sysname, "float")) {
+        return AWLVAL_FLOAT;
+    } else if (streq(sysname, "str")) {
+        return AWLVAL_STR;
+    } else if (streq(sysname, "bool")) {
+        return AWLVAL_BOOL;
+    } else if (streq(sysname, "qsym")) {
+        return AWLVAL_QSYM;
+    } else if (streq(sysname, "qexpr")) {
+        return AWLVAL_QEXPR;
+    } else if (streq(sysname, "err")) {
+        return AWLVAL_ERR;
+    } else if (streq(sysname, "builtin")) {
+        return AWLVAL_BUILTIN;
+    } else if (streq(sysname, "fn")) {
+        return AWLVAL_FN;
+    } else if (streq(sysname, "macro")) {
+        return AWLVAL_MACRO;
+    } else if (streq(sysname, "sym")) {
+        return AWLVAL_SYM;
+    } else if (streq(sysname, "sexpr")) {
+        return AWLVAL_SEXPR;
+    } else if (streq(sysname, "eexpr")) {
+        return AWLVAL_EEXPR;
+    } else if (streq(sysname, "cexpr")) {
+        return AWLVAL_CEXPR;
+    } else {
+        errno = EINVAL;
+        return 0;
     }
 }
 
@@ -74,7 +112,7 @@ awlval* awlval_err(const char* fmt, ...) {
     return v;
 }
 
-awlval* awlval_num(long x) {
+awlval* awlval_int(long x) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_INT;
     v->lng = x;
@@ -135,7 +173,7 @@ awlval* awlval_fun(const awlbuiltin builtin, const char* builtin_name) {
 
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     awlval* v = malloc(sizeof(awlval));
-    v->type = AWLVAL_FUNC;
+    v->type = AWLVAL_FN;
     v->env = awlenv_new();
     v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
     v->formals = formals;
@@ -198,7 +236,7 @@ void awlval_del(awlval* v) {
             free(v->builtin_name);
             break;
 
-        case AWLVAL_FUNC:
+        case AWLVAL_FN:
         case AWLVAL_MACRO:
             awlenv_del(v->env);
             awlval_del(v->formals);
@@ -433,7 +471,7 @@ awlval* awlval_copy(const awlval* v) {
             strcpy(x->builtin_name, v->builtin_name);
             break;
 
-        case AWLVAL_FUNC:
+        case AWLVAL_FN:
         case AWLVAL_MACRO:
             x->env = awlenv_copy(v->env);
             x->formals = awlval_copy(v->formals);
@@ -487,6 +525,109 @@ awlval* awlval_copy(const awlval* v) {
     return x;
 }
 
+awlval* awlval_convert(awlval_type_t t, const awlval* v) {
+    if (v->type == t) {
+        return awlval_copy(v);
+    }
+
+    switch (t) {
+        case AWLVAL_INT:
+            switch (v->type) {
+                case AWLVAL_FLOAT:
+                    return awlval_int((long)v->dbl);
+                    break;
+
+                case AWLVAL_STR:
+                    {
+                        errno = 0;
+                        long x = strtol(v->str, NULL, 10);
+                        return errno != ERANGE ? awlval_int(x) : awlval_err("invalid number: %s", v->str);
+                    }
+                    break;
+
+                case AWLVAL_BOOL:
+                    return awlval_int(v->bln);
+                    break;
+
+                default:
+                    return awlval_err("a direct conversion from type %s to type %s does not exist",
+                            awlval_type_name(v->type), awlval_type_name(t));
+                    break;
+            }
+            break;
+
+        case AWLVAL_FLOAT:
+            switch (v->type) {
+                case AWLVAL_INT:
+                    return awlval_float((double)v->lng);
+                    break;
+
+                case AWLVAL_STR:
+                    {
+                        errno = 0;
+                        double x = strtod(v->str, NULL);
+                        return errno != ERANGE ? awlval_float(x) : awlval_err("invalid float: %s", v->str);
+                    }
+                    break;
+
+                case AWLVAL_BOOL:
+                    return awlval_float((double)v->bln);
+                    break;
+
+                default:
+                    return awlval_err("a direct conversion from type %s to type %s does not exist",
+                            awlval_type_name(v->type), awlval_type_name(t));
+                    break;
+            }
+            break;
+
+        case AWLVAL_STR:
+            if (v->type == AWLVAL_QSYM) {
+                return awlval_str(v->sym);
+            } else {
+                char* str = awlval_to_str(v);
+                awlval* res = awlval_str(str);
+                free(str);
+                return res;
+            }
+            break;
+
+        case AWLVAL_BOOL:
+            switch (v->type) {
+                case AWLVAL_INT:
+                    return awlval_bool(v->lng != 0 ? true : false);
+                    break;
+
+                case AWLVAL_FLOAT:
+                    return awlval_bool(v->dbl != 0.0 ? true : false);
+                    break;
+
+                default:
+                    return awlval_err("a direct conversion from type %s to type %s does not exist",
+                            awlval_type_name(v->type), awlval_type_name(t));
+                    break;
+            }
+            break;
+
+        case AWLVAL_QSYM:
+            switch (v->type) {
+                case AWLVAL_STR:
+                    return awlval_qsym(v->str);
+                    break;
+
+                default:
+                    return awlval_err("a direct conversion from type %s to type %s does not exist",
+                            awlval_type_name(v->type), awlval_type_name(t));
+                    break;
+            }
+            break;
+
+        default:
+            return awlval_err("no type can be directly converted to type %s", awlval_type_name(t));
+            break;
+    }
+}
+
 bool awlval_eq(awlval* x, awlval* y) {
     awlval_maybe_promote_numeric(x, y);
     if (x->type != y->type) {
@@ -498,7 +639,7 @@ bool awlval_eq(awlval* x, awlval* y) {
             return y->type == AWLVAL_BUILTIN && x->builtin == y->builtin;
             break;
 
-        case AWLVAL_FUNC:
+        case AWLVAL_FN:
         case AWLVAL_MACRO:
             return y->type == x->type && awlval_eq(x->formals, y->formals) && awlval_eq(x->body, y->body);
             break;
@@ -768,6 +909,7 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "macro", builtin_macro);
 
     awlenv_add_builtin(e, "typeof", builtin_typeof);
+    awlenv_add_builtin(e, "convert", builtin_convert);
     awlenv_add_builtin(e, "import", builtin_import);
     awlenv_add_builtin(e, "print", builtin_print);
     awlenv_add_builtin(e, "println", builtin_println);

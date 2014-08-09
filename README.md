@@ -485,6 +485,13 @@ function also retains the current environment as a closure</td>
 </tr>
 
 <tr>
+<td><code>convert</code></td>
+<td><code>(convert [type] [value])</code></td>
+<td>Converts a value to <code>type</code>, which is represented by a qsym,
+as returned by <code>typeof</code></td>
+</tr>
+
+<tr>
 <td><code>import</code></td>
 <td><code>(import [path])</code></td>
 <td>Attempts to import the <code>awl</code> file at the given path</td>
@@ -565,15 +572,27 @@ features, as well as provide some basic functional tools.
 </tr>
 
 <tr>
-<td><code>string?</code></td>
-<td><code>(string? [arg1])</code></td>
+<td><code>str?</code></td>
+<td><code>(str? [arg1])</code></td>
 <td>Checks that argument is a string</td>
+</tr>
+
+<tr>
+<td><code>builtin?</code></td>
+<td><code>(builtin? [arg1])</code></td>
+<td>Checks that argument is a builtin</td>
 </tr>
 
 <tr>
 <td><code>fn?</code></td>
 <td><code>(fn? [arg1])</code></td>
-<td>Checks that argument is a function</td>
+<td>Checks that argument is a user-defined function</td>
+</tr>
+
+<tr>
+<td><code>macro?</code></td>
+<td><code>(macro? [arg1])</code></td>
+<td>Checks that argument is a macro</td>
 </tr>
 
 <tr>
@@ -598,6 +617,12 @@ features, as well as provide some basic functional tools.
 <td><code>nil?</code></td>
 <td><code>(nil? [arg1])</code></td>
 <td>Checks that argument is <code>nil</code></td>
+</tr>
+
+<tr>
+<td><code>to-str</code></td>
+<td><code>(to-str [arg1])</code></td>
+<td>Converts argument to a string</td>
 </tr>
 
 <tr>

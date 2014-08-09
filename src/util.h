@@ -2,6 +2,18 @@
 #define AWL_UTIL_H
 
 #include <stdbool.h>
+#include <stdarg.h>
+
+typedef struct {
+    int length;
+    int size;
+    char* str;
+} stringbuilder_t;
+
+stringbuilder_t* stringbuilder_new(void);
+void stringbuilder_write(stringbuilder_t* sb, const char* format, ...);
+char* stringbuilder_to_str(stringbuilder_t* sb);
+void stringbuilder_del(stringbuilder_t* sb);
 
 bool streq(const char* a, const char* b);
 char* strrev(const char* str);

@@ -10,15 +10,20 @@
     {global @(first (qhead f)) (fn (@(tail (qhead f))) @b)})
 
 ; Type functions
-(func (int? x) (== (typeof x) 'integer'))
-(func (float? x) (== (typeof x) 'float'))
-(func (string? x) (== (typeof x) 'string'))
-(func (fn? x) (== (typeof x) 'function'))
-(func (bool? x) (== (typeof x) 'boolean'))
-(func (qexpr? x) (== (typeof x) 'qexpr'))
+(func (int? x) (== (typeof x) :int))
+(func (float? x) (== (typeof x) :float))
+(func (str? x) (== (typeof x) :str))
+(func (builtin? x) (== (typeof x) :builtin))
+(func (fn? x) (== (typeof x) :fn))
+(func (macro? x) (== (typeof x) :macro))
+(func (qsym? x) (== (typeof x) :qsym))
+(func (bool? x) (== (typeof x) :bool))
+(func (qexpr? x) (== (typeof x) :qexpr))
 (global list? qexpr?)
 
 (func (nil? x) (== x nil))
+
+(func (to-str v) (convert :str v))
 
 ; Basic control structures
 (func (do & l)

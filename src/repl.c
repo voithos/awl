@@ -105,10 +105,10 @@ void run_repl(awlenv* e) {
     load_history();
 
     while (!repl_aborted) {
+        errno = 0;
         char* input = get_input("awl> ");
         if (!input) {
             if (errno == EAGAIN) {
-                errno = 0;
                 continue;
             } else {
                 awl_printf("\n");

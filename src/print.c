@@ -6,30 +6,9 @@
 
 #include "mpc.h"
 #include "assert.h"
+#include "util.h"
 
 #define BUFSIZE 4096
-
-static void awlval_expr_print(const awlval* v, char* open, char* close) {
-    awl_printf(open);
-    for (int i = 0; i < v->count; i++) {
-        awlval_print(v->cell[i]);
-
-        if (i != (v->count - 1)) {
-            awl_printf(" ");
-        }
-    }
-    awl_printf(close);
-}
-
-static void awlval_print_str(const awlval* v) {
-    char* escaped = malloc(strlen(v->str) + 1);
-    strcpy(escaped, v->str);
-
-    escaped = mpcf_escape(escaped);
-    awl_printf("\"%s\"", escaped);
-
-    free(escaped);
-}
 
 static void (*print_fn)(char*);
 
@@ -45,7 +24,8 @@ void register_default_print_fn(void) {
     print_fn = &default_print_fn;
 }
 
-void awl_printf(char* format, ...) {
+void awl_printf(const char* format, ...) {
+    // TODO: Make it similar to stringbuilder_t?
     char* buffer = malloc(BUFSIZE);
     va_list arguments;
     va_start(arguments, format);
@@ -59,78 +39,111 @@ void awl_printf(char* format, ...) {
 
 void awlval_println(const awlval* v) {
     awlval_print(v);
-    awl_printf("\n");
+    print_fn("\n");
 }
 
 void awlval_print(const awlval* v) {
+    print_fn(awlval_to_str(v));
+}
+
+static void awlval_expr_print(stringbuilder_t* sb, const awlval* v, const char* open, const char* close) {
+    stringbuilder_write(sb, open);
+    for (int i = 0; i < v->count; i++) {
+        awlval_print(v->cell[i]);
+
+        if (i != (v->count - 1)) {
+            stringbuilder_write(sb, " ");
+        }
+    }
+    stringbuilder_write(sb, close);
+}
+
+static void awlval_print_str(stringbuilder_t* sb, const awlval* v) {
+    char* escaped = malloc(strlen(v->str) + 1);
+    strcpy(escaped, v->str);
+
+    escaped = mpcf_escape(escaped);
+    stringbuilder_write(sb, "\"%s\"", escaped);
+
+    free(escaped);
+}
+
+static void awlval_write_sb(stringbuilder_t* sb, const awlval* v) {
     switch (v->type) {
         case AWLVAL_ERR:
-            awl_printf("Error: %s", v->err);
+            stringbuilder_write(sb, "Error: %s", v->err);
             break;
 
         case AWLVAL_INT:
-            awl_printf("%li", v->lng);
+            stringbuilder_write(sb, "%li", v->lng);
             break;
 
         case AWLVAL_FLOAT:
-            awl_printf("%f", v->dbl);
+            stringbuilder_write(sb, "%f", v->dbl);
             break;
 
         case AWLVAL_SYM:
-            awl_printf("%s", v->sym);
+            stringbuilder_write(sb, "%s", v->sym);
             break;
 
         case AWLVAL_QSYM:
-            awl_printf(":%s", v->sym);
+            stringbuilder_write(sb, ":%s", v->sym);
             break;
 
         case AWLVAL_STR:
-            awlval_print_str(v);
+            awlval_print_str(sb, v);
             break;
 
         case AWLVAL_BOOL:
             if (v->bln) {
-                awl_printf("true");
+                stringbuilder_write(sb, "true");
             } else {
-                awl_printf("false");
+                stringbuilder_write(sb, "false");
             }
             break;
 
         case AWLVAL_BUILTIN:
-            awl_printf("<builtin %s>", v->builtin_name);
+            stringbuilder_write(sb, "<builtin %s>", v->builtin_name);
             break;
 
-        case AWLVAL_FUNC:
-            awl_printf("(fn ");
-            awlval_print(v->formals);
-            awl_printf(" ");
-            awlval_print(v->body);
-            awl_printf(")");
+        case AWLVAL_FN:
+            stringbuilder_write(sb, "(fn ");
+            awlval_write_sb(sb, v->formals);
+            stringbuilder_write(sb, " ");
+            awlval_write_sb(sb, v->body);
+            stringbuilder_write(sb, ")");
             break;
 
         case AWLVAL_MACRO:
-            awl_printf("(macro ");
-            awlval_print(v->formals);
-            awl_printf(" ");
-            awlval_print(v->body);
-            awl_printf(")");
+            stringbuilder_write(sb, "(macro ");
+            awlval_write_sb(sb, v->formals);
+            stringbuilder_write(sb, " ");
+            awlval_write_sb(sb, v->body);
+            stringbuilder_write(sb, ")");
             break;
 
         case AWLVAL_SEXPR:
-            awlval_expr_print(v, "(", ")");
+            awlval_expr_print(sb, v, "(", ")");
             break;
 
         case AWLVAL_QEXPR:
-            awlval_expr_print(v, "{", "}");
+            awlval_expr_print(sb, v, "{", "}");
             break;
 
         case AWLVAL_EEXPR:
-            awlval_expr_print(v, "\\", "");
+            awlval_expr_print(sb, v, "\\", "");
             break;
 
         case AWLVAL_CEXPR:
-            awlval_expr_print(v, "@", "");
+            awlval_expr_print(sb, v, "@", "");
             break;
     }
 }
 
+char* awlval_to_str(const awlval* v) {
+    stringbuilder_t* sb = stringbuilder_new();
+    awlval_write_sb(sb, v);
+    char* str = stringbuilder_to_str(sb);
+    stringbuilder_del(sb);
+    return str;
+}

@@ -530,12 +530,12 @@ void test_builtin_let(void) {
 void test_builtin_lambda(void) {
     awlenv* e = setup_test();
 
-    TEST_ASSERT_TYPE(e, "(fn () 5)", AWLVAL_FUNC);
-    TEST_ASSERT_TYPE(e, "(fn () x)", AWLVAL_FUNC);
+    TEST_ASSERT_TYPE(e, "(fn () 5)", AWLVAL_FN);
+    TEST_ASSERT_TYPE(e, "(fn () x)", AWLVAL_FN);
     TEST_ASSERT_TYPE(e, "((fn () x))", AWLVAL_ERR);
     TEST_ASSERT_TYPE(e, "((fn () 5) 10)", AWLVAL_ERR);
-    TEST_ASSERT_TYPE(e, "((fn (a b c) c) 1)", AWLVAL_FUNC);
-    TEST_ASSERT_TYPE(e, "((fn (a b c) c) 1 2)", AWLVAL_FUNC);
+    TEST_ASSERT_TYPE(e, "((fn (a b c) c) 1)", AWLVAL_FN);
+    TEST_ASSERT_TYPE(e, "((fn (a b c) c) 1 2)", AWLVAL_FN);
     TEST_ASSERT_EQ(e, "((fn (a b c) c) 1 2 3)", "3");
 
     /* First class functions */

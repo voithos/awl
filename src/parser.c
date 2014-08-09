@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include "mpc.h"
 #include "assert.h"
@@ -66,10 +67,11 @@ void teardown_parser(void) {
 static awlval* awlval_read_int(const mpc_ast_t* t) {
     errno = 0;
     long x = strtol(t->contents, NULL, 10);
-    return errno != ERANGE ? awlval_num(x) : awlval_err("invalid number: %s", t->contents);
+    return errno != ERANGE ? awlval_int(x) : awlval_err("invalid number: %s", t->contents);
 }
 
 static awlval* awlval_read_float(const mpc_ast_t* t) {
+    errno = 0;
     double x = strtod(t->contents, NULL);
     return errno != ERANGE ? awlval_float(x) : awlval_err("invalid float: %s", t->contents);
 }
