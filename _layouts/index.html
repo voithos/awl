@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/jquery.terminal.css" media="screen">
+
+    <title>Awl</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Awl</h1>
+        <h2>Experimental Lispy mini-language</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/voithos/awl/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/voithos/awl/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/voithos/awl" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+          {{ content }}
+      </section>
+    </div>
+
+    <script src="{{ site.baseurl }}/javascripts/lib/jquery.min.js"></script>
+    <script src="{{ site.baseurl }}/javascripts/lib/jquery.mousewheel.min.js"></script>
+    <script src="{{ site.baseurl }}/javascripts/lib/jquery.terminal.min.js"></script>
+
+    <script src="{{ site.baseurl }}/javascripts/awl.js"></script>
+    <script src="{{ site.baseurl }}/javascripts/webawl.js"></script>
+  </body>
+</html>

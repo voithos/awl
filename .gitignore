@@ -1,0 +1,8 @@
+bin/
+obj/
+web/
+tags
+awl
+*.hist
+*.d
+_site/
