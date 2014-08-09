@@ -9,20 +9,23 @@ languages.
 
 ### Synopsis
 
-It was written for fun and ~~profit~~ to learn more about interpreter design,
-programming in C, and using [emscripten](https://github.com/kripken/emscripten)
-to transpile to JavaScript.
+It was written for fun and <s>profit</s> to learn more about interpreter
+design, programming in C, and using
+[emscripten](https://github.com/kripken/emscripten) to transpile to JavaScript.
 
 **Note**: This naturally goes without saying, but Awl is just an experimental
-learning project. It should *not* be used for production code. That being said,
-experimenting and hacking on non-production-ready code just for fun is usually
-worthwhile!
+learning project, which means that it is lacking in thorough testing and
+probably has many bugs. It should *not* be used for production code, lest it
+summon Undefined Behavior&trade; to wreak havok on your code.
+
+That being said, experimenting and hacking on non-production-ready code just
+for fun is usually worthwhile!
 
 ## Compiling
 
-Most of awl's dependencies are included in the repository, so you shouldn't
+Most of Awl's dependencies are included in the repository, so you shouldn't
 need to install anything other than the build tools. Awl takes advantage of
-some new features in C11, so you will need a fairly recent C compiler.
+some new features in `C11`, so you will need a fairly recent C compiler.
 
 - Both `clang` (tested with version 3.5.0) and `gcc` (tested with version
   4.7.2) are known to successfully compile
@@ -46,7 +49,7 @@ Or transpile to JavaScript (`emcc` will need to be in your `$PATH`):
 
     $ make web
 
-You can also clean up:
+Clean up if you want to start over:
 
     $ make clean
 
@@ -94,7 +97,7 @@ expressions.
 
 ### Basic Features
 
-Awl supports inline comments in the form of Lisp's semicolon `;`:
+Awl supports inline comments using semicolons (`;`):
 
     ; Can go on its own line
     (func (plus-one x)
@@ -105,8 +108,8 @@ Printing to standard output can be done using `print` and `println`:
     awl> (println "Hello sekai!")
     Hello sekai!
 
-Variables are defined with `define` (which is affects the local environment)
-and `global` (which, as the name suggests, affects the global environment):
+Variables are created with `define` (which affects the local environment) and
+`global` (which, as the name suggests, affects the global environment):
 
     awl> (define foo 'bar')
     awl> (println foo)
@@ -178,13 +181,12 @@ and `global` (which, as the name suggests, affects the global environment):
 
 ### Expressions
 
-Operations in Awl are defined as
+Function calls in Awl are defined as
 [S-Expressions](http://en.wikipedia.org/wiki/S_expression) (symbolic
 expressions). They are syntactically enclosed in parentheses `()`. The first
 argument of the expression must be a callable, and is evaluated in the current
-environment with any following arguments as parameters (the result is the
-iconic "[Polish notation](http://en.wikipedia.org/wiki/Polish_notation)" of
-Lisp).
+environment with any following arguments as parameters (this is the iconic
+"[Polish notation](http://en.wikipedia.org/wiki/Polish_notation)" of Lisp).
 
     awl> (+ 5 6)
     11
@@ -212,12 +214,12 @@ The primitive types evaluate to themselves.
 
 Q-Expressions (quoted expressions, often referred to simply as 'lists') are
 particularly important. They are enclosed inside curly braces `{}`. They are a
-collection type and behave similar to lists. They can store any number and
-mixture of primitive types. And they have one more important ability:
-expressions that they contain which would normally be evaluated, such as
-symbols and S-Expressions, are left unevaluated (i.e. they are "quoted"). This
-allows them to contain arbitrary code, and then be converted and evaluated as
-S-Expressions:
+collection type and behave similar to lists in other languages. They can store
+any number and mixture of primitive types. And they have one more important
+ability: expressions that they contain which would normally be evaluated, such
+as symbols and S-Expressions, are left unevaluated (i.e. they are "quoted").
+This allows them to contain arbitrary code, and then be converted and evaluated
+as S-Expressions:
 
     awl> (head {1 2 3})
     1
@@ -748,3 +750,6 @@ and their creators:
 - linenoise
 - clang / LLVM
 - emscripten
+
+Also, thanks goes to the creator of the free "Build Your Own Lisp" online book,
+which is what Awl was inspired from.
