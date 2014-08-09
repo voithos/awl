@@ -9,6 +9,7 @@ void test_builtin_arithmetic(void) {
 
     TEST_ASSERT_TYPE(e, "(+)", AWLVAL_ERR);
     TEST_ASSERT_TYPE(e, "(-)", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "(/ 5 0)", AWLVAL_ERR);
 
     TEST_ASSERT_EQ(e, "(- 5)", "-5");
 

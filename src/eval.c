@@ -172,7 +172,15 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
             }
 
             awlval* nsym = awlval_pop(f->formals, 0);
-            awlenv_put(f->env, nsym, builtin_list(e, a), false);
+            awlval* varargs = builtin_list(e, a);
+
+            if (varargs->type == AWLVAL_ERR) {
+                awlval_del(sym);
+                awlval_del(nsym);
+                return varargs;
+            }
+
+            awlenv_put(f->env, nsym, varargs, false);
             awlval_del(sym);
             awlval_del(nsym);
             break;
