@@ -540,8 +540,9 @@ awlval* awlval_convert(awlval_type_t t, const awlval* v) {
                 case AWLVAL_STR:
                     {
                         errno = 0;
-                        long x = strtol(v->str, NULL, 10);
-                        return errno != ERANGE ? awlval_int(x) : awlval_err("invalid number: %s", v->str);
+                        char* strend = v->str;
+                        long x = strtol(v->str, &strend, 10);
+                        return errno != ERANGE && *strend == '\0' ? awlval_int(x) : awlval_err("invalid number: %s", v->str);
                     }
                     break;
 
@@ -565,8 +566,9 @@ awlval* awlval_convert(awlval_type_t t, const awlval* v) {
                 case AWLVAL_STR:
                     {
                         errno = 0;
-                        double x = strtod(v->str, NULL);
-                        return errno != ERANGE ? awlval_float(x) : awlval_err("invalid float: %s", v->str);
+                        char* strend = v->str;
+                        double x = strtod(v->str, &strend);
+                        return errno != ERANGE && *strend == '\0' ? awlval_float(x) : awlval_err("invalid float: %s", v->str);
                     }
                     break;
 

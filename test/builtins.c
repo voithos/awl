@@ -545,6 +545,34 @@ void test_builtin_lambda(void) {
     teardown_test(e);
 }
 
+void test_builtin_convert(void) {
+    awlenv* e = setup_test();
+
+    TEST_ASSERT_TYPE(e, "(convert :qexpr 5)", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "(convert :qsym 5)", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "(convert :int 'foo')", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "(convert :float 'bar')", AWLVAL_ERR);
+
+    TEST_ASSERT_EQ(e, "(convert :int 5.9)", "5");
+    TEST_ASSERT_EQ(e, "(convert :int '8')", "8");
+    TEST_ASSERT_EQ(e, "(convert :float 2)", "2.0");
+    TEST_ASSERT_EQ(e, "(convert :float '9.5')", "9.5");
+
+    TEST_ASSERT_EQ(e, "(convert :bool 90)", "true");
+    TEST_ASSERT_EQ(e, "(convert :bool 0)", "false");
+    TEST_ASSERT_EQ(e, "(convert :bool 5.0)", "true");
+    TEST_ASSERT_EQ(e, "(convert :bool 0.0)", "false");
+
+    TEST_ASSERT_EQ(e, "(convert :str 5)", "'5'");
+    TEST_ASSERT_EQ(e, "(convert :str 1.23)", "'1.230000'");
+    TEST_ASSERT_EQ(e, "(convert :str :testfoo)", "'testfoo'");
+    TEST_ASSERT_EQ(e, "(convert :str {1 2 3 4})", "'{1 2 3 4}'");
+
+    TEST_ASSERT_EQ(e, "(convert :qsym 'foobar')", ":foobar");
+
+    teardown_test(e);
+}
+
 void suite_builtin(void) {
     pt_add_test(test_builtin_arithmetic, "Test Arithmetic", "Suite Builtin");
     pt_add_test(test_builtin_div, "Test Div", "Suite Builtin");
@@ -567,4 +595,5 @@ void suite_builtin(void) {
     pt_add_test(test_builtin_var, "Test Var", "Suite Builtin");
     pt_add_test(test_builtin_let, "Test Let", "Suite Builtin");
     pt_add_test(test_builtin_lambda, "Test Lambda", "Suite Builtin");
+    pt_add_test(test_builtin_convert, "Test Convert", "Suite Builtin");
 }

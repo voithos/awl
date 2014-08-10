@@ -46,10 +46,12 @@ void awlval_print(const awlval* v) {
     print_fn(awlval_to_str(v));
 }
 
+static void awlval_write_sb(stringbuilder_t* sb, const awlval* v);
+
 static void awlval_expr_print(stringbuilder_t* sb, const awlval* v, const char* open, const char* close) {
     stringbuilder_write(sb, open);
     for (int i = 0; i < v->count; i++) {
-        awlval_print(v->cell[i]);
+        awlval_write_sb(sb, v->cell[i]);
 
         if (i != (v->count - 1)) {
             stringbuilder_write(sb, " ");
