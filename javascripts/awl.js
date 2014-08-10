@@ -18,7 +18,7 @@ Module.expectedDataFileDownloads++;
     var PACKAGE_NAME = 'web/awl.data';
     var REMOTE_PACKAGE_NAME = (Module['filePackagePrefixURL'] || '') + 'awl.data';
     var REMOTE_PACKAGE_SIZE = 2024;
-    var PACKAGE_UUID = '1958cd45-7083-411c-9aea-1a127dd3357a';
+    var PACKAGE_UUID = '8c3fe8e6-3461-49c4-9185-647106286224';
   
     function fetchRemotePackage(packageName, packageSize, callback, errback) {
       var xhr = new XMLHttpRequest();
@@ -11867,8 +11867,8 @@ function _awlval_eval($e,$v) {
   $10 = $2; //@line 34 "src/eval.c"
   $11 = HEAP32[$10>>2]|0; //@line 34 "src/eval.c"
   switch ($11|0) {
-  case 13: case 12:  {
-   label = 20;
+  case 11:  {
+   label = 17;
    break L1;
    break;
   }
@@ -11877,8 +11877,8 @@ function _awlval_eval($e,$v) {
    break L1;
    break;
   }
-  case 11:  {
-   label = 17;
+  case 13: case 12:  {
+   label = 20;
    break L1;
    break;
   }
@@ -12117,15 +12117,7 @@ function _awlval_eval_inside_qexpr($e,$v) {
  $2 = $v;
  $3 = $2; //@line 246 "src/eval.c"
  $4 = HEAP32[$3>>2]|0; //@line 246 "src/eval.c"
- if ((($4|0) == 12)) {
-  $66 = $1; //@line 278 "src/eval.c"
-  $67 = $2; //@line 278 "src/eval.c"
-  $68 = (_awlval_take($67,0)|0); //@line 278 "src/eval.c"
-  $69 = (_awlval_eval($66,$68)|0); //@line 278 "src/eval.c"
-  $0 = $69; //@line 278 "src/eval.c"
-  $71 = $0; //@line 287 "src/eval.c"
-  STACKTOP = sp;return ($71|0); //@line 287 "src/eval.c"
- } else if ((($4|0) == 11) | (($4|0) == 10)) {
+ if ((($4|0) == 11) | (($4|0) == 10)) {
   $i = 0; //@line 250 "src/eval.c"
   while(1) {
    $5 = $i; //@line 250 "src/eval.c"
@@ -12229,6 +12221,14 @@ function _awlval_eval_inside_qexpr($e,$v) {
    $71 = $0; //@line 287 "src/eval.c"
    STACKTOP = sp;return ($71|0); //@line 287 "src/eval.c"
   }
+ } else if ((($4|0) == 12)) {
+  $66 = $1; //@line 278 "src/eval.c"
+  $67 = $2; //@line 278 "src/eval.c"
+  $68 = (_awlval_take($67,0)|0); //@line 278 "src/eval.c"
+  $69 = (_awlval_eval($66,$68)|0); //@line 278 "src/eval.c"
+  $0 = $69; //@line 278 "src/eval.c"
+  $71 = $0; //@line 287 "src/eval.c"
+  STACKTOP = sp;return ($71|0); //@line 287 "src/eval.c"
  } else {
   $70 = $2; //@line 284 "src/eval.c"
   $0 = $70; //@line 284 "src/eval.c"
@@ -13059,40 +13059,40 @@ function _mpc_err_char_unescape($c) {
  $3 = $2 << 24 >> 24; //@line 133 "src/mpc.c"
  do {
   switch ($3|0) {
-  case 7:  {
-   $0 = 3232; //@line 135 "src/mpc.c"
-   break;
-  }
-  case 0:  {
-   $0 = 2240; //@line 140 "src/mpc.c"
-   break;
-  }
-  case 13:  {
-   $0 = 3272; //@line 138 "src/mpc.c"
-   break;
-  }
-  case 11:  {
-   $0 = 3288; //@line 139 "src/mpc.c"
+  case 8:  {
+   $0 = 3240; //@line 136 "src/mpc.c"
    break;
   }
   case 12:  {
    $0 = 3256; //@line 137 "src/mpc.c"
    break;
   }
-  case 8:  {
-   $0 = 3240; //@line 136 "src/mpc.c"
-   break;
-  }
-  case 9:  {
-   $0 = 2312; //@line 142 "src/mpc.c"
+  case 11:  {
+   $0 = 3288; //@line 139 "src/mpc.c"
    break;
   }
   case 32:  {
    $0 = 3304; //@line 143 "src/mpc.c"
    break;
   }
+  case 7:  {
+   $0 = 3232; //@line 135 "src/mpc.c"
+   break;
+  }
+  case 13:  {
+   $0 = 3272; //@line 138 "src/mpc.c"
+   break;
+  }
   case 10:  {
    $0 = 2304; //@line 141 "src/mpc.c"
+   break;
+  }
+  case 9:  {
+   $0 = 2312; //@line 142 "src/mpc.c"
+   break;
+  }
+  case 0:  {
+   $0 = 2240; //@line 140 "src/mpc.c"
    break;
   }
   default: {
@@ -13327,6 +13327,36 @@ function _mpc_parse_input($i,$init,$final) {
     }
     break;
    }
+   case 9:  {
+    $79 = $0; //@line 1005 "src/mpc.c"
+    $80 = (_mpc_input_eoi($79)|0); //@line 1005 "src/mpc.c"
+    $81 = ($80|0)!=(0); //@line 1005 "src/mpc.c"
+    if ($81) {
+     $82 = $stk; //@line 1005 "src/mpc.c"
+     _mpc_stack_popp($82,$p,$st); //@line 1005 "src/mpc.c"
+     $83 = $stk; //@line 1005 "src/mpc.c"
+     _mpc_result_out($5,0); //@line 1005 "src/mpc.c"
+     ;HEAP32[$$byval_copy3+0>>2]=HEAP32[$5+0>>2]|0; //@line 1005 "src/mpc.c"
+     _mpc_stack_pushr($83,$$byval_copy3,1); //@line 1005 "src/mpc.c"
+     continue L1;
+    } else {
+     $84 = $stk; //@line 1005 "src/mpc.c"
+     _mpc_stack_popp($84,$p,$st); //@line 1005 "src/mpc.c"
+     $85 = $stk; //@line 1005 "src/mpc.c"
+     $86 = $0; //@line 1005 "src/mpc.c"
+     $87 = (($86) + 4|0); //@line 1005 "src/mpc.c"
+     $88 = HEAP32[$87>>2]|0; //@line 1005 "src/mpc.c"
+     $89 = $0; //@line 1005 "src/mpc.c"
+     $90 = (($89) + 8|0); //@line 1005 "src/mpc.c"
+     ;HEAP32[$$byval_copy4+0>>2]=HEAP32[$90+0>>2]|0;HEAP32[$$byval_copy4+4>>2]=HEAP32[$90+4>>2]|0;HEAP32[$$byval_copy4+8>>2]=HEAP32[$90+8>>2]|0; //@line 1005 "src/mpc.c"
+     $91 = (_mpc_err_fail($88,$$byval_copy4,2024)|0); //@line 1005 "src/mpc.c"
+     _mpc_result_err($6,$91); //@line 1005 "src/mpc.c"
+     ;HEAP32[$$byval_copy5+0>>2]=HEAP32[$6+0>>2]|0; //@line 1005 "src/mpc.c"
+     _mpc_stack_pushr($85,$$byval_copy5,0); //@line 1005 "src/mpc.c"
+     continue L1;
+    }
+    break;
+   }
    case 8:  {
     $66 = $0; //@line 1004 "src/mpc.c"
     $67 = (_mpc_input_soi($66)|0); //@line 1004 "src/mpc.c"
@@ -13387,36 +13417,6 @@ function _mpc_parse_input($i,$init,$final) {
      _mpc_result_err($10,$122); //@line 1007 "src/mpc.c"
      ;HEAP32[$$byval_copy11+0>>2]=HEAP32[$10+0>>2]|0; //@line 1007 "src/mpc.c"
      _mpc_stack_pushr($116,$$byval_copy11,0); //@line 1007 "src/mpc.c"
-     continue L1;
-    }
-    break;
-   }
-   case 9:  {
-    $79 = $0; //@line 1005 "src/mpc.c"
-    $80 = (_mpc_input_eoi($79)|0); //@line 1005 "src/mpc.c"
-    $81 = ($80|0)!=(0); //@line 1005 "src/mpc.c"
-    if ($81) {
-     $82 = $stk; //@line 1005 "src/mpc.c"
-     _mpc_stack_popp($82,$p,$st); //@line 1005 "src/mpc.c"
-     $83 = $stk; //@line 1005 "src/mpc.c"
-     _mpc_result_out($5,0); //@line 1005 "src/mpc.c"
-     ;HEAP32[$$byval_copy3+0>>2]=HEAP32[$5+0>>2]|0; //@line 1005 "src/mpc.c"
-     _mpc_stack_pushr($83,$$byval_copy3,1); //@line 1005 "src/mpc.c"
-     continue L1;
-    } else {
-     $84 = $stk; //@line 1005 "src/mpc.c"
-     _mpc_stack_popp($84,$p,$st); //@line 1005 "src/mpc.c"
-     $85 = $stk; //@line 1005 "src/mpc.c"
-     $86 = $0; //@line 1005 "src/mpc.c"
-     $87 = (($86) + 4|0); //@line 1005 "src/mpc.c"
-     $88 = HEAP32[$87>>2]|0; //@line 1005 "src/mpc.c"
-     $89 = $0; //@line 1005 "src/mpc.c"
-     $90 = (($89) + 8|0); //@line 1005 "src/mpc.c"
-     ;HEAP32[$$byval_copy4+0>>2]=HEAP32[$90+0>>2]|0;HEAP32[$$byval_copy4+4>>2]=HEAP32[$90+4>>2]|0;HEAP32[$$byval_copy4+8>>2]=HEAP32[$90+8>>2]|0; //@line 1005 "src/mpc.c"
-     $91 = (_mpc_err_fail($88,$$byval_copy4,2024)|0); //@line 1005 "src/mpc.c"
-     _mpc_result_err($6,$91); //@line 1005 "src/mpc.c"
-     ;HEAP32[$$byval_copy5+0>>2]=HEAP32[$6+0>>2]|0; //@line 1005 "src/mpc.c"
-     _mpc_stack_pushr($85,$$byval_copy5,0); //@line 1005 "src/mpc.c"
      continue L1;
     }
     break;
@@ -16377,11 +16377,17 @@ function _mpc_undefine_unretained($p,$force) {
  $11 = $10 << 24 >> 24; //@line 1272 "src/mpc.c"
  do {
   switch ($11|0) {
-  case 20: case 21:  {
-   $27 = $0; //@line 1288 "src/mpc.c"
-   $28 = (($27) + 12|0); //@line 1288 "src/mpc.c"
-   $29 = HEAP32[$28>>2]|0; //@line 1288 "src/mpc.c"
-   _mpc_undefine_unretained($29,0); //@line 1288 "src/mpc.c"
+  case 24: case 23: case 22:  {
+   $37 = $0; //@line 1299 "src/mpc.c"
+   $38 = (($37) + 12|0); //@line 1299 "src/mpc.c"
+   $39 = (($38) + 8|0); //@line 1299 "src/mpc.c"
+   $40 = HEAP32[$39>>2]|0; //@line 1299 "src/mpc.c"
+   _mpc_undefine_unretained($40,0); //@line 1299 "src/mpc.c"
+   break;
+  }
+  case 26:  {
+   $42 = $0; //@line 1303 "src/mpc.c"
+   _mpc_undefine_and($42); //@line 1303 "src/mpc.c"
    break;
   }
   case 25:  {
@@ -16401,12 +16407,18 @@ function _mpc_undefine_unretained($p,$force) {
    _free($36); //@line 1293 "src/mpc.c"
    break;
   }
-  case 24: case 23: case 22:  {
-   $37 = $0; //@line 1299 "src/mpc.c"
-   $38 = (($37) + 12|0); //@line 1299 "src/mpc.c"
-   $39 = (($38) + 8|0); //@line 1299 "src/mpc.c"
-   $40 = HEAP32[$39>>2]|0; //@line 1299 "src/mpc.c"
-   _mpc_undefine_unretained($40,0); //@line 1299 "src/mpc.c"
+  case 17:  {
+   $18 = $0; //@line 1282 "src/mpc.c"
+   $19 = (($18) + 12|0); //@line 1282 "src/mpc.c"
+   $20 = HEAP32[$19>>2]|0; //@line 1282 "src/mpc.c"
+   _mpc_undefine_unretained($20,0); //@line 1282 "src/mpc.c"
+   break;
+  }
+  case 18:  {
+   $21 = $0; //@line 1283 "src/mpc.c"
+   $22 = (($21) + 12|0); //@line 1283 "src/mpc.c"
+   $23 = HEAP32[$22>>2]|0; //@line 1283 "src/mpc.c"
+   _mpc_undefine_unretained($23,0); //@line 1283 "src/mpc.c"
    break;
   }
   case 19:  {
@@ -16414,6 +16426,13 @@ function _mpc_undefine_unretained($p,$force) {
    $25 = (($24) + 12|0); //@line 1284 "src/mpc.c"
    $26 = HEAP32[$25>>2]|0; //@line 1284 "src/mpc.c"
    _mpc_undefine_unretained($26,0); //@line 1284 "src/mpc.c"
+   break;
+  }
+  case 20: case 21:  {
+   $27 = $0; //@line 1288 "src/mpc.c"
+   $28 = (($27) + 12|0); //@line 1288 "src/mpc.c"
+   $29 = HEAP32[$28>>2]|0; //@line 1288 "src/mpc.c"
+   _mpc_undefine_unretained($29,0); //@line 1288 "src/mpc.c"
    break;
   }
   case 2:  {
@@ -16428,25 +16447,6 @@ function _mpc_undefine_unretained($p,$force) {
    $16 = (($15) + 12|0); //@line 1279 "src/mpc.c"
    $17 = HEAP32[$16>>2]|0; //@line 1279 "src/mpc.c"
    _free($17); //@line 1279 "src/mpc.c"
-   break;
-  }
-  case 26:  {
-   $42 = $0; //@line 1303 "src/mpc.c"
-   _mpc_undefine_and($42); //@line 1303 "src/mpc.c"
-   break;
-  }
-  case 17:  {
-   $18 = $0; //@line 1282 "src/mpc.c"
-   $19 = (($18) + 12|0); //@line 1282 "src/mpc.c"
-   $20 = HEAP32[$19>>2]|0; //@line 1282 "src/mpc.c"
-   _mpc_undefine_unretained($20,0); //@line 1282 "src/mpc.c"
-   break;
-  }
-  case 18:  {
-   $21 = $0; //@line 1283 "src/mpc.c"
-   $22 = (($21) + 12|0); //@line 1283 "src/mpc.c"
-   $23 = HEAP32[$22>>2]|0; //@line 1283 "src/mpc.c"
-   _mpc_undefine_unretained($23,0); //@line 1283 "src/mpc.c"
    break;
   }
   default: {
@@ -20773,6 +20773,14 @@ function _mpc_re_range_escape_char($c) {
  $3 = $2 << 24 >> 24; //@line 1940 "src/mpc.c"
  do {
   switch ($3|0) {
+  case 114:  {
+   $0 = 3072; //@line 1945 "src/mpc.c"
+   break;
+  }
+  case 97:  {
+   $0 = 3056; //@line 1942 "src/mpc.c"
+   break;
+  }
   case 119:  {
    $0 = 3104; //@line 1951 "src/mpc.c"
    break;
@@ -20781,8 +20789,16 @@ function _mpc_re_range_escape_char($c) {
    $0 = 3080; //@line 1946 "src/mpc.c"
    break;
   }
-  case 118:  {
-   $0 = 3088; //@line 1947 "src/mpc.c"
+  case 110:  {
+   $0 = 2016; //@line 1944 "src/mpc.c"
+   break;
+  }
+  case 100:  {
+   $0 = 2320; //@line 1949 "src/mpc.c"
+   break;
+  }
+  case 115:  {
+   $0 = 2272; //@line 1950 "src/mpc.c"
    break;
   }
   case 45:  {
@@ -20793,28 +20809,12 @@ function _mpc_re_range_escape_char($c) {
    $0 = 3064; //@line 1943 "src/mpc.c"
    break;
   }
-  case 115:  {
-   $0 = 2272; //@line 1950 "src/mpc.c"
-   break;
-  }
-  case 110:  {
-   $0 = 2016; //@line 1944 "src/mpc.c"
-   break;
-  }
-  case 97:  {
-   $0 = 3056; //@line 1942 "src/mpc.c"
-   break;
-  }
-  case 114:  {
-   $0 = 3072; //@line 1945 "src/mpc.c"
+  case 118:  {
+   $0 = 3088; //@line 1947 "src/mpc.c"
    break;
   }
   case 98:  {
    $0 = 3096; //@line 1948 "src/mpc.c"
-   break;
-  }
-  case 100:  {
-   $0 = 2320; //@line 1949 "src/mpc.c"
    break;
   }
   default: {
@@ -20840,24 +20840,30 @@ function _mpc_re_escape_char($c) {
  $3 = $2 << 24 >> 24; //@line 1894 "src/mpc.c"
  do {
   switch ($3|0) {
+  case 66:  {
+   $13 = (_mpc_boundary()|0); //@line 1902 "src/mpc.c"
+   $14 = (_mpc_not_lift($13,7,19)|0); //@line 1902 "src/mpc.c"
+   $0 = $14; //@line 1902 "src/mpc.c"
+   break;
+  }
+  case 110:  {
+   $6 = (_mpc_char(10)|0); //@line 1897 "src/mpc.c"
+   $0 = $6; //@line 1897 "src/mpc.c"
+   break;
+  }
   case 102:  {
    $5 = (_mpc_char(12)|0); //@line 1896 "src/mpc.c"
    $0 = $5; //@line 1896 "src/mpc.c"
    break;
   }
-  case 114:  {
-   $7 = (_mpc_char(13)|0); //@line 1898 "src/mpc.c"
-   $0 = $7; //@line 1898 "src/mpc.c"
+  case 97:  {
+   $4 = (_mpc_char(7)|0); //@line 1895 "src/mpc.c"
+   $0 = $4; //@line 1895 "src/mpc.c"
    break;
   }
   case 116:  {
    $8 = (_mpc_char(9)|0); //@line 1899 "src/mpc.c"
    $0 = $8; //@line 1899 "src/mpc.c"
-   break;
-  }
-  case 118:  {
-   $9 = (_mpc_char(11)|0); //@line 1900 "src/mpc.c"
-   $0 = $9; //@line 1900 "src/mpc.c"
    break;
   }
   case 65:  {
@@ -20872,10 +20878,9 @@ function _mpc_re_escape_char($c) {
    $0 = $17; //@line 1903 "src/mpc.c"
    break;
   }
-  case 87:  {
-   $28 = (_mpc_alphanum()|0); //@line 1910 "src/mpc.c"
-   $29 = (_mpc_not_lift($28,7,19)|0); //@line 1910 "src/mpc.c"
-   $0 = $29; //@line 1910 "src/mpc.c"
+  case 100:  {
+   $21 = (_mpc_digit()|0); //@line 1905 "src/mpc.c"
+   $0 = $21; //@line 1905 "src/mpc.c"
    break;
   }
   case 90:  {
@@ -20890,19 +20895,20 @@ function _mpc_re_escape_char($c) {
    $0 = $20; //@line 1904 "src/mpc.c"
    break;
   }
-  case 100:  {
-   $21 = (_mpc_digit()|0); //@line 1905 "src/mpc.c"
-   $0 = $21; //@line 1905 "src/mpc.c"
-   break;
-  }
-  case 97:  {
-   $4 = (_mpc_char(7)|0); //@line 1895 "src/mpc.c"
-   $0 = $4; //@line 1895 "src/mpc.c"
+  case 68:  {
+   $22 = (_mpc_digit()|0); //@line 1906 "src/mpc.c"
+   $23 = (_mpc_not_lift($22,7,19)|0); //@line 1906 "src/mpc.c"
+   $0 = $23; //@line 1906 "src/mpc.c"
    break;
   }
   case 115:  {
    $24 = (_mpc_whitespace()|0); //@line 1907 "src/mpc.c"
    $0 = $24; //@line 1907 "src/mpc.c"
+   break;
+  }
+  case 114:  {
+   $7 = (_mpc_char(13)|0); //@line 1898 "src/mpc.c"
+   $0 = $7; //@line 1898 "src/mpc.c"
    break;
   }
   case 83:  {
@@ -20916,21 +20922,10 @@ function _mpc_re_escape_char($c) {
    $0 = $27; //@line 1909 "src/mpc.c"
    break;
   }
-  case 110:  {
-   $6 = (_mpc_char(10)|0); //@line 1897 "src/mpc.c"
-   $0 = $6; //@line 1897 "src/mpc.c"
-   break;
-  }
-  case 66:  {
-   $13 = (_mpc_boundary()|0); //@line 1902 "src/mpc.c"
-   $14 = (_mpc_not_lift($13,7,19)|0); //@line 1902 "src/mpc.c"
-   $0 = $14; //@line 1902 "src/mpc.c"
-   break;
-  }
-  case 68:  {
-   $22 = (_mpc_digit()|0); //@line 1906 "src/mpc.c"
-   $23 = (_mpc_not_lift($22,7,19)|0); //@line 1906 "src/mpc.c"
-   $0 = $23; //@line 1906 "src/mpc.c"
+  case 87:  {
+   $28 = (_mpc_alphanum()|0); //@line 1910 "src/mpc.c"
+   $29 = (_mpc_not_lift($28,7,19)|0); //@line 1910 "src/mpc.c"
+   $0 = $29; //@line 1910 "src/mpc.c"
    break;
   }
   case 98:  {
@@ -20943,6 +20938,11 @@ function _mpc_re_escape_char($c) {
    HEAP32[$vararg_ptr2>>2] = 7; //@line 1901 "src/mpc.c"
    $12 = (_mpc_and(2,11,$vararg_buffer)|0); //@line 1901 "src/mpc.c"
    $0 = $12; //@line 1901 "src/mpc.c"
+   break;
+  }
+  case 118:  {
+   $9 = (_mpc_char(11)|0); //@line 1900 "src/mpc.c"
+   $0 = $9; //@line 1900 "src/mpc.c"
    break;
   }
   default: {
@@ -22879,18 +22879,18 @@ function _awlval_to_str($v) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
  $0 = $v;
- $1 = (_stringbuilder_new()|0); //@line 144 "src/print.c"
- $sb = $1; //@line 144 "src/print.c"
- $2 = $sb; //@line 145 "src/print.c"
- $3 = $0; //@line 145 "src/print.c"
- _awlval_write_sb($2,$3); //@line 145 "src/print.c"
- $4 = $sb; //@line 146 "src/print.c"
- $5 = (_stringbuilder_to_str($4)|0); //@line 146 "src/print.c"
- $str = $5; //@line 146 "src/print.c"
- $6 = $sb; //@line 147 "src/print.c"
- _stringbuilder_del($6); //@line 147 "src/print.c"
- $7 = $str; //@line 148 "src/print.c"
- STACKTOP = sp;return ($7|0); //@line 148 "src/print.c"
+ $1 = (_stringbuilder_new()|0); //@line 146 "src/print.c"
+ $sb = $1; //@line 146 "src/print.c"
+ $2 = $sb; //@line 147 "src/print.c"
+ $3 = $0; //@line 147 "src/print.c"
+ _awlval_write_sb($2,$3); //@line 147 "src/print.c"
+ $4 = $sb; //@line 148 "src/print.c"
+ $5 = (_stringbuilder_to_str($4)|0); //@line 148 "src/print.c"
+ $str = $5; //@line 148 "src/print.c"
+ $6 = $sb; //@line 149 "src/print.c"
+ _stringbuilder_del($6); //@line 149 "src/print.c"
+ $7 = $str; //@line 150 "src/print.c"
+ STACKTOP = sp;return ($7|0); //@line 150 "src/print.c"
 }
 function _awlval_write_sb($sb,$v) {
  $sb = $sb|0;
@@ -22918,167 +22918,167 @@ function _awlval_write_sb($sb,$v) {
  $vararg_buffer = sp;
  $0 = $sb;
  $1 = $v;
- $2 = $1; //@line 72 "src/print.c"
- $3 = HEAP32[$2>>2]|0; //@line 72 "src/print.c"
+ $2 = $1; //@line 74 "src/print.c"
+ $3 = HEAP32[$2>>2]|0; //@line 74 "src/print.c"
  do {
   switch ($3|0) {
-  case 0:  {
-   $8 = $0; //@line 78 "src/print.c"
-   $9 = $1; //@line 78 "src/print.c"
-   $10 = (($9) + 16|0); //@line 78 "src/print.c"
-   $11 = HEAP32[$10>>2]|0; //@line 78 "src/print.c"
-   HEAP32[$vararg_buffer1>>2] = $11; //@line 78 "src/print.c"
-   _stringbuilder_write($8,4904,$vararg_buffer1); //@line 78 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
+  case 2:  {
+   $4 = $0; //@line 76 "src/print.c"
+   $5 = $1; //@line 76 "src/print.c"
+   $6 = (($5) + 16|0); //@line 76 "src/print.c"
+   $7 = HEAP32[$6>>2]|0; //@line 76 "src/print.c"
+   HEAP32[$vararg_buffer>>2] = $7; //@line 76 "src/print.c"
+   _stringbuilder_write($4,4888,$vararg_buffer); //@line 76 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
    break;
   }
   case 3:  {
-   $16 = $0; //@line 86 "src/print.c"
-   $17 = $1; //@line 86 "src/print.c"
-   $18 = (($17) + 16|0); //@line 86 "src/print.c"
-   $19 = HEAP32[$18>>2]|0; //@line 86 "src/print.c"
-   HEAP32[$vararg_buffer7>>2] = $19; //@line 86 "src/print.c"
-   _stringbuilder_write($16,4920,$vararg_buffer7); //@line 86 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 1:  {
-   $12 = $0; //@line 82 "src/print.c"
-   $13 = $1; //@line 82 "src/print.c"
-   $14 = (($13) + 16|0); //@line 82 "src/print.c"
-   $15 = +HEAPF64[$14>>3]; //@line 82 "src/print.c"
-   HEAPF64[tempDoublePtr>>3]=$15;HEAP32[$vararg_buffer4>>2]=HEAP32[tempDoublePtr>>2];HEAP32[$vararg_buffer4+4>>2]=HEAP32[tempDoublePtr+4>>2]; //@line 82 "src/print.c"
-   _stringbuilder_write($12,4912,$vararg_buffer4); //@line 82 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 13:  {
-   $69 = $0; //@line 138 "src/print.c"
-   $70 = $1; //@line 138 "src/print.c"
-   _awlval_expr_print($69,$70,5040,5032); //@line 138 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 2:  {
-   $4 = $0; //@line 74 "src/print.c"
-   $5 = $1; //@line 74 "src/print.c"
-   $6 = (($5) + 16|0); //@line 74 "src/print.c"
-   $7 = HEAP32[$6>>2]|0; //@line 74 "src/print.c"
-   HEAP32[$vararg_buffer>>2] = $7; //@line 74 "src/print.c"
-   _stringbuilder_write($4,4888,$vararg_buffer); //@line 74 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 7:  {
-   $32 = $0; //@line 106 "src/print.c"
-   $33 = $1; //@line 106 "src/print.c"
-   $34 = (($33) + 16|0); //@line 106 "src/print.c"
-   $35 = (($34) + 4|0); //@line 106 "src/print.c"
-   $36 = HEAP32[$35>>2]|0; //@line 106 "src/print.c"
-   HEAP32[$vararg_buffer17>>2] = $36; //@line 106 "src/print.c"
-   _stringbuilder_write($32,4952,$vararg_buffer17); //@line 106 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 8:  {
-   $37 = $0; //@line 110 "src/print.c"
-   _stringbuilder_write($37,4968,$vararg_buffer20); //@line 110 "src/print.c"
-   $38 = $0; //@line 111 "src/print.c"
-   $39 = $1; //@line 111 "src/print.c"
-   $40 = (($39) + 16|0); //@line 111 "src/print.c"
-   $41 = (($40) + 4|0); //@line 111 "src/print.c"
-   $42 = HEAP32[$41>>2]|0; //@line 111 "src/print.c"
-   _awlval_write_sb($38,$42); //@line 111 "src/print.c"
-   $43 = $0; //@line 112 "src/print.c"
-   _stringbuilder_write($43,4976,$vararg_buffer22); //@line 112 "src/print.c"
-   $44 = $0; //@line 113 "src/print.c"
-   $45 = $1; //@line 113 "src/print.c"
-   $46 = (($45) + 16|0); //@line 113 "src/print.c"
-   $47 = (($46) + 8|0); //@line 113 "src/print.c"
-   $48 = HEAP32[$47>>2]|0; //@line 113 "src/print.c"
-   _awlval_write_sb($44,$48); //@line 113 "src/print.c"
-   $49 = $0; //@line 114 "src/print.c"
-   _stringbuilder_write($49,4984,$vararg_buffer24); //@line 114 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 9:  {
-   $50 = $0; //@line 118 "src/print.c"
-   _stringbuilder_write($50,4992,$vararg_buffer26); //@line 118 "src/print.c"
-   $51 = $0; //@line 119 "src/print.c"
-   $52 = $1; //@line 119 "src/print.c"
-   $53 = (($52) + 16|0); //@line 119 "src/print.c"
-   $54 = (($53) + 4|0); //@line 119 "src/print.c"
-   $55 = HEAP32[$54>>2]|0; //@line 119 "src/print.c"
-   _awlval_write_sb($51,$55); //@line 119 "src/print.c"
-   $56 = $0; //@line 120 "src/print.c"
-   _stringbuilder_write($56,4976,$vararg_buffer28); //@line 120 "src/print.c"
-   $57 = $0; //@line 121 "src/print.c"
-   $58 = $1; //@line 121 "src/print.c"
-   $59 = (($58) + 16|0); //@line 121 "src/print.c"
-   $60 = (($59) + 8|0); //@line 121 "src/print.c"
-   $61 = HEAP32[$60>>2]|0; //@line 121 "src/print.c"
-   _awlval_write_sb($57,$61); //@line 121 "src/print.c"
-   $62 = $0; //@line 122 "src/print.c"
-   _stringbuilder_write($62,4984,$vararg_buffer30); //@line 122 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 10:  {
-   $63 = $0; //@line 126 "src/print.c"
-   $64 = $1; //@line 126 "src/print.c"
-   _awlval_expr_print($63,$64,5000,4984); //@line 126 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 11:  {
-   $65 = $0; //@line 130 "src/print.c"
-   $66 = $1; //@line 130 "src/print.c"
-   _awlval_expr_print($65,$66,5008,5016); //@line 130 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 12:  {
-   $67 = $0; //@line 134 "src/print.c"
-   $68 = $1; //@line 134 "src/print.c"
-   _awlval_expr_print($67,$68,5024,5032); //@line 134 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
-   break;
-  }
-  case 4:  {
-   $20 = $0; //@line 90 "src/print.c"
-   $21 = $1; //@line 90 "src/print.c"
-   $22 = (($21) + 16|0); //@line 90 "src/print.c"
-   $23 = HEAP32[$22>>2]|0; //@line 90 "src/print.c"
-   HEAP32[$vararg_buffer10>>2] = $23; //@line 90 "src/print.c"
-   _stringbuilder_write($20,4928,$vararg_buffer10); //@line 90 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
+   $16 = $0; //@line 88 "src/print.c"
+   $17 = $1; //@line 88 "src/print.c"
+   $18 = (($17) + 16|0); //@line 88 "src/print.c"
+   $19 = HEAP32[$18>>2]|0; //@line 88 "src/print.c"
+   HEAP32[$vararg_buffer7>>2] = $19; //@line 88 "src/print.c"
+   _stringbuilder_write($16,4920,$vararg_buffer7); //@line 88 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
    break;
   }
   case 5:  {
-   $24 = $0; //@line 94 "src/print.c"
-   $25 = $1; //@line 94 "src/print.c"
-   _awlval_print_str($24,$25); //@line 94 "src/print.c"
-   STACKTOP = sp;return; //@line 141 "src/print.c"
+   $24 = $0; //@line 96 "src/print.c"
+   $25 = $1; //@line 96 "src/print.c"
+   _awlval_print_str($24,$25); //@line 96 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 4:  {
+   $20 = $0; //@line 92 "src/print.c"
+   $21 = $1; //@line 92 "src/print.c"
+   $22 = (($21) + 16|0); //@line 92 "src/print.c"
+   $23 = HEAP32[$22>>2]|0; //@line 92 "src/print.c"
+   HEAP32[$vararg_buffer10>>2] = $23; //@line 92 "src/print.c"
+   _stringbuilder_write($20,4928,$vararg_buffer10); //@line 92 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
    break;
   }
   case 6:  {
-   $26 = $1; //@line 98 "src/print.c"
-   $27 = (($26) + 16|0); //@line 98 "src/print.c"
-   $28 = HEAP8[$27>>0]|0; //@line 98 "src/print.c"
-   $29 = $28&1; //@line 98 "src/print.c"
+   $26 = $1; //@line 100 "src/print.c"
+   $27 = (($26) + 16|0); //@line 100 "src/print.c"
+   $28 = HEAP8[$27>>0]|0; //@line 100 "src/print.c"
+   $29 = $28&1; //@line 100 "src/print.c"
    if ($29) {
-    $30 = $0; //@line 99 "src/print.c"
-    _stringbuilder_write($30,4936,$vararg_buffer13); //@line 99 "src/print.c"
+    $30 = $0; //@line 101 "src/print.c"
+    _stringbuilder_write($30,4936,$vararg_buffer13); //@line 101 "src/print.c"
    } else {
-    $31 = $0; //@line 101 "src/print.c"
-    _stringbuilder_write($31,4944,$vararg_buffer15); //@line 101 "src/print.c"
+    $31 = $0; //@line 103 "src/print.c"
+    _stringbuilder_write($31,4944,$vararg_buffer15); //@line 103 "src/print.c"
    }
-   STACKTOP = sp;return; //@line 141 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 7:  {
+   $32 = $0; //@line 108 "src/print.c"
+   $33 = $1; //@line 108 "src/print.c"
+   $34 = (($33) + 16|0); //@line 108 "src/print.c"
+   $35 = (($34) + 4|0); //@line 108 "src/print.c"
+   $36 = HEAP32[$35>>2]|0; //@line 108 "src/print.c"
+   HEAP32[$vararg_buffer17>>2] = $36; //@line 108 "src/print.c"
+   _stringbuilder_write($32,4952,$vararg_buffer17); //@line 108 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 0:  {
+   $8 = $0; //@line 80 "src/print.c"
+   $9 = $1; //@line 80 "src/print.c"
+   $10 = (($9) + 16|0); //@line 80 "src/print.c"
+   $11 = HEAP32[$10>>2]|0; //@line 80 "src/print.c"
+   HEAP32[$vararg_buffer1>>2] = $11; //@line 80 "src/print.c"
+   _stringbuilder_write($8,4904,$vararg_buffer1); //@line 80 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 1:  {
+   $12 = $0; //@line 84 "src/print.c"
+   $13 = $1; //@line 84 "src/print.c"
+   $14 = (($13) + 16|0); //@line 84 "src/print.c"
+   $15 = +HEAPF64[$14>>3]; //@line 84 "src/print.c"
+   HEAPF64[tempDoublePtr>>3]=$15;HEAP32[$vararg_buffer4>>2]=HEAP32[tempDoublePtr>>2];HEAP32[$vararg_buffer4+4>>2]=HEAP32[tempDoublePtr+4>>2]; //@line 84 "src/print.c"
+   _stringbuilder_write($12,4912,$vararg_buffer4); //@line 84 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 8:  {
+   $37 = $0; //@line 112 "src/print.c"
+   _stringbuilder_write($37,4968,$vararg_buffer20); //@line 112 "src/print.c"
+   $38 = $0; //@line 113 "src/print.c"
+   $39 = $1; //@line 113 "src/print.c"
+   $40 = (($39) + 16|0); //@line 113 "src/print.c"
+   $41 = (($40) + 4|0); //@line 113 "src/print.c"
+   $42 = HEAP32[$41>>2]|0; //@line 113 "src/print.c"
+   _awlval_write_sb($38,$42); //@line 113 "src/print.c"
+   $43 = $0; //@line 114 "src/print.c"
+   _stringbuilder_write($43,4976,$vararg_buffer22); //@line 114 "src/print.c"
+   $44 = $0; //@line 115 "src/print.c"
+   $45 = $1; //@line 115 "src/print.c"
+   $46 = (($45) + 16|0); //@line 115 "src/print.c"
+   $47 = (($46) + 8|0); //@line 115 "src/print.c"
+   $48 = HEAP32[$47>>2]|0; //@line 115 "src/print.c"
+   _awlval_write_sb($44,$48); //@line 115 "src/print.c"
+   $49 = $0; //@line 116 "src/print.c"
+   _stringbuilder_write($49,4984,$vararg_buffer24); //@line 116 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 9:  {
+   $50 = $0; //@line 120 "src/print.c"
+   _stringbuilder_write($50,4992,$vararg_buffer26); //@line 120 "src/print.c"
+   $51 = $0; //@line 121 "src/print.c"
+   $52 = $1; //@line 121 "src/print.c"
+   $53 = (($52) + 16|0); //@line 121 "src/print.c"
+   $54 = (($53) + 4|0); //@line 121 "src/print.c"
+   $55 = HEAP32[$54>>2]|0; //@line 121 "src/print.c"
+   _awlval_write_sb($51,$55); //@line 121 "src/print.c"
+   $56 = $0; //@line 122 "src/print.c"
+   _stringbuilder_write($56,4976,$vararg_buffer28); //@line 122 "src/print.c"
+   $57 = $0; //@line 123 "src/print.c"
+   $58 = $1; //@line 123 "src/print.c"
+   $59 = (($58) + 16|0); //@line 123 "src/print.c"
+   $60 = (($59) + 8|0); //@line 123 "src/print.c"
+   $61 = HEAP32[$60>>2]|0; //@line 123 "src/print.c"
+   _awlval_write_sb($57,$61); //@line 123 "src/print.c"
+   $62 = $0; //@line 124 "src/print.c"
+   _stringbuilder_write($62,4984,$vararg_buffer30); //@line 124 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 10:  {
+   $63 = $0; //@line 128 "src/print.c"
+   $64 = $1; //@line 128 "src/print.c"
+   _awlval_expr_print($63,$64,5000,4984); //@line 128 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 11:  {
+   $65 = $0; //@line 132 "src/print.c"
+   $66 = $1; //@line 132 "src/print.c"
+   _awlval_expr_print($65,$66,5008,5016); //@line 132 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 12:  {
+   $67 = $0; //@line 136 "src/print.c"
+   $68 = $1; //@line 136 "src/print.c"
+   _awlval_expr_print($67,$68,5024,5032); //@line 136 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
+   break;
+  }
+  case 13:  {
+   $69 = $0; //@line 140 "src/print.c"
+   $70 = $1; //@line 140 "src/print.c"
+   _awlval_expr_print($69,$70,5040,5032); //@line 140 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
    break;
   }
   default: {
-   STACKTOP = sp;return; //@line 141 "src/print.c"
+   STACKTOP = sp;return; //@line 143 "src/print.c"
   }
   }
  } while(0);
@@ -23093,28 +23093,28 @@ function _awlval_print_str($sb,$v) {
  $vararg_buffer = sp;
  $0 = $sb;
  $1 = $v;
- $2 = $1; //@line 62 "src/print.c"
- $3 = (($2) + 16|0); //@line 62 "src/print.c"
- $4 = HEAP32[$3>>2]|0; //@line 62 "src/print.c"
- $5 = (_strlen(($4|0))|0); //@line 62 "src/print.c"
- $6 = (($5) + 1)|0; //@line 62 "src/print.c"
- $7 = (_malloc($6)|0); //@line 62 "src/print.c"
- $escaped = $7; //@line 62 "src/print.c"
- $8 = $escaped; //@line 63 "src/print.c"
- $9 = $1; //@line 63 "src/print.c"
- $10 = (($9) + 16|0); //@line 63 "src/print.c"
- $11 = HEAP32[$10>>2]|0; //@line 63 "src/print.c"
- (_strcpy(($8|0),($11|0))|0); //@line 63 "src/print.c"
- $12 = $escaped; //@line 65 "src/print.c"
- $13 = (_mpcf_escape($12)|0); //@line 65 "src/print.c"
- $escaped = $13; //@line 65 "src/print.c"
- $14 = $0; //@line 66 "src/print.c"
- $15 = $escaped; //@line 66 "src/print.c"
- HEAP32[$vararg_buffer>>2] = $15; //@line 66 "src/print.c"
- _stringbuilder_write($14,5048,$vararg_buffer); //@line 66 "src/print.c"
- $16 = $escaped; //@line 68 "src/print.c"
- _free($16); //@line 68 "src/print.c"
- STACKTOP = sp;return; //@line 69 "src/print.c"
+ $2 = $1; //@line 64 "src/print.c"
+ $3 = (($2) + 16|0); //@line 64 "src/print.c"
+ $4 = HEAP32[$3>>2]|0; //@line 64 "src/print.c"
+ $5 = (_strlen(($4|0))|0); //@line 64 "src/print.c"
+ $6 = (($5) + 1)|0; //@line 64 "src/print.c"
+ $7 = (_malloc($6)|0); //@line 64 "src/print.c"
+ $escaped = $7; //@line 64 "src/print.c"
+ $8 = $escaped; //@line 65 "src/print.c"
+ $9 = $1; //@line 65 "src/print.c"
+ $10 = (($9) + 16|0); //@line 65 "src/print.c"
+ $11 = HEAP32[$10>>2]|0; //@line 65 "src/print.c"
+ (_strcpy(($8|0),($11|0))|0); //@line 65 "src/print.c"
+ $12 = $escaped; //@line 67 "src/print.c"
+ $13 = (_mpcf_escape($12)|0); //@line 67 "src/print.c"
+ $escaped = $13; //@line 67 "src/print.c"
+ $14 = $0; //@line 68 "src/print.c"
+ $15 = $escaped; //@line 68 "src/print.c"
+ HEAP32[$vararg_buffer>>2] = $15; //@line 68 "src/print.c"
+ _stringbuilder_write($14,5048,$vararg_buffer); //@line 68 "src/print.c"
+ $16 = $escaped; //@line 70 "src/print.c"
+ _free($16); //@line 70 "src/print.c"
+ STACKTOP = sp;return; //@line 71 "src/print.c"
 }
 function _awlval_expr_print($sb,$v,$open,$close) {
  $sb = $sb|0;
@@ -23122,7 +23122,7 @@ function _awlval_expr_print($sb,$v,$open,$close) {
  $open = $open|0;
  $close = $close|0;
  var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $25 = 0, $26 = 0;
- var $27 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $i = 0, $vararg_buffer = 0, $vararg_buffer1 = 0, $vararg_buffer3 = 0, label = 0, sp = 0;
+ var $27 = 0, $28 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $i = 0, $vararg_buffer = 0, $vararg_buffer1 = 0, $vararg_buffer3 = 0, label = 0, sp = 0;
  sp = STACKTOP;
  STACKTOP = STACKTOP + 48|0;
  $vararg_buffer3 = sp + 16|0;
@@ -23132,44 +23132,45 @@ function _awlval_expr_print($sb,$v,$open,$close) {
  $1 = $v;
  $2 = $open;
  $3 = $close;
- $4 = $0; //@line 50 "src/print.c"
- $5 = $2; //@line 50 "src/print.c"
- _stringbuilder_write($4,$5,$vararg_buffer); //@line 50 "src/print.c"
- $i = 0; //@line 51 "src/print.c"
+ $4 = $0; //@line 52 "src/print.c"
+ $5 = $2; //@line 52 "src/print.c"
+ _stringbuilder_write($4,$5,$vararg_buffer); //@line 52 "src/print.c"
+ $i = 0; //@line 53 "src/print.c"
  while(1) {
-  $6 = $i; //@line 51 "src/print.c"
-  $7 = $1; //@line 51 "src/print.c"
-  $8 = (($7) + 4|0); //@line 51 "src/print.c"
-  $9 = HEAP32[$8>>2]|0; //@line 51 "src/print.c"
-  $10 = ($6|0)<($9|0); //@line 51 "src/print.c"
+  $6 = $i; //@line 53 "src/print.c"
+  $7 = $1; //@line 53 "src/print.c"
+  $8 = (($7) + 4|0); //@line 53 "src/print.c"
+  $9 = HEAP32[$8>>2]|0; //@line 53 "src/print.c"
+  $10 = ($6|0)<($9|0); //@line 53 "src/print.c"
   if (!($10)) {
    break;
   }
-  $11 = $i; //@line 52 "src/print.c"
-  $12 = $1; //@line 52 "src/print.c"
-  $13 = (($12) + 8|0); //@line 52 "src/print.c"
-  $14 = HEAP32[$13>>2]|0; //@line 52 "src/print.c"
-  $15 = (($14) + ($11<<2)|0); //@line 52 "src/print.c"
-  $16 = HEAP32[$15>>2]|0; //@line 52 "src/print.c"
-  _awlval_print($16); //@line 52 "src/print.c"
-  $17 = $i; //@line 54 "src/print.c"
-  $18 = $1; //@line 54 "src/print.c"
-  $19 = (($18) + 4|0); //@line 54 "src/print.c"
-  $20 = HEAP32[$19>>2]|0; //@line 54 "src/print.c"
-  $21 = (($20) - 1)|0; //@line 54 "src/print.c"
-  $22 = ($17|0)!=($21|0); //@line 54 "src/print.c"
-  if ($22) {
-   $23 = $0; //@line 55 "src/print.c"
-   _stringbuilder_write($23,4976,$vararg_buffer1); //@line 55 "src/print.c"
+  $11 = $0; //@line 54 "src/print.c"
+  $12 = $i; //@line 54 "src/print.c"
+  $13 = $1; //@line 54 "src/print.c"
+  $14 = (($13) + 8|0); //@line 54 "src/print.c"
+  $15 = HEAP32[$14>>2]|0; //@line 54 "src/print.c"
+  $16 = (($15) + ($12<<2)|0); //@line 54 "src/print.c"
+  $17 = HEAP32[$16>>2]|0; //@line 54 "src/print.c"
+  _awlval_write_sb($11,$17); //@line 54 "src/print.c"
+  $18 = $i; //@line 56 "src/print.c"
+  $19 = $1; //@line 56 "src/print.c"
+  $20 = (($19) + 4|0); //@line 56 "src/print.c"
+  $21 = HEAP32[$20>>2]|0; //@line 56 "src/print.c"
+  $22 = (($21) - 1)|0; //@line 56 "src/print.c"
+  $23 = ($18|0)!=($22|0); //@line 56 "src/print.c"
+  if ($23) {
+   $24 = $0; //@line 57 "src/print.c"
+   _stringbuilder_write($24,4976,$vararg_buffer1); //@line 57 "src/print.c"
   }
-  $24 = $i; //@line 51 "src/print.c"
-  $25 = (($24) + 1)|0; //@line 51 "src/print.c"
-  $i = $25; //@line 51 "src/print.c"
+  $25 = $i; //@line 53 "src/print.c"
+  $26 = (($25) + 1)|0; //@line 53 "src/print.c"
+  $i = $26; //@line 53 "src/print.c"
  }
- $26 = $0; //@line 58 "src/print.c"
- $27 = $3; //@line 58 "src/print.c"
- _stringbuilder_write($26,$27,$vararg_buffer3); //@line 58 "src/print.c"
- STACKTOP = sp;return; //@line 59 "src/print.c"
+ $27 = $0; //@line 60 "src/print.c"
+ $28 = $3; //@line 60 "src/print.c"
+ _stringbuilder_write($27,$28,$vararg_buffer3); //@line 60 "src/print.c"
+ STACKTOP = sp;return; //@line 61 "src/print.c"
 }
 function _eval_repl($e,$v) {
  $e = $e|0;
@@ -23262,6 +23263,10 @@ function _awlval_type_name($t) {
  $2 = $1; //@line 21 "src/types.c"
  do {
   switch ($2|0) {
+  case 2:  {
+   $0 = 5128; //@line 22 "src/types.c"
+   break;
+  }
   case 6:  {
    $0 = 5216; //@line 31 "src/types.c"
    break;
@@ -23276,14 +23281,6 @@ function _awlval_type_name($t) {
   }
   case 12:  {
    $0 = 5256; //@line 34 "src/types.c"
-   break;
-  }
-  case 13:  {
-   $0 = 5272; //@line 35 "src/types.c"
-   break;
-  }
-  case 2:  {
-   $0 = 5128; //@line 22 "src/types.c"
    break;
   }
   case 0:  {
@@ -23318,6 +23315,10 @@ function _awlval_type_name($t) {
    $0 = 5208; //@line 30 "src/types.c"
    break;
   }
+  case 13:  {
+   $0 = 5272; //@line 35 "src/types.c"
+   break;
+  }
   default: {
    $0 = 5288; //@line 36 "src/types.c"
   }
@@ -23335,24 +23336,24 @@ function _awlval_type_sysname($t) {
  $2 = $1; //@line 41 "src/types.c"
  do {
   switch ($2|0) {
+  case 1:  {
+   $0 = 5312; //@line 44 "src/types.c"
+   break;
+  }
   case 7:  {
    $0 = 5320; //@line 45 "src/types.c"
    break;
   }
-  case 8:  {
-   $0 = 5328; //@line 46 "src/types.c"
-   break;
-  }
-  case 9:  {
-   $0 = 5336; //@line 47 "src/types.c"
-   break;
-  }
-  case 4:  {
-   $0 = 5352; //@line 49 "src/types.c"
-   break;
-  }
   case 3:  {
    $0 = 5344; //@line 48 "src/types.c"
+   break;
+  }
+  case 12:  {
+   $0 = 5392; //@line 54 "src/types.c"
+   break;
+  }
+  case 13:  {
+   $0 = 5400; //@line 55 "src/types.c"
    break;
   }
   case 2:  {
@@ -23363,8 +23364,16 @@ function _awlval_type_sysname($t) {
    $0 = 5304; //@line 43 "src/types.c"
    break;
   }
-  case 1:  {
-   $0 = 5312; //@line 44 "src/types.c"
+  case 9:  {
+   $0 = 5336; //@line 47 "src/types.c"
+   break;
+  }
+  case 8:  {
+   $0 = 5328; //@line 46 "src/types.c"
+   break;
+  }
+  case 4:  {
+   $0 = 5352; //@line 49 "src/types.c"
    break;
   }
   case 5:  {
@@ -23381,14 +23390,6 @@ function _awlval_type_sysname($t) {
   }
   case 11:  {
    $0 = 5384; //@line 53 "src/types.c"
-   break;
-  }
-  case 12:  {
-   $0 = 5392; //@line 54 "src/types.c"
-   break;
-  }
-  case 13:  {
-   $0 = 5400; //@line 55 "src/types.c"
    break;
   }
   default: {
@@ -23780,50 +23781,50 @@ function _awlenv_new() {
  var $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $e = 0, $i = 0, label = 0, sp = 0;
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
- $0 = (_malloc(28)|0); //@line 691 "src/types.c"
- $e = $0; //@line 691 "src/types.c"
- $1 = $e; //@line 692 "src/types.c"
- HEAP32[$1>>2] = 0; //@line 692 "src/types.c"
- $2 = $e; //@line 693 "src/types.c"
- $3 = (($2) + 4|0); //@line 693 "src/types.c"
- HEAP32[$3>>2] = 16; //@line 693 "src/types.c"
- $4 = $e; //@line 694 "src/types.c"
- $5 = (($4) + 8|0); //@line 694 "src/types.c"
- HEAP32[$5>>2] = 0; //@line 694 "src/types.c"
- $6 = (_malloc(64)|0); //@line 695 "src/types.c"
- $7 = $e; //@line 695 "src/types.c"
- $8 = (($7) + 12|0); //@line 695 "src/types.c"
- HEAP32[$8>>2] = $6; //@line 695 "src/types.c"
- $i = 0; //@line 696 "src/types.c"
+ $0 = (_malloc(28)|0); //@line 693 "src/types.c"
+ $e = $0; //@line 693 "src/types.c"
+ $1 = $e; //@line 694 "src/types.c"
+ HEAP32[$1>>2] = 0; //@line 694 "src/types.c"
+ $2 = $e; //@line 695 "src/types.c"
+ $3 = (($2) + 4|0); //@line 695 "src/types.c"
+ HEAP32[$3>>2] = 16; //@line 695 "src/types.c"
+ $4 = $e; //@line 696 "src/types.c"
+ $5 = (($4) + 8|0); //@line 696 "src/types.c"
+ HEAP32[$5>>2] = 0; //@line 696 "src/types.c"
+ $6 = (_malloc(64)|0); //@line 697 "src/types.c"
+ $7 = $e; //@line 697 "src/types.c"
+ $8 = (($7) + 12|0); //@line 697 "src/types.c"
+ HEAP32[$8>>2] = $6; //@line 697 "src/types.c"
+ $i = 0; //@line 698 "src/types.c"
  while(1) {
-  $9 = $i; //@line 696 "src/types.c"
-  $10 = ($9|0)<(16); //@line 696 "src/types.c"
+  $9 = $i; //@line 698 "src/types.c"
+  $10 = ($9|0)<(16); //@line 698 "src/types.c"
   if (!($10)) {
    break;
   }
-  $11 = $i; //@line 697 "src/types.c"
-  $12 = $e; //@line 697 "src/types.c"
-  $13 = (($12) + 12|0); //@line 697 "src/types.c"
-  $14 = HEAP32[$13>>2]|0; //@line 697 "src/types.c"
-  $15 = (($14) + ($11<<2)|0); //@line 697 "src/types.c"
-  HEAP32[$15>>2] = 0; //@line 697 "src/types.c"
-  $16 = $i; //@line 696 "src/types.c"
-  $17 = (($16) + 1)|0; //@line 696 "src/types.c"
-  $i = $17; //@line 696 "src/types.c"
+  $11 = $i; //@line 699 "src/types.c"
+  $12 = $e; //@line 699 "src/types.c"
+  $13 = (($12) + 12|0); //@line 699 "src/types.c"
+  $14 = HEAP32[$13>>2]|0; //@line 699 "src/types.c"
+  $15 = (($14) + ($11<<2)|0); //@line 699 "src/types.c"
+  HEAP32[$15>>2] = 0; //@line 699 "src/types.c"
+  $16 = $i; //@line 698 "src/types.c"
+  $17 = (($16) + 1)|0; //@line 698 "src/types.c"
+  $i = $17; //@line 698 "src/types.c"
  }
- $18 = (_malloc(64)|0); //@line 699 "src/types.c"
- $19 = $e; //@line 699 "src/types.c"
- $20 = (($19) + 16|0); //@line 699 "src/types.c"
- HEAP32[$20>>2] = $18; //@line 699 "src/types.c"
- $21 = (_malloc(16)|0); //@line 700 "src/types.c"
- $22 = $e; //@line 700 "src/types.c"
- $23 = (($22) + 20|0); //@line 700 "src/types.c"
- HEAP32[$23>>2] = $21; //@line 700 "src/types.c"
- $24 = $e; //@line 701 "src/types.c"
- $25 = (($24) + 24|0); //@line 701 "src/types.c"
- HEAP8[$25>>0] = 0; //@line 701 "src/types.c"
- $26 = $e; //@line 702 "src/types.c"
- STACKTOP = sp;return ($26|0); //@line 702 "src/types.c"
+ $18 = (_malloc(64)|0); //@line 701 "src/types.c"
+ $19 = $e; //@line 701 "src/types.c"
+ $20 = (($19) + 16|0); //@line 701 "src/types.c"
+ HEAP32[$20>>2] = $18; //@line 701 "src/types.c"
+ $21 = (_malloc(16)|0); //@line 702 "src/types.c"
+ $22 = $e; //@line 702 "src/types.c"
+ $23 = (($22) + 20|0); //@line 702 "src/types.c"
+ HEAP32[$23>>2] = $21; //@line 702 "src/types.c"
+ $24 = $e; //@line 703 "src/types.c"
+ $25 = (($24) + 24|0); //@line 703 "src/types.c"
+ HEAP8[$25>>0] = 0; //@line 703 "src/types.c"
+ $26 = $e; //@line 704 "src/types.c"
+ STACKTOP = sp;return ($26|0); //@line 704 "src/types.c"
 }
 function _awlenv_copy($e) {
  $e = $e|0;
@@ -23836,145 +23837,145 @@ function _awlenv_copy($e) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
  $0 = $e;
- $1 = (_malloc(28)|0); //@line 838 "src/types.c"
- $n = $1; //@line 838 "src/types.c"
- $2 = $0; //@line 839 "src/types.c"
- $3 = HEAP32[$2>>2]|0; //@line 839 "src/types.c"
- $4 = ($3|0)!=(0|0); //@line 839 "src/types.c"
+ $1 = (_malloc(28)|0); //@line 840 "src/types.c"
+ $n = $1; //@line 840 "src/types.c"
+ $2 = $0; //@line 841 "src/types.c"
+ $3 = HEAP32[$2>>2]|0; //@line 841 "src/types.c"
+ $4 = ($3|0)!=(0|0); //@line 841 "src/types.c"
  if ($4) {
-  $5 = $0; //@line 839 "src/types.c"
-  $6 = HEAP32[$5>>2]|0; //@line 839 "src/types.c"
-  $7 = (($6) + 24|0); //@line 839 "src/types.c"
-  $8 = HEAP8[$7>>0]|0; //@line 839 "src/types.c"
-  $9 = $8&1; //@line 839 "src/types.c"
+  $5 = $0; //@line 841 "src/types.c"
+  $6 = HEAP32[$5>>2]|0; //@line 841 "src/types.c"
+  $7 = (($6) + 24|0); //@line 841 "src/types.c"
+  $8 = HEAP8[$7>>0]|0; //@line 841 "src/types.c"
+  $9 = $8&1; //@line 841 "src/types.c"
   if ($9) {
    label = 4;
   } else {
-   $10 = $0; //@line 839 "src/types.c"
-   $11 = HEAP32[$10>>2]|0; //@line 839 "src/types.c"
-   $12 = (_awlenv_copy($11)|0); //@line 839 "src/types.c"
+   $10 = $0; //@line 841 "src/types.c"
+   $11 = HEAP32[$10>>2]|0; //@line 841 "src/types.c"
+   $12 = (_awlenv_copy($11)|0); //@line 841 "src/types.c"
    $16 = $12;
   }
  } else {
   label = 4;
  }
  if ((label|0) == 4) {
-  $13 = $0; //@line 839 "src/types.c"
-  $14 = HEAP32[$13>>2]|0; //@line 839 "src/types.c"
+  $13 = $0; //@line 841 "src/types.c"
+  $14 = HEAP32[$13>>2]|0; //@line 841 "src/types.c"
   $16 = $14;
  }
- $15 = $n; //@line 839 "src/types.c"
- HEAP32[$15>>2] = $16; //@line 839 "src/types.c"
- $17 = $0; //@line 840 "src/types.c"
- $18 = (($17) + 4|0); //@line 840 "src/types.c"
- $19 = HEAP32[$18>>2]|0; //@line 840 "src/types.c"
- $20 = $n; //@line 840 "src/types.c"
- $21 = (($20) + 4|0); //@line 840 "src/types.c"
- HEAP32[$21>>2] = $19; //@line 840 "src/types.c"
- $22 = $0; //@line 841 "src/types.c"
- $23 = (($22) + 8|0); //@line 841 "src/types.c"
- $24 = HEAP32[$23>>2]|0; //@line 841 "src/types.c"
- $25 = $n; //@line 841 "src/types.c"
- $26 = (($25) + 8|0); //@line 841 "src/types.c"
- HEAP32[$26>>2] = $24; //@line 841 "src/types.c"
- $27 = $0; //@line 842 "src/types.c"
- $28 = (($27) + 4|0); //@line 842 "src/types.c"
- $29 = HEAP32[$28>>2]|0; //@line 842 "src/types.c"
- $30 = $29<<2; //@line 842 "src/types.c"
- $31 = (_malloc($30)|0); //@line 842 "src/types.c"
- $32 = $n; //@line 842 "src/types.c"
- $33 = (($32) + 12|0); //@line 842 "src/types.c"
- HEAP32[$33>>2] = $31; //@line 842 "src/types.c"
- $i = 0; //@line 843 "src/types.c"
+ $15 = $n; //@line 841 "src/types.c"
+ HEAP32[$15>>2] = $16; //@line 841 "src/types.c"
+ $17 = $0; //@line 842 "src/types.c"
+ $18 = (($17) + 4|0); //@line 842 "src/types.c"
+ $19 = HEAP32[$18>>2]|0; //@line 842 "src/types.c"
+ $20 = $n; //@line 842 "src/types.c"
+ $21 = (($20) + 4|0); //@line 842 "src/types.c"
+ HEAP32[$21>>2] = $19; //@line 842 "src/types.c"
+ $22 = $0; //@line 843 "src/types.c"
+ $23 = (($22) + 8|0); //@line 843 "src/types.c"
+ $24 = HEAP32[$23>>2]|0; //@line 843 "src/types.c"
+ $25 = $n; //@line 843 "src/types.c"
+ $26 = (($25) + 8|0); //@line 843 "src/types.c"
+ HEAP32[$26>>2] = $24; //@line 843 "src/types.c"
+ $27 = $0; //@line 844 "src/types.c"
+ $28 = (($27) + 4|0); //@line 844 "src/types.c"
+ $29 = HEAP32[$28>>2]|0; //@line 844 "src/types.c"
+ $30 = $29<<2; //@line 844 "src/types.c"
+ $31 = (_malloc($30)|0); //@line 844 "src/types.c"
+ $32 = $n; //@line 844 "src/types.c"
+ $33 = (($32) + 12|0); //@line 844 "src/types.c"
+ HEAP32[$33>>2] = $31; //@line 844 "src/types.c"
+ $i = 0; //@line 845 "src/types.c"
  while(1) {
-  $34 = $i; //@line 843 "src/types.c"
-  $35 = $0; //@line 843 "src/types.c"
-  $36 = (($35) + 4|0); //@line 843 "src/types.c"
-  $37 = HEAP32[$36>>2]|0; //@line 843 "src/types.c"
-  $38 = ($34|0)<($37|0); //@line 843 "src/types.c"
+  $34 = $i; //@line 845 "src/types.c"
+  $35 = $0; //@line 845 "src/types.c"
+  $36 = (($35) + 4|0); //@line 845 "src/types.c"
+  $37 = HEAP32[$36>>2]|0; //@line 845 "src/types.c"
+  $38 = ($34|0)<($37|0); //@line 845 "src/types.c"
   if (!($38)) {
    break;
   }
-  $39 = $i; //@line 844 "src/types.c"
-  $40 = $n; //@line 844 "src/types.c"
-  $41 = (($40) + 12|0); //@line 844 "src/types.c"
-  $42 = HEAP32[$41>>2]|0; //@line 844 "src/types.c"
-  $43 = (($42) + ($39<<2)|0); //@line 844 "src/types.c"
-  HEAP32[$43>>2] = 0; //@line 844 "src/types.c"
-  $44 = $i; //@line 843 "src/types.c"
-  $45 = (($44) + 1)|0; //@line 843 "src/types.c"
-  $i = $45; //@line 843 "src/types.c"
+  $39 = $i; //@line 846 "src/types.c"
+  $40 = $n; //@line 846 "src/types.c"
+  $41 = (($40) + 12|0); //@line 846 "src/types.c"
+  $42 = HEAP32[$41>>2]|0; //@line 846 "src/types.c"
+  $43 = (($42) + ($39<<2)|0); //@line 846 "src/types.c"
+  HEAP32[$43>>2] = 0; //@line 846 "src/types.c"
+  $44 = $i; //@line 845 "src/types.c"
+  $45 = (($44) + 1)|0; //@line 845 "src/types.c"
+  $i = $45; //@line 845 "src/types.c"
  }
- $46 = $0; //@line 846 "src/types.c"
- $47 = (($46) + 4|0); //@line 846 "src/types.c"
- $48 = HEAP32[$47>>2]|0; //@line 846 "src/types.c"
- $49 = $48<<2; //@line 846 "src/types.c"
- $50 = (_malloc($49)|0); //@line 846 "src/types.c"
- $51 = $n; //@line 846 "src/types.c"
- $52 = (($51) + 16|0); //@line 846 "src/types.c"
- HEAP32[$52>>2] = $50; //@line 846 "src/types.c"
- $53 = $0; //@line 847 "src/types.c"
- $54 = (($53) + 4|0); //@line 847 "src/types.c"
- $55 = HEAP32[$54>>2]|0; //@line 847 "src/types.c"
- $56 = $55; //@line 847 "src/types.c"
- $57 = (_malloc($56)|0); //@line 847 "src/types.c"
- $58 = $n; //@line 847 "src/types.c"
- $59 = (($58) + 20|0); //@line 847 "src/types.c"
- HEAP32[$59>>2] = $57; //@line 847 "src/types.c"
- $i1 = 0; //@line 849 "src/types.c"
+ $46 = $0; //@line 848 "src/types.c"
+ $47 = (($46) + 4|0); //@line 848 "src/types.c"
+ $48 = HEAP32[$47>>2]|0; //@line 848 "src/types.c"
+ $49 = $48<<2; //@line 848 "src/types.c"
+ $50 = (_malloc($49)|0); //@line 848 "src/types.c"
+ $51 = $n; //@line 848 "src/types.c"
+ $52 = (($51) + 16|0); //@line 848 "src/types.c"
+ HEAP32[$52>>2] = $50; //@line 848 "src/types.c"
+ $53 = $0; //@line 849 "src/types.c"
+ $54 = (($53) + 4|0); //@line 849 "src/types.c"
+ $55 = HEAP32[$54>>2]|0; //@line 849 "src/types.c"
+ $56 = $55; //@line 849 "src/types.c"
+ $57 = (_malloc($56)|0); //@line 849 "src/types.c"
+ $58 = $n; //@line 849 "src/types.c"
+ $59 = (($58) + 20|0); //@line 849 "src/types.c"
+ HEAP32[$59>>2] = $57; //@line 849 "src/types.c"
+ $i1 = 0; //@line 851 "src/types.c"
  while(1) {
-  $60 = $i1; //@line 849 "src/types.c"
-  $61 = $0; //@line 849 "src/types.c"
-  $62 = (($61) + 4|0); //@line 849 "src/types.c"
-  $63 = HEAP32[$62>>2]|0; //@line 849 "src/types.c"
-  $64 = ($60|0)<($63|0); //@line 849 "src/types.c"
+  $60 = $i1; //@line 851 "src/types.c"
+  $61 = $0; //@line 851 "src/types.c"
+  $62 = (($61) + 4|0); //@line 851 "src/types.c"
+  $63 = HEAP32[$62>>2]|0; //@line 851 "src/types.c"
+  $64 = ($60|0)<($63|0); //@line 851 "src/types.c"
   if (!($64)) {
    break;
   }
-  $65 = $i1; //@line 850 "src/types.c"
-  $66 = $0; //@line 850 "src/types.c"
-  $67 = (($66) + 12|0); //@line 850 "src/types.c"
-  $68 = HEAP32[$67>>2]|0; //@line 850 "src/types.c"
-  $69 = (($68) + ($65<<2)|0); //@line 850 "src/types.c"
-  $70 = HEAP32[$69>>2]|0; //@line 850 "src/types.c"
-  $71 = ($70|0)!=(0|0); //@line 850 "src/types.c"
+  $65 = $i1; //@line 852 "src/types.c"
+  $66 = $0; //@line 852 "src/types.c"
+  $67 = (($66) + 12|0); //@line 852 "src/types.c"
+  $68 = HEAP32[$67>>2]|0; //@line 852 "src/types.c"
+  $69 = (($68) + ($65<<2)|0); //@line 852 "src/types.c"
+  $70 = HEAP32[$69>>2]|0; //@line 852 "src/types.c"
+  $71 = ($70|0)!=(0|0); //@line 852 "src/types.c"
   if ($71) {
-   $72 = $n; //@line 851 "src/types.c"
-   $73 = $i1; //@line 851 "src/types.c"
-   $74 = $0; //@line 851 "src/types.c"
-   $75 = (($74) + 12|0); //@line 851 "src/types.c"
-   $76 = HEAP32[$75>>2]|0; //@line 851 "src/types.c"
-   $77 = (($76) + ($73<<2)|0); //@line 851 "src/types.c"
-   $78 = HEAP32[$77>>2]|0; //@line 851 "src/types.c"
-   $79 = $i1; //@line 851 "src/types.c"
-   $80 = $0; //@line 851 "src/types.c"
-   $81 = (($80) + 16|0); //@line 851 "src/types.c"
-   $82 = HEAP32[$81>>2]|0; //@line 851 "src/types.c"
-   $83 = (($82) + ($79<<2)|0); //@line 851 "src/types.c"
-   $84 = HEAP32[$83>>2]|0; //@line 851 "src/types.c"
-   $85 = $i1; //@line 851 "src/types.c"
-   $86 = $0; //@line 851 "src/types.c"
-   $87 = (($86) + 20|0); //@line 851 "src/types.c"
-   $88 = HEAP32[$87>>2]|0; //@line 851 "src/types.c"
-   $89 = (($88) + ($85)|0); //@line 851 "src/types.c"
-   $90 = HEAP8[$89>>0]|0; //@line 851 "src/types.c"
-   $91 = $90&1; //@line 851 "src/types.c"
-   _awlenv_set($72,$78,$84,$91); //@line 851 "src/types.c"
+   $72 = $n; //@line 853 "src/types.c"
+   $73 = $i1; //@line 853 "src/types.c"
+   $74 = $0; //@line 853 "src/types.c"
+   $75 = (($74) + 12|0); //@line 853 "src/types.c"
+   $76 = HEAP32[$75>>2]|0; //@line 853 "src/types.c"
+   $77 = (($76) + ($73<<2)|0); //@line 853 "src/types.c"
+   $78 = HEAP32[$77>>2]|0; //@line 853 "src/types.c"
+   $79 = $i1; //@line 853 "src/types.c"
+   $80 = $0; //@line 853 "src/types.c"
+   $81 = (($80) + 16|0); //@line 853 "src/types.c"
+   $82 = HEAP32[$81>>2]|0; //@line 853 "src/types.c"
+   $83 = (($82) + ($79<<2)|0); //@line 853 "src/types.c"
+   $84 = HEAP32[$83>>2]|0; //@line 853 "src/types.c"
+   $85 = $i1; //@line 853 "src/types.c"
+   $86 = $0; //@line 853 "src/types.c"
+   $87 = (($86) + 20|0); //@line 853 "src/types.c"
+   $88 = HEAP32[$87>>2]|0; //@line 853 "src/types.c"
+   $89 = (($88) + ($85)|0); //@line 853 "src/types.c"
+   $90 = HEAP8[$89>>0]|0; //@line 853 "src/types.c"
+   $91 = $90&1; //@line 853 "src/types.c"
+   _awlenv_set($72,$78,$84,$91); //@line 853 "src/types.c"
   }
-  $92 = $i1; //@line 849 "src/types.c"
-  $93 = (($92) + 1)|0; //@line 849 "src/types.c"
-  $i1 = $93; //@line 849 "src/types.c"
+  $92 = $i1; //@line 851 "src/types.c"
+  $93 = (($92) + 1)|0; //@line 851 "src/types.c"
+  $i1 = $93; //@line 851 "src/types.c"
  }
- $94 = $0; //@line 854 "src/types.c"
- $95 = (($94) + 24|0); //@line 854 "src/types.c"
- $96 = HEAP8[$95>>0]|0; //@line 854 "src/types.c"
- $97 = $96&1; //@line 854 "src/types.c"
- $98 = $n; //@line 854 "src/types.c"
- $99 = (($98) + 24|0); //@line 854 "src/types.c"
- $100 = $97&1; //@line 854 "src/types.c"
- HEAP8[$99>>0] = $100; //@line 854 "src/types.c"
- $101 = $n; //@line 856 "src/types.c"
- STACKTOP = sp;return ($101|0); //@line 856 "src/types.c"
+ $94 = $0; //@line 856 "src/types.c"
+ $95 = (($94) + 24|0); //@line 856 "src/types.c"
+ $96 = HEAP8[$95>>0]|0; //@line 856 "src/types.c"
+ $97 = $96&1; //@line 856 "src/types.c"
+ $98 = $n; //@line 856 "src/types.c"
+ $99 = (($98) + 24|0); //@line 856 "src/types.c"
+ $100 = $97&1; //@line 856 "src/types.c"
+ HEAP8[$99>>0] = $100; //@line 856 "src/types.c"
+ $101 = $n; //@line 858 "src/types.c"
+ STACKTOP = sp;return ($101|0); //@line 858 "src/types.c"
 }
 function _awlval_macro($closure,$formals,$body) {
  $closure = $closure|0;
@@ -24132,13 +24133,6 @@ function _awlval_del($v) {
   _free($6); //@line 236 "src/types.c"
   break;
  }
- case 2:  {
-  $18 = $0; //@line 247 "src/types.c"
-  $19 = (($18) + 16|0); //@line 247 "src/types.c"
-  $20 = HEAP32[$19>>2]|0; //@line 247 "src/types.c"
-  _free($20); //@line 247 "src/types.c"
-  break;
- }
  case 9: case 8:  {
   $7 = $0; //@line 241 "src/types.c"
   $8 = (($7) + 16|0); //@line 241 "src/types.c"
@@ -24154,6 +24148,13 @@ function _awlval_del($v) {
   $16 = (($15) + 8|0); //@line 243 "src/types.c"
   $17 = HEAP32[$16>>2]|0; //@line 243 "src/types.c"
   _awlval_del($17); //@line 243 "src/types.c"
+  break;
+ }
+ case 2:  {
+  $18 = $0; //@line 247 "src/types.c"
+  $19 = (($18) + 16|0); //@line 247 "src/types.c"
+  $20 = HEAP32[$19>>2]|0; //@line 247 "src/types.c"
+  _free($20); //@line 247 "src/types.c"
   break;
  }
  case 4: case 3:  {
@@ -24185,73 +24186,73 @@ function _awlenv_del($e) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
  $0 = $e;
- $1 = $0; //@line 714 "src/types.c"
- $2 = HEAP32[$1>>2]|0; //@line 714 "src/types.c"
- $3 = ($2|0)!=(0|0); //@line 714 "src/types.c"
+ $1 = $0; //@line 716 "src/types.c"
+ $2 = HEAP32[$1>>2]|0; //@line 716 "src/types.c"
+ $3 = ($2|0)!=(0|0); //@line 716 "src/types.c"
  if ($3) {
-  $4 = $0; //@line 714 "src/types.c"
-  $5 = HEAP32[$4>>2]|0; //@line 714 "src/types.c"
-  $6 = (($5) + 24|0); //@line 714 "src/types.c"
-  $7 = HEAP8[$6>>0]|0; //@line 714 "src/types.c"
-  $8 = $7&1; //@line 714 "src/types.c"
+  $4 = $0; //@line 716 "src/types.c"
+  $5 = HEAP32[$4>>2]|0; //@line 716 "src/types.c"
+  $6 = (($5) + 24|0); //@line 716 "src/types.c"
+  $7 = HEAP8[$6>>0]|0; //@line 716 "src/types.c"
+  $8 = $7&1; //@line 716 "src/types.c"
   if (!($8)) {
-   $9 = $0; //@line 715 "src/types.c"
-   $10 = HEAP32[$9>>2]|0; //@line 715 "src/types.c"
-   _awlenv_del($10); //@line 715 "src/types.c"
+   $9 = $0; //@line 717 "src/types.c"
+   $10 = HEAP32[$9>>2]|0; //@line 717 "src/types.c"
+   _awlenv_del($10); //@line 717 "src/types.c"
   }
  }
- $i = 0; //@line 717 "src/types.c"
+ $i = 0; //@line 719 "src/types.c"
  while(1) {
-  $11 = $i; //@line 717 "src/types.c"
-  $12 = $0; //@line 717 "src/types.c"
-  $13 = (($12) + 4|0); //@line 717 "src/types.c"
-  $14 = HEAP32[$13>>2]|0; //@line 717 "src/types.c"
-  $15 = ($11|0)<($14|0); //@line 717 "src/types.c"
+  $11 = $i; //@line 719 "src/types.c"
+  $12 = $0; //@line 719 "src/types.c"
+  $13 = (($12) + 4|0); //@line 719 "src/types.c"
+  $14 = HEAP32[$13>>2]|0; //@line 719 "src/types.c"
+  $15 = ($11|0)<($14|0); //@line 719 "src/types.c"
   if (!($15)) {
    break;
   }
-  $16 = $i; //@line 718 "src/types.c"
-  $17 = $0; //@line 718 "src/types.c"
-  $18 = (($17) + 12|0); //@line 718 "src/types.c"
-  $19 = HEAP32[$18>>2]|0; //@line 718 "src/types.c"
-  $20 = (($19) + ($16<<2)|0); //@line 718 "src/types.c"
-  $21 = HEAP32[$20>>2]|0; //@line 718 "src/types.c"
-  $22 = ($21|0)!=(0|0); //@line 718 "src/types.c"
+  $16 = $i; //@line 720 "src/types.c"
+  $17 = $0; //@line 720 "src/types.c"
+  $18 = (($17) + 12|0); //@line 720 "src/types.c"
+  $19 = HEAP32[$18>>2]|0; //@line 720 "src/types.c"
+  $20 = (($19) + ($16<<2)|0); //@line 720 "src/types.c"
+  $21 = HEAP32[$20>>2]|0; //@line 720 "src/types.c"
+  $22 = ($21|0)!=(0|0); //@line 720 "src/types.c"
   if ($22) {
-   $23 = $i; //@line 719 "src/types.c"
-   $24 = $0; //@line 719 "src/types.c"
-   $25 = (($24) + 12|0); //@line 719 "src/types.c"
-   $26 = HEAP32[$25>>2]|0; //@line 719 "src/types.c"
-   $27 = (($26) + ($23<<2)|0); //@line 719 "src/types.c"
-   $28 = HEAP32[$27>>2]|0; //@line 719 "src/types.c"
-   _free($28); //@line 719 "src/types.c"
-   $29 = $i; //@line 720 "src/types.c"
-   $30 = $0; //@line 720 "src/types.c"
-   $31 = (($30) + 16|0); //@line 720 "src/types.c"
-   $32 = HEAP32[$31>>2]|0; //@line 720 "src/types.c"
-   $33 = (($32) + ($29<<2)|0); //@line 720 "src/types.c"
-   $34 = HEAP32[$33>>2]|0; //@line 720 "src/types.c"
-   _awlval_del($34); //@line 720 "src/types.c"
+   $23 = $i; //@line 721 "src/types.c"
+   $24 = $0; //@line 721 "src/types.c"
+   $25 = (($24) + 12|0); //@line 721 "src/types.c"
+   $26 = HEAP32[$25>>2]|0; //@line 721 "src/types.c"
+   $27 = (($26) + ($23<<2)|0); //@line 721 "src/types.c"
+   $28 = HEAP32[$27>>2]|0; //@line 721 "src/types.c"
+   _free($28); //@line 721 "src/types.c"
+   $29 = $i; //@line 722 "src/types.c"
+   $30 = $0; //@line 722 "src/types.c"
+   $31 = (($30) + 16|0); //@line 722 "src/types.c"
+   $32 = HEAP32[$31>>2]|0; //@line 722 "src/types.c"
+   $33 = (($32) + ($29<<2)|0); //@line 722 "src/types.c"
+   $34 = HEAP32[$33>>2]|0; //@line 722 "src/types.c"
+   _awlval_del($34); //@line 722 "src/types.c"
   }
-  $35 = $i; //@line 717 "src/types.c"
-  $36 = (($35) + 1)|0; //@line 717 "src/types.c"
-  $i = $36; //@line 717 "src/types.c"
+  $35 = $i; //@line 719 "src/types.c"
+  $36 = (($35) + 1)|0; //@line 719 "src/types.c"
+  $i = $36; //@line 719 "src/types.c"
  }
- $37 = $0; //@line 723 "src/types.c"
- $38 = (($37) + 12|0); //@line 723 "src/types.c"
- $39 = HEAP32[$38>>2]|0; //@line 723 "src/types.c"
- _free($39); //@line 723 "src/types.c"
- $40 = $0; //@line 724 "src/types.c"
- $41 = (($40) + 16|0); //@line 724 "src/types.c"
- $42 = HEAP32[$41>>2]|0; //@line 724 "src/types.c"
- _free($42); //@line 724 "src/types.c"
- $43 = $0; //@line 725 "src/types.c"
- $44 = (($43) + 20|0); //@line 725 "src/types.c"
- $45 = HEAP32[$44>>2]|0; //@line 725 "src/types.c"
- _free($45); //@line 725 "src/types.c"
- $46 = $0; //@line 726 "src/types.c"
- _free($46); //@line 726 "src/types.c"
- STACKTOP = sp;return; //@line 727 "src/types.c"
+ $37 = $0; //@line 725 "src/types.c"
+ $38 = (($37) + 12|0); //@line 725 "src/types.c"
+ $39 = HEAP32[$38>>2]|0; //@line 725 "src/types.c"
+ _free($39); //@line 725 "src/types.c"
+ $40 = $0; //@line 726 "src/types.c"
+ $41 = (($40) + 16|0); //@line 726 "src/types.c"
+ $42 = HEAP32[$41>>2]|0; //@line 726 "src/types.c"
+ _free($42); //@line 726 "src/types.c"
+ $43 = $0; //@line 727 "src/types.c"
+ $44 = (($43) + 20|0); //@line 727 "src/types.c"
+ $45 = HEAP32[$44>>2]|0; //@line 727 "src/types.c"
+ _free($45); //@line 727 "src/types.c"
+ $46 = $0; //@line 728 "src/types.c"
+ _free($46); //@line 728 "src/types.c"
+ STACKTOP = sp;return; //@line 729 "src/types.c"
 }
 function _awlval_add($v,$x) {
  $v = $v|0;
@@ -25319,14 +25320,15 @@ function _awlval_copy($v) {
 function _awlval_convert($t,$v) {
  $t = $t|0;
  $v = $v|0;
- var $0 = 0, $1 = 0, $10 = 0, $100 = 0, $101 = 0, $102 = 0.0, $103 = 0, $104 = 0, $105 = 0, $106 = 0, $107 = 0, $108 = 0, $109 = 0, $11 = 0, $110 = 0, $111 = 0, $112 = 0, $113 = 0, $114 = 0, $115 = 0;
- var $116 = 0, $117 = 0, $118 = 0, $119 = 0, $12 = 0, $120 = 0, $121 = 0, $122 = 0, $123 = 0, $124 = 0, $125 = 0, $126 = 0, $127 = 0, $128 = 0, $13 = 0, $14 = 0.0, $15 = 0, $16 = 0, $17 = 0, $18 = 0;
- var $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $25 = 0, $26 = 0, $27 = 0, $28 = 0, $29 = 0, $3 = 0, $30 = 0, $31 = 0, $32 = 0, $33 = 0, $34 = 0, $35 = 0, $36 = 0;
- var $37 = 0, $38 = 0, $39 = 0, $4 = 0, $40 = 0, $41 = 0, $42 = 0, $43 = 0, $44 = 0, $45 = 0, $46 = 0, $47 = 0, $48 = 0, $49 = 0.0, $5 = 0, $50 = 0, $51 = 0, $52 = 0, $53 = 0, $54 = 0;
- var $55 = 0.0, $56 = 0, $57 = 0, $58 = 0, $59 = 0.0, $6 = 0, $60 = 0, $61 = 0, $62 = 0, $63 = 0, $64 = 0, $65 = 0, $66 = 0, $67 = 0, $68 = 0, $69 = 0, $7 = 0, $70 = 0.0, $71 = 0, $72 = 0;
- var $73 = 0, $74 = 0, $75 = 0, $76 = 0, $77 = 0, $78 = 0, $79 = 0, $8 = 0, $80 = 0, $81 = 0, $82 = 0, $83 = 0, $84 = 0, $85 = 0, $86 = 0, $87 = 0, $88 = 0, $89 = 0, $9 = 0, $90 = 0;
- var $91 = 0, $92 = 0, $93 = 0, $94 = 0, $95 = 0, $96 = 0, $97 = 0, $98 = 0, $99 = 0, $res = 0, $str = 0, $vararg_buffer = 0, $vararg_buffer1 = 0, $vararg_buffer12 = 0, $vararg_buffer16 = 0, $vararg_buffer20 = 0, $vararg_buffer5 = 0, $vararg_buffer8 = 0, $vararg_ptr11 = 0, $vararg_ptr15 = 0;
- var $vararg_ptr19 = 0, $vararg_ptr4 = 0, $x = 0, $x1 = 0.0, label = 0, sp = 0;
+ var $0 = 0, $1 = 0, $10 = 0, $100 = 0, $101 = 0, $102 = 0, $103 = 0, $104 = 0, $105 = 0, $106 = 0, $107 = 0, $108 = 0, $109 = 0, $11 = 0, $110 = 0, $111 = 0, $112 = 0, $113 = 0, $114 = 0, $115 = 0;
+ var $116 = 0.0, $117 = 0, $118 = 0, $119 = 0, $12 = 0, $120 = 0, $121 = 0, $122 = 0, $123 = 0, $124 = 0, $125 = 0, $126 = 0, $127 = 0, $128 = 0, $129 = 0, $13 = 0, $130 = 0, $131 = 0, $132 = 0, $133 = 0;
+ var $134 = 0, $135 = 0, $136 = 0, $137 = 0, $138 = 0, $139 = 0, $14 = 0.0, $140 = 0, $141 = 0, $142 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0;
+ var $24 = 0, $25 = 0, $26 = 0, $27 = 0, $28 = 0, $29 = 0, $3 = 0, $30 = 0, $31 = 0, $32 = 0, $33 = 0, $34 = 0, $35 = 0, $36 = 0, $37 = 0, $38 = 0, $39 = 0, $4 = 0, $40 = 0, $41 = 0;
+ var $42 = 0, $43 = 0, $44 = 0, $45 = 0, $46 = 0, $47 = 0, $48 = 0, $49 = 0, $5 = 0, $50 = 0, $51 = 0, $52 = 0, $53 = 0, $54 = 0, $55 = 0, $56 = 0.0, $57 = 0, $58 = 0, $59 = 0, $6 = 0;
+ var $60 = 0, $61 = 0, $62 = 0, $63 = 0, $64 = 0, $65 = 0.0, $66 = 0, $67 = 0, $68 = 0, $69 = 0, $7 = 0, $70 = 0, $71 = 0, $72 = 0, $73 = 0.0, $74 = 0, $75 = 0, $76 = 0, $77 = 0, $78 = 0;
+ var $79 = 0, $8 = 0, $80 = 0, $81 = 0, $82 = 0, $83 = 0, $84 = 0.0, $85 = 0, $86 = 0, $87 = 0, $88 = 0, $89 = 0, $9 = 0, $90 = 0, $91 = 0, $92 = 0, $93 = 0, $94 = 0, $95 = 0, $96 = 0;
+ var $97 = 0, $98 = 0, $99 = 0, $res = 0, $str = 0, $strend = 0, $strend1 = 0, $vararg_buffer = 0, $vararg_buffer1 = 0, $vararg_buffer12 = 0, $vararg_buffer16 = 0, $vararg_buffer20 = 0, $vararg_buffer5 = 0, $vararg_buffer8 = 0, $vararg_ptr11 = 0, $vararg_ptr15 = 0, $vararg_ptr19 = 0, $vararg_ptr4 = 0, $x = 0, $x2 = 0.0;
+ var label = 0, sp = 0;
  sp = STACKTOP;
  STACKTOP = STACKTOP + 96|0;
  $vararg_buffer20 = sp + 56|0;
@@ -25336,6 +25338,8 @@ function _awlval_convert($t,$v) {
  $vararg_buffer5 = sp + 24|0;
  $vararg_buffer1 = sp + 16|0;
  $vararg_buffer = sp + 8|0;
+ $strend = sp + 76|0;
+ $strend1 = sp + 68|0;
  $1 = $t;
  $2 = $v;
  $3 = $2; //@line 529 "src/types.c"
@@ -25346,8 +25350,8 @@ function _awlval_convert($t,$v) {
   $7 = $2; //@line 530 "src/types.c"
   $8 = (_awlval_copy($7)|0); //@line 530 "src/types.c"
   $0 = $8; //@line 530 "src/types.c"
-  $128 = $0; //@line 629 "src/types.c"
-  STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+  $142 = $0; //@line 631 "src/types.c"
+  STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
  }
  $9 = $1; //@line 533 "src/types.c"
  switch ($9|0) {
@@ -25361,228 +25365,258 @@ function _awlval_convert($t,$v) {
    $15 = (~~(($14))); //@line 537 "src/types.c"
    $16 = (_awlval_int($15)|0); //@line 537 "src/types.c"
    $0 = $16; //@line 537 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   } else if ((($11|0) == 5)) {
    $17 = (___errno_location()|0); //@line 542 "src/types.c"
    HEAP32[$17>>2] = 0; //@line 542 "src/types.c"
    $18 = $2; //@line 543 "src/types.c"
    $19 = (($18) + 16|0); //@line 543 "src/types.c"
    $20 = HEAP32[$19>>2]|0; //@line 543 "src/types.c"
-   $21 = (_strtol($20,0,10)|0); //@line 543 "src/types.c"
-   $x = $21; //@line 543 "src/types.c"
-   $22 = (___errno_location()|0); //@line 544 "src/types.c"
+   HEAP32[$strend>>2] = $20; //@line 543 "src/types.c"
+   $21 = $2; //@line 544 "src/types.c"
+   $22 = (($21) + 16|0); //@line 544 "src/types.c"
    $23 = HEAP32[$22>>2]|0; //@line 544 "src/types.c"
-   $24 = ($23|0)!=(34); //@line 544 "src/types.c"
-   if ($24) {
-    $25 = $x; //@line 544 "src/types.c"
-    $26 = (_awlval_int($25)|0); //@line 544 "src/types.c"
-    $31 = $26;
+   $24 = (_strtol($23,$strend,10)|0); //@line 544 "src/types.c"
+   $x = $24; //@line 544 "src/types.c"
+   $25 = (___errno_location()|0); //@line 545 "src/types.c"
+   $26 = HEAP32[$25>>2]|0; //@line 545 "src/types.c"
+   $27 = ($26|0)!=(34); //@line 545 "src/types.c"
+   if ($27) {
+    $28 = HEAP32[$strend>>2]|0; //@line 545 "src/types.c"
+    $29 = HEAP8[$28>>0]|0; //@line 545 "src/types.c"
+    $30 = $29 << 24 >> 24; //@line 545 "src/types.c"
+    $31 = ($30|0)==(0); //@line 545 "src/types.c"
+    if ($31) {
+     $32 = $x; //@line 545 "src/types.c"
+     $33 = (_awlval_int($32)|0); //@line 545 "src/types.c"
+     $38 = $33;
+    } else {
+     label = 9;
+    }
    } else {
-    $27 = $2; //@line 544 "src/types.c"
-    $28 = (($27) + 16|0); //@line 544 "src/types.c"
-    $29 = HEAP32[$28>>2]|0; //@line 544 "src/types.c"
-    HEAP32[$vararg_buffer>>2] = $29; //@line 544 "src/types.c"
-    $30 = (_awlval_err(5416,$vararg_buffer)|0); //@line 544 "src/types.c"
-    $31 = $30;
+    label = 9;
    }
-   $0 = $31; //@line 544 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+   if ((label|0) == 9) {
+    $34 = $2; //@line 545 "src/types.c"
+    $35 = (($34) + 16|0); //@line 545 "src/types.c"
+    $36 = HEAP32[$35>>2]|0; //@line 545 "src/types.c"
+    HEAP32[$vararg_buffer>>2] = $36; //@line 545 "src/types.c"
+    $37 = (_awlval_err(5416,$vararg_buffer)|0); //@line 545 "src/types.c"
+    $38 = $37;
+   }
+   $0 = $38; //@line 545 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   } else if ((($11|0) == 6)) {
-   $32 = $2; //@line 549 "src/types.c"
-   $33 = (($32) + 16|0); //@line 549 "src/types.c"
-   $34 = HEAP8[$33>>0]|0; //@line 549 "src/types.c"
-   $35 = $34&1; //@line 549 "src/types.c"
-   $36 = $35&1; //@line 549 "src/types.c"
-   $37 = (_awlval_int($36)|0); //@line 549 "src/types.c"
-   $0 = $37; //@line 549 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+   $39 = $2; //@line 550 "src/types.c"
+   $40 = (($39) + 16|0); //@line 550 "src/types.c"
+   $41 = HEAP8[$40>>0]|0; //@line 550 "src/types.c"
+   $42 = $41&1; //@line 550 "src/types.c"
+   $43 = $42&1; //@line 550 "src/types.c"
+   $44 = (_awlval_int($43)|0); //@line 550 "src/types.c"
+   $0 = $44; //@line 550 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   } else {
-   $38 = $2; //@line 554 "src/types.c"
-   $39 = HEAP32[$38>>2]|0; //@line 554 "src/types.c"
-   $40 = (_awlval_type_name($39)|0); //@line 554 "src/types.c"
-   $41 = $1; //@line 554 "src/types.c"
-   $42 = (_awlval_type_name($41)|0); //@line 554 "src/types.c"
-   HEAP32[$vararg_buffer1>>2] = $40; //@line 554 "src/types.c"
-   $vararg_ptr4 = (($vararg_buffer1) + 4|0); //@line 554 "src/types.c"
-   HEAP32[$vararg_ptr4>>2] = $42; //@line 554 "src/types.c"
-   $43 = (_awlval_err(5440,$vararg_buffer1)|0); //@line 554 "src/types.c"
-   $0 = $43; //@line 554 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
-  }
-  break;
- }
- case 4:  {
-  $113 = $2; //@line 613 "src/types.c"
-  $114 = HEAP32[$113>>2]|0; //@line 613 "src/types.c"
-  if ((($114|0) == 5)) {
-   $115 = $2; //@line 615 "src/types.c"
-   $116 = (($115) + 16|0); //@line 615 "src/types.c"
-   $117 = HEAP32[$116>>2]|0; //@line 615 "src/types.c"
-   $118 = (_awlval_qsym($117)|0); //@line 615 "src/types.c"
-   $0 = $118; //@line 615 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
-  } else {
-   $119 = $2; //@line 620 "src/types.c"
-   $120 = HEAP32[$119>>2]|0; //@line 620 "src/types.c"
-   $121 = (_awlval_type_name($120)|0); //@line 620 "src/types.c"
-   $122 = $1; //@line 620 "src/types.c"
-   $123 = (_awlval_type_name($122)|0); //@line 620 "src/types.c"
-   HEAP32[$vararg_buffer16>>2] = $121; //@line 620 "src/types.c"
-   $vararg_ptr19 = (($vararg_buffer16) + 4|0); //@line 620 "src/types.c"
-   HEAP32[$vararg_ptr19>>2] = $123; //@line 620 "src/types.c"
-   $124 = (_awlval_err(5440,$vararg_buffer16)|0); //@line 620 "src/types.c"
-   $0 = $124; //@line 620 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
-  }
-  break;
- }
- case 1:  {
-  $44 = $2; //@line 560 "src/types.c"
-  $45 = HEAP32[$44>>2]|0; //@line 560 "src/types.c"
-  if ((($45|0) == 0)) {
-   $46 = $2; //@line 562 "src/types.c"
-   $47 = (($46) + 16|0); //@line 562 "src/types.c"
-   $48 = HEAP32[$47>>2]|0; //@line 562 "src/types.c"
-   $49 = (+($48|0)); //@line 562 "src/types.c"
-   $50 = (_awlval_float($49)|0); //@line 562 "src/types.c"
-   $0 = $50; //@line 562 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
-  } else if ((($45|0) == 5)) {
-   $51 = (___errno_location()|0); //@line 567 "src/types.c"
-   HEAP32[$51>>2] = 0; //@line 567 "src/types.c"
-   $52 = $2; //@line 568 "src/types.c"
-   $53 = (($52) + 16|0); //@line 568 "src/types.c"
-   $54 = HEAP32[$53>>2]|0; //@line 568 "src/types.c"
-   $55 = (+_strtod($54,0)); //@line 568 "src/types.c"
-   $x1 = $55; //@line 568 "src/types.c"
-   $56 = (___errno_location()|0); //@line 569 "src/types.c"
-   $57 = HEAP32[$56>>2]|0; //@line 569 "src/types.c"
-   $58 = ($57|0)!=(34); //@line 569 "src/types.c"
-   if ($58) {
-    $59 = $x1; //@line 569 "src/types.c"
-    $60 = (_awlval_float($59)|0); //@line 569 "src/types.c"
-    $65 = $60;
-   } else {
-    $61 = $2; //@line 569 "src/types.c"
-    $62 = (($61) + 16|0); //@line 569 "src/types.c"
-    $63 = HEAP32[$62>>2]|0; //@line 569 "src/types.c"
-    HEAP32[$vararg_buffer5>>2] = $63; //@line 569 "src/types.c"
-    $64 = (_awlval_err(5504,$vararg_buffer5)|0); //@line 569 "src/types.c"
-    $65 = $64;
-   }
-   $0 = $65; //@line 569 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
-  } else if ((($45|0) == 6)) {
-   $66 = $2; //@line 574 "src/types.c"
-   $67 = (($66) + 16|0); //@line 574 "src/types.c"
-   $68 = HEAP8[$67>>0]|0; //@line 574 "src/types.c"
-   $69 = $68&1; //@line 574 "src/types.c"
-   $70 = (+($69&1)); //@line 574 "src/types.c"
-   $71 = (_awlval_float($70)|0); //@line 574 "src/types.c"
-   $0 = $71; //@line 574 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
-  } else {
-   $72 = $2; //@line 579 "src/types.c"
-   $73 = HEAP32[$72>>2]|0; //@line 579 "src/types.c"
-   $74 = (_awlval_type_name($73)|0); //@line 579 "src/types.c"
-   $75 = $1; //@line 579 "src/types.c"
-   $76 = (_awlval_type_name($75)|0); //@line 579 "src/types.c"
-   HEAP32[$vararg_buffer8>>2] = $74; //@line 579 "src/types.c"
-   $vararg_ptr11 = (($vararg_buffer8) + 4|0); //@line 579 "src/types.c"
-   HEAP32[$vararg_ptr11>>2] = $76; //@line 579 "src/types.c"
-   $77 = (_awlval_err(5440,$vararg_buffer8)|0); //@line 579 "src/types.c"
-   $0 = $77; //@line 579 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+   $45 = $2; //@line 555 "src/types.c"
+   $46 = HEAP32[$45>>2]|0; //@line 555 "src/types.c"
+   $47 = (_awlval_type_name($46)|0); //@line 555 "src/types.c"
+   $48 = $1; //@line 555 "src/types.c"
+   $49 = (_awlval_type_name($48)|0); //@line 555 "src/types.c"
+   HEAP32[$vararg_buffer1>>2] = $47; //@line 555 "src/types.c"
+   $vararg_ptr4 = (($vararg_buffer1) + 4|0); //@line 555 "src/types.c"
+   HEAP32[$vararg_ptr4>>2] = $49; //@line 555 "src/types.c"
+   $50 = (_awlval_err(5440,$vararg_buffer1)|0); //@line 555 "src/types.c"
+   $0 = $50; //@line 555 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   }
   break;
  }
  case 5:  {
-  $78 = $2; //@line 585 "src/types.c"
-  $79 = HEAP32[$78>>2]|0; //@line 585 "src/types.c"
-  $80 = ($79|0)==(4); //@line 585 "src/types.c"
-  if ($80) {
-   $81 = $2; //@line 586 "src/types.c"
-   $82 = (($81) + 16|0); //@line 586 "src/types.c"
-   $83 = HEAP32[$82>>2]|0; //@line 586 "src/types.c"
-   $84 = (_awlval_str($83)|0); //@line 586 "src/types.c"
-   $0 = $84; //@line 586 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+  $92 = $2; //@line 587 "src/types.c"
+  $93 = HEAP32[$92>>2]|0; //@line 587 "src/types.c"
+  $94 = ($93|0)==(4); //@line 587 "src/types.c"
+  if ($94) {
+   $95 = $2; //@line 588 "src/types.c"
+   $96 = (($95) + 16|0); //@line 588 "src/types.c"
+   $97 = HEAP32[$96>>2]|0; //@line 588 "src/types.c"
+   $98 = (_awlval_str($97)|0); //@line 588 "src/types.c"
+   $0 = $98; //@line 588 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   } else {
-   $85 = $2; //@line 588 "src/types.c"
-   $86 = (_awlval_to_str($85)|0); //@line 588 "src/types.c"
-   $str = $86; //@line 588 "src/types.c"
-   $87 = $str; //@line 589 "src/types.c"
-   $88 = (_awlval_str($87)|0); //@line 589 "src/types.c"
-   $res = $88; //@line 589 "src/types.c"
-   $89 = $str; //@line 590 "src/types.c"
-   _free($89); //@line 590 "src/types.c"
-   $90 = $res; //@line 591 "src/types.c"
-   $0 = $90; //@line 591 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+   $99 = $2; //@line 590 "src/types.c"
+   $100 = (_awlval_to_str($99)|0); //@line 590 "src/types.c"
+   $str = $100; //@line 590 "src/types.c"
+   $101 = $str; //@line 591 "src/types.c"
+   $102 = (_awlval_str($101)|0); //@line 591 "src/types.c"
+   $res = $102; //@line 591 "src/types.c"
+   $103 = $str; //@line 592 "src/types.c"
+   _free($103); //@line 592 "src/types.c"
+   $104 = $res; //@line 593 "src/types.c"
+   $0 = $104; //@line 593 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
+  }
+  break;
+ }
+ case 1:  {
+  $51 = $2; //@line 561 "src/types.c"
+  $52 = HEAP32[$51>>2]|0; //@line 561 "src/types.c"
+  if ((($52|0) == 0)) {
+   $53 = $2; //@line 563 "src/types.c"
+   $54 = (($53) + 16|0); //@line 563 "src/types.c"
+   $55 = HEAP32[$54>>2]|0; //@line 563 "src/types.c"
+   $56 = (+($55|0)); //@line 563 "src/types.c"
+   $57 = (_awlval_float($56)|0); //@line 563 "src/types.c"
+   $0 = $57; //@line 563 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
+  } else if ((($52|0) == 6)) {
+   $80 = $2; //@line 576 "src/types.c"
+   $81 = (($80) + 16|0); //@line 576 "src/types.c"
+   $82 = HEAP8[$81>>0]|0; //@line 576 "src/types.c"
+   $83 = $82&1; //@line 576 "src/types.c"
+   $84 = (+($83&1)); //@line 576 "src/types.c"
+   $85 = (_awlval_float($84)|0); //@line 576 "src/types.c"
+   $0 = $85; //@line 576 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
+  } else if ((($52|0) == 5)) {
+   $58 = (___errno_location()|0); //@line 568 "src/types.c"
+   HEAP32[$58>>2] = 0; //@line 568 "src/types.c"
+   $59 = $2; //@line 569 "src/types.c"
+   $60 = (($59) + 16|0); //@line 569 "src/types.c"
+   $61 = HEAP32[$60>>2]|0; //@line 569 "src/types.c"
+   HEAP32[$strend1>>2] = $61; //@line 569 "src/types.c"
+   $62 = $2; //@line 570 "src/types.c"
+   $63 = (($62) + 16|0); //@line 570 "src/types.c"
+   $64 = HEAP32[$63>>2]|0; //@line 570 "src/types.c"
+   $65 = (+_strtod($64,$strend1)); //@line 570 "src/types.c"
+   $x2 = $65; //@line 570 "src/types.c"
+   $66 = (___errno_location()|0); //@line 571 "src/types.c"
+   $67 = HEAP32[$66>>2]|0; //@line 571 "src/types.c"
+   $68 = ($67|0)!=(34); //@line 571 "src/types.c"
+   if ($68) {
+    $69 = HEAP32[$strend1>>2]|0; //@line 571 "src/types.c"
+    $70 = HEAP8[$69>>0]|0; //@line 571 "src/types.c"
+    $71 = $70 << 24 >> 24; //@line 571 "src/types.c"
+    $72 = ($71|0)==(0); //@line 571 "src/types.c"
+    if ($72) {
+     $73 = $x2; //@line 571 "src/types.c"
+     $74 = (_awlval_float($73)|0); //@line 571 "src/types.c"
+     $79 = $74;
+    } else {
+     label = 18;
+    }
+   } else {
+    label = 18;
+   }
+   if ((label|0) == 18) {
+    $75 = $2; //@line 571 "src/types.c"
+    $76 = (($75) + 16|0); //@line 571 "src/types.c"
+    $77 = HEAP32[$76>>2]|0; //@line 571 "src/types.c"
+    HEAP32[$vararg_buffer5>>2] = $77; //@line 571 "src/types.c"
+    $78 = (_awlval_err(5504,$vararg_buffer5)|0); //@line 571 "src/types.c"
+    $79 = $78;
+   }
+   $0 = $79; //@line 571 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
+  } else {
+   $86 = $2; //@line 581 "src/types.c"
+   $87 = HEAP32[$86>>2]|0; //@line 581 "src/types.c"
+   $88 = (_awlval_type_name($87)|0); //@line 581 "src/types.c"
+   $89 = $1; //@line 581 "src/types.c"
+   $90 = (_awlval_type_name($89)|0); //@line 581 "src/types.c"
+   HEAP32[$vararg_buffer8>>2] = $88; //@line 581 "src/types.c"
+   $vararg_ptr11 = (($vararg_buffer8) + 4|0); //@line 581 "src/types.c"
+   HEAP32[$vararg_ptr11>>2] = $90; //@line 581 "src/types.c"
+   $91 = (_awlval_err(5440,$vararg_buffer8)|0); //@line 581 "src/types.c"
+   $0 = $91; //@line 581 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   }
   break;
  }
  case 6:  {
-  $91 = $2; //@line 596 "src/types.c"
-  $92 = HEAP32[$91>>2]|0; //@line 596 "src/types.c"
-  if ((($92|0) == 0)) {
-   $93 = $2; //@line 598 "src/types.c"
-   $94 = (($93) + 16|0); //@line 598 "src/types.c"
-   $95 = HEAP32[$94>>2]|0; //@line 598 "src/types.c"
-   $96 = ($95|0)!=(0); //@line 598 "src/types.c"
-   $97 = $96 ? 1 : 0; //@line 598 "src/types.c"
-   $98 = ($97|0)!=(0); //@line 598 "src/types.c"
-   $99 = (_awlval_bool($98)|0); //@line 598 "src/types.c"
-   $0 = $99; //@line 598 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
-  } else if ((($92|0) == 1)) {
-   $100 = $2; //@line 602 "src/types.c"
-   $101 = (($100) + 16|0); //@line 602 "src/types.c"
-   $102 = +HEAPF64[$101>>3]; //@line 602 "src/types.c"
-   $103 = $102 != 0.0; //@line 602 "src/types.c"
-   $104 = $103 ? 1 : 0; //@line 602 "src/types.c"
-   $105 = ($104|0)!=(0); //@line 602 "src/types.c"
-   $106 = (_awlval_bool($105)|0); //@line 602 "src/types.c"
-   $0 = $106; //@line 602 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+  $105 = $2; //@line 598 "src/types.c"
+  $106 = HEAP32[$105>>2]|0; //@line 598 "src/types.c"
+  if ((($106|0) == 0)) {
+   $107 = $2; //@line 600 "src/types.c"
+   $108 = (($107) + 16|0); //@line 600 "src/types.c"
+   $109 = HEAP32[$108>>2]|0; //@line 600 "src/types.c"
+   $110 = ($109|0)!=(0); //@line 600 "src/types.c"
+   $111 = $110 ? 1 : 0; //@line 600 "src/types.c"
+   $112 = ($111|0)!=(0); //@line 600 "src/types.c"
+   $113 = (_awlval_bool($112)|0); //@line 600 "src/types.c"
+   $0 = $113; //@line 600 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
+  } else if ((($106|0) == 1)) {
+   $114 = $2; //@line 604 "src/types.c"
+   $115 = (($114) + 16|0); //@line 604 "src/types.c"
+   $116 = +HEAPF64[$115>>3]; //@line 604 "src/types.c"
+   $117 = $116 != 0.0; //@line 604 "src/types.c"
+   $118 = $117 ? 1 : 0; //@line 604 "src/types.c"
+   $119 = ($118|0)!=(0); //@line 604 "src/types.c"
+   $120 = (_awlval_bool($119)|0); //@line 604 "src/types.c"
+   $0 = $120; //@line 604 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   } else {
-   $107 = $2; //@line 607 "src/types.c"
-   $108 = HEAP32[$107>>2]|0; //@line 607 "src/types.c"
-   $109 = (_awlval_type_name($108)|0); //@line 607 "src/types.c"
-   $110 = $1; //@line 607 "src/types.c"
-   $111 = (_awlval_type_name($110)|0); //@line 607 "src/types.c"
-   HEAP32[$vararg_buffer12>>2] = $109; //@line 607 "src/types.c"
-   $vararg_ptr15 = (($vararg_buffer12) + 4|0); //@line 607 "src/types.c"
-   HEAP32[$vararg_ptr15>>2] = $111; //@line 607 "src/types.c"
-   $112 = (_awlval_err(5440,$vararg_buffer12)|0); //@line 607 "src/types.c"
-   $0 = $112; //@line 607 "src/types.c"
-   $128 = $0; //@line 629 "src/types.c"
-   STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+   $121 = $2; //@line 609 "src/types.c"
+   $122 = HEAP32[$121>>2]|0; //@line 609 "src/types.c"
+   $123 = (_awlval_type_name($122)|0); //@line 609 "src/types.c"
+   $124 = $1; //@line 609 "src/types.c"
+   $125 = (_awlval_type_name($124)|0); //@line 609 "src/types.c"
+   HEAP32[$vararg_buffer12>>2] = $123; //@line 609 "src/types.c"
+   $vararg_ptr15 = (($vararg_buffer12) + 4|0); //@line 609 "src/types.c"
+   HEAP32[$vararg_ptr15>>2] = $125; //@line 609 "src/types.c"
+   $126 = (_awlval_err(5440,$vararg_buffer12)|0); //@line 609 "src/types.c"
+   $0 = $126; //@line 609 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
+  }
+  break;
+ }
+ case 4:  {
+  $127 = $2; //@line 615 "src/types.c"
+  $128 = HEAP32[$127>>2]|0; //@line 615 "src/types.c"
+  if ((($128|0) == 5)) {
+   $129 = $2; //@line 617 "src/types.c"
+   $130 = (($129) + 16|0); //@line 617 "src/types.c"
+   $131 = HEAP32[$130>>2]|0; //@line 617 "src/types.c"
+   $132 = (_awlval_qsym($131)|0); //@line 617 "src/types.c"
+   $0 = $132; //@line 617 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
+  } else {
+   $133 = $2; //@line 622 "src/types.c"
+   $134 = HEAP32[$133>>2]|0; //@line 622 "src/types.c"
+   $135 = (_awlval_type_name($134)|0); //@line 622 "src/types.c"
+   $136 = $1; //@line 622 "src/types.c"
+   $137 = (_awlval_type_name($136)|0); //@line 622 "src/types.c"
+   HEAP32[$vararg_buffer16>>2] = $135; //@line 622 "src/types.c"
+   $vararg_ptr19 = (($vararg_buffer16) + 4|0); //@line 622 "src/types.c"
+   HEAP32[$vararg_ptr19>>2] = $137; //@line 622 "src/types.c"
+   $138 = (_awlval_err(5440,$vararg_buffer16)|0); //@line 622 "src/types.c"
+   $0 = $138; //@line 622 "src/types.c"
+   $142 = $0; //@line 631 "src/types.c"
+   STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
   }
   break;
  }
  default: {
-  $125 = $1; //@line 626 "src/types.c"
-  $126 = (_awlval_type_name($125)|0); //@line 626 "src/types.c"
-  HEAP32[$vararg_buffer20>>2] = $126; //@line 626 "src/types.c"
-  $127 = (_awlval_err(5528,$vararg_buffer20)|0); //@line 626 "src/types.c"
-  $0 = $127; //@line 626 "src/types.c"
-  $128 = $0; //@line 629 "src/types.c"
-  STACKTOP = sp;return ($128|0); //@line 629 "src/types.c"
+  $139 = $1; //@line 628 "src/types.c"
+  $140 = (_awlval_type_name($139)|0); //@line 628 "src/types.c"
+  HEAP32[$vararg_buffer20>>2] = $140; //@line 628 "src/types.c"
+  $141 = (_awlval_err(5528,$vararg_buffer20)|0); //@line 628 "src/types.c"
+  $0 = $141; //@line 628 "src/types.c"
+  $142 = $0; //@line 631 "src/types.c"
+  STACKTOP = sp;return ($142|0); //@line 631 "src/types.c"
  }
  }
  return 0|0;
@@ -25602,62 +25636,208 @@ function _awlval_eq($x,$y) {
  STACKTOP = STACKTOP + 16|0;
  $1 = $x;
  $2 = $y;
- $3 = $1; //@line 632 "src/types.c"
- $4 = $2; //@line 632 "src/types.c"
- _awlval_maybe_promote_numeric($3,$4); //@line 632 "src/types.c"
- $5 = $1; //@line 633 "src/types.c"
- $6 = HEAP32[$5>>2]|0; //@line 633 "src/types.c"
- $7 = $2; //@line 633 "src/types.c"
- $8 = HEAP32[$7>>2]|0; //@line 633 "src/types.c"
- $9 = ($6|0)!=($8|0); //@line 633 "src/types.c"
+ $3 = $1; //@line 634 "src/types.c"
+ $4 = $2; //@line 634 "src/types.c"
+ _awlval_maybe_promote_numeric($3,$4); //@line 634 "src/types.c"
+ $5 = $1; //@line 635 "src/types.c"
+ $6 = HEAP32[$5>>2]|0; //@line 635 "src/types.c"
+ $7 = $2; //@line 635 "src/types.c"
+ $8 = HEAP32[$7>>2]|0; //@line 635 "src/types.c"
+ $9 = ($6|0)!=($8|0); //@line 635 "src/types.c"
  L1: do {
   if ($9) {
-   $$expand_i1_val = 0; //@line 634 "src/types.c"
-   $0 = $$expand_i1_val; //@line 634 "src/types.c"
+   $$expand_i1_val = 0; //@line 636 "src/types.c"
+   $0 = $$expand_i1_val; //@line 636 "src/types.c"
   } else {
-   $10 = $1; //@line 637 "src/types.c"
-   $11 = HEAP32[$10>>2]|0; //@line 637 "src/types.c"
+   $10 = $1; //@line 639 "src/types.c"
+   $11 = HEAP32[$10>>2]|0; //@line 639 "src/types.c"
    do {
     switch ($11|0) {
+    case 7:  {
+     $12 = $2; //@line 641 "src/types.c"
+     $13 = HEAP32[$12>>2]|0; //@line 641 "src/types.c"
+     $14 = ($13|0)==(7); //@line 641 "src/types.c"
+     if ($14) {
+      $15 = $1; //@line 641 "src/types.c"
+      $16 = (($15) + 16|0); //@line 641 "src/types.c"
+      $17 = HEAP32[$16>>2]|0; //@line 641 "src/types.c"
+      $18 = $2; //@line 641 "src/types.c"
+      $19 = (($18) + 16|0); //@line 641 "src/types.c"
+      $20 = HEAP32[$19>>2]|0; //@line 641 "src/types.c"
+      $21 = ($17|0)==($20|0); //@line 641 "src/types.c"
+      $22 = $21;
+     } else {
+      $22 = 0;
+     }
+     $$expand_i1_val2 = $22&1;
+     $0 = $$expand_i1_val2;
+     break L1;
+     break;
+    }
+    case 1:  {
+     $54 = $1; //@line 654 "src/types.c"
+     $55 = (($54) + 16|0); //@line 654 "src/types.c"
+     $56 = +HEAPF64[$55>>3]; //@line 654 "src/types.c"
+     $57 = $2; //@line 654 "src/types.c"
+     $58 = (($57) + 16|0); //@line 654 "src/types.c"
+     $59 = +HEAPF64[$58>>3]; //@line 654 "src/types.c"
+     $60 = $56 == $59; //@line 654 "src/types.c"
+     $$expand_i1_val8 = $60&1; //@line 654 "src/types.c"
+     $0 = $$expand_i1_val8; //@line 654 "src/types.c"
+     break L1;
+     break;
+    }
+    case 13: case 12: case 11: case 10:  {
+     $109 = $1; //@line 678 "src/types.c"
+     $110 = (($109) + 4|0); //@line 678 "src/types.c"
+     $111 = HEAP32[$110>>2]|0; //@line 678 "src/types.c"
+     $112 = $2; //@line 678 "src/types.c"
+     $113 = (($112) + 4|0); //@line 678 "src/types.c"
+     $114 = HEAP32[$113>>2]|0; //@line 678 "src/types.c"
+     $115 = ($111|0)!=($114|0); //@line 678 "src/types.c"
+     if ($115) {
+      $$expand_i1_val18 = 0; //@line 679 "src/types.c"
+      $0 = $$expand_i1_val18; //@line 679 "src/types.c"
+      break L1;
+     }
+     $i = 0; //@line 681 "src/types.c"
+     while(1) {
+      $116 = $i; //@line 681 "src/types.c"
+      $117 = $1; //@line 681 "src/types.c"
+      $118 = (($117) + 4|0); //@line 681 "src/types.c"
+      $119 = HEAP32[$118>>2]|0; //@line 681 "src/types.c"
+      $120 = ($116|0)<($119|0); //@line 681 "src/types.c"
+      if (!($120)) {
+       label = 29;
+       break;
+      }
+      $121 = $i; //@line 682 "src/types.c"
+      $122 = $1; //@line 682 "src/types.c"
+      $123 = (($122) + 8|0); //@line 682 "src/types.c"
+      $124 = HEAP32[$123>>2]|0; //@line 682 "src/types.c"
+      $125 = (($124) + ($121<<2)|0); //@line 682 "src/types.c"
+      $126 = HEAP32[$125>>2]|0; //@line 682 "src/types.c"
+      $127 = $i; //@line 682 "src/types.c"
+      $128 = $2; //@line 682 "src/types.c"
+      $129 = (($128) + 8|0); //@line 682 "src/types.c"
+      $130 = HEAP32[$129>>2]|0; //@line 682 "src/types.c"
+      $131 = (($130) + ($127<<2)|0); //@line 682 "src/types.c"
+      $132 = HEAP32[$131>>2]|0; //@line 682 "src/types.c"
+      $133 = (_awlval_eq($126,$132)|0); //@line 682 "src/types.c"
+      if (!($133)) {
+       label = 26;
+       break;
+      }
+      $134 = $i; //@line 681 "src/types.c"
+      $135 = (($134) + 1)|0; //@line 681 "src/types.c"
+      $i = $135; //@line 681 "src/types.c"
+     }
+     if ((label|0) == 26) {
+      $$expand_i1_val20 = 0; //@line 683 "src/types.c"
+      $0 = $$expand_i1_val20; //@line 683 "src/types.c"
+      break L1;
+     }
+     else if ((label|0) == 29) {
+      $$expand_i1_val22 = 1; //@line 686 "src/types.c"
+      $0 = $$expand_i1_val22; //@line 686 "src/types.c"
+      break L1;
+     }
+     break;
+    }
+    case 6:  {
+     $98 = $1; //@line 671 "src/types.c"
+     $99 = (($98) + 16|0); //@line 671 "src/types.c"
+     $100 = HEAP8[$99>>0]|0; //@line 671 "src/types.c"
+     $101 = $100&1; //@line 671 "src/types.c"
+     $102 = $101&1; //@line 671 "src/types.c"
+     $103 = $2; //@line 671 "src/types.c"
+     $104 = (($103) + 16|0); //@line 671 "src/types.c"
+     $105 = HEAP8[$104>>0]|0; //@line 671 "src/types.c"
+     $106 = $105&1; //@line 671 "src/types.c"
+     $107 = $106&1; //@line 671 "src/types.c"
+     $108 = ($102|0)==($107|0); //@line 671 "src/types.c"
+     $$expand_i1_val16 = $108&1; //@line 671 "src/types.c"
+     $0 = $$expand_i1_val16; //@line 671 "src/types.c"
+     break L1;
+     break;
+    }
     case 0:  {
-     $47 = $1; //@line 648 "src/types.c"
-     $48 = (($47) + 16|0); //@line 648 "src/types.c"
-     $49 = HEAP32[$48>>2]|0; //@line 648 "src/types.c"
-     $50 = $2; //@line 648 "src/types.c"
-     $51 = (($50) + 16|0); //@line 648 "src/types.c"
-     $52 = HEAP32[$51>>2]|0; //@line 648 "src/types.c"
-     $53 = ($49|0)==($52|0); //@line 648 "src/types.c"
-     $$expand_i1_val6 = $53&1; //@line 648 "src/types.c"
-     $0 = $$expand_i1_val6; //@line 648 "src/types.c"
+     $47 = $1; //@line 650 "src/types.c"
+     $48 = (($47) + 16|0); //@line 650 "src/types.c"
+     $49 = HEAP32[$48>>2]|0; //@line 650 "src/types.c"
+     $50 = $2; //@line 650 "src/types.c"
+     $51 = (($50) + 16|0); //@line 650 "src/types.c"
+     $52 = HEAP32[$51>>2]|0; //@line 650 "src/types.c"
+     $53 = ($49|0)==($52|0); //@line 650 "src/types.c"
+     $$expand_i1_val6 = $53&1; //@line 650 "src/types.c"
+     $0 = $$expand_i1_val6; //@line 650 "src/types.c"
+     break L1;
+     break;
+    }
+    case 5:  {
+     $83 = $1; //@line 667 "src/types.c"
+     $84 = (($83) + 12|0); //@line 667 "src/types.c"
+     $85 = HEAP32[$84>>2]|0; //@line 667 "src/types.c"
+     $86 = $2; //@line 667 "src/types.c"
+     $87 = (($86) + 12|0); //@line 667 "src/types.c"
+     $88 = HEAP32[$87>>2]|0; //@line 667 "src/types.c"
+     $89 = ($85|0)==($88|0); //@line 667 "src/types.c"
+     if ($89) {
+      $90 = $1; //@line 667 "src/types.c"
+      $91 = (($90) + 16|0); //@line 667 "src/types.c"
+      $92 = HEAP32[$91>>2]|0; //@line 667 "src/types.c"
+      $93 = $2; //@line 667 "src/types.c"
+      $94 = (($93) + 16|0); //@line 667 "src/types.c"
+      $95 = HEAP32[$94>>2]|0; //@line 667 "src/types.c"
+      $96 = (_streq($92,$95)|0); //@line 667 "src/types.c"
+      $97 = $96;
+     } else {
+      $97 = 0;
+     }
+     $$expand_i1_val14 = $97&1;
+     $0 = $$expand_i1_val14;
+     break L1;
+     break;
+    }
+    case 2:  {
+     $61 = $1; //@line 658 "src/types.c"
+     $62 = (($61) + 16|0); //@line 658 "src/types.c"
+     $63 = HEAP32[$62>>2]|0; //@line 658 "src/types.c"
+     $64 = $2; //@line 658 "src/types.c"
+     $65 = (($64) + 16|0); //@line 658 "src/types.c"
+     $66 = HEAP32[$65>>2]|0; //@line 658 "src/types.c"
+     $67 = (_streq($63,$66)|0); //@line 658 "src/types.c"
+     $$expand_i1_val10 = $67&1; //@line 658 "src/types.c"
+     $0 = $$expand_i1_val10; //@line 658 "src/types.c"
      break L1;
      break;
     }
     case 9: case 8:  {
-     $23 = $2; //@line 644 "src/types.c"
-     $24 = HEAP32[$23>>2]|0; //@line 644 "src/types.c"
-     $25 = $1; //@line 644 "src/types.c"
-     $26 = HEAP32[$25>>2]|0; //@line 644 "src/types.c"
-     $27 = ($24|0)==($26|0); //@line 644 "src/types.c"
+     $23 = $2; //@line 646 "src/types.c"
+     $24 = HEAP32[$23>>2]|0; //@line 646 "src/types.c"
+     $25 = $1; //@line 646 "src/types.c"
+     $26 = HEAP32[$25>>2]|0; //@line 646 "src/types.c"
+     $27 = ($24|0)==($26|0); //@line 646 "src/types.c"
      if ($27) {
-      $28 = $1; //@line 644 "src/types.c"
-      $29 = (($28) + 16|0); //@line 644 "src/types.c"
-      $30 = (($29) + 4|0); //@line 644 "src/types.c"
-      $31 = HEAP32[$30>>2]|0; //@line 644 "src/types.c"
-      $32 = $2; //@line 644 "src/types.c"
-      $33 = (($32) + 16|0); //@line 644 "src/types.c"
-      $34 = (($33) + 4|0); //@line 644 "src/types.c"
-      $35 = HEAP32[$34>>2]|0; //@line 644 "src/types.c"
-      $36 = (_awlval_eq($31,$35)|0); //@line 644 "src/types.c"
+      $28 = $1; //@line 646 "src/types.c"
+      $29 = (($28) + 16|0); //@line 646 "src/types.c"
+      $30 = (($29) + 4|0); //@line 646 "src/types.c"
+      $31 = HEAP32[$30>>2]|0; //@line 646 "src/types.c"
+      $32 = $2; //@line 646 "src/types.c"
+      $33 = (($32) + 16|0); //@line 646 "src/types.c"
+      $34 = (($33) + 4|0); //@line 646 "src/types.c"
+      $35 = HEAP32[$34>>2]|0; //@line 646 "src/types.c"
+      $36 = (_awlval_eq($31,$35)|0); //@line 646 "src/types.c"
       if ($36) {
-       $37 = $1; //@line 644 "src/types.c"
-       $38 = (($37) + 16|0); //@line 644 "src/types.c"
-       $39 = (($38) + 8|0); //@line 644 "src/types.c"
-       $40 = HEAP32[$39>>2]|0; //@line 644 "src/types.c"
-       $41 = $2; //@line 644 "src/types.c"
-       $42 = (($41) + 16|0); //@line 644 "src/types.c"
-       $43 = (($42) + 8|0); //@line 644 "src/types.c"
-       $44 = HEAP32[$43>>2]|0; //@line 644 "src/types.c"
-       $45 = (_awlval_eq($40,$44)|0); //@line 644 "src/types.c"
+       $37 = $1; //@line 646 "src/types.c"
+       $38 = (($37) + 16|0); //@line 646 "src/types.c"
+       $39 = (($38) + 8|0); //@line 646 "src/types.c"
+       $40 = HEAP32[$39>>2]|0; //@line 646 "src/types.c"
+       $41 = $2; //@line 646 "src/types.c"
+       $42 = (($41) + 16|0); //@line 646 "src/types.c"
+       $43 = (($42) + 8|0); //@line 646 "src/types.c"
+       $44 = HEAP32[$43>>2]|0; //@line 646 "src/types.c"
+       $45 = (_awlval_eq($40,$44)|0); //@line 646 "src/types.c"
        $46 = $45;
       } else {
        $46 = 0;
@@ -25671,21 +25851,21 @@ function _awlval_eq($x,$y) {
      break;
     }
     case 4: case 3:  {
-     $68 = $1; //@line 661 "src/types.c"
-     $69 = (($68) + 12|0); //@line 661 "src/types.c"
-     $70 = HEAP32[$69>>2]|0; //@line 661 "src/types.c"
-     $71 = $2; //@line 661 "src/types.c"
-     $72 = (($71) + 12|0); //@line 661 "src/types.c"
-     $73 = HEAP32[$72>>2]|0; //@line 661 "src/types.c"
-     $74 = ($70|0)==($73|0); //@line 661 "src/types.c"
+     $68 = $1; //@line 663 "src/types.c"
+     $69 = (($68) + 12|0); //@line 663 "src/types.c"
+     $70 = HEAP32[$69>>2]|0; //@line 663 "src/types.c"
+     $71 = $2; //@line 663 "src/types.c"
+     $72 = (($71) + 12|0); //@line 663 "src/types.c"
+     $73 = HEAP32[$72>>2]|0; //@line 663 "src/types.c"
+     $74 = ($70|0)==($73|0); //@line 663 "src/types.c"
      if ($74) {
-      $75 = $1; //@line 661 "src/types.c"
-      $76 = (($75) + 16|0); //@line 661 "src/types.c"
-      $77 = HEAP32[$76>>2]|0; //@line 661 "src/types.c"
-      $78 = $2; //@line 661 "src/types.c"
-      $79 = (($78) + 16|0); //@line 661 "src/types.c"
-      $80 = HEAP32[$79>>2]|0; //@line 661 "src/types.c"
-      $81 = (_streq($77,$80)|0); //@line 661 "src/types.c"
+      $75 = $1; //@line 663 "src/types.c"
+      $76 = (($75) + 16|0); //@line 663 "src/types.c"
+      $77 = HEAP32[$76>>2]|0; //@line 663 "src/types.c"
+      $78 = $2; //@line 663 "src/types.c"
+      $79 = (($78) + 16|0); //@line 663 "src/types.c"
+      $80 = HEAP32[$79>>2]|0; //@line 663 "src/types.c"
+      $81 = (_streq($77,$80)|0); //@line 663 "src/types.c"
       $82 = $81;
      } else {
       $82 = 0;
@@ -25695,180 +25875,34 @@ function _awlval_eq($x,$y) {
      break L1;
      break;
     }
-    case 13: case 12: case 11: case 10:  {
-     $109 = $1; //@line 676 "src/types.c"
-     $110 = (($109) + 4|0); //@line 676 "src/types.c"
-     $111 = HEAP32[$110>>2]|0; //@line 676 "src/types.c"
-     $112 = $2; //@line 676 "src/types.c"
-     $113 = (($112) + 4|0); //@line 676 "src/types.c"
-     $114 = HEAP32[$113>>2]|0; //@line 676 "src/types.c"
-     $115 = ($111|0)!=($114|0); //@line 676 "src/types.c"
-     if ($115) {
-      $$expand_i1_val18 = 0; //@line 677 "src/types.c"
-      $0 = $$expand_i1_val18; //@line 677 "src/types.c"
-      break L1;
-     }
-     $i = 0; //@line 679 "src/types.c"
-     while(1) {
-      $116 = $i; //@line 679 "src/types.c"
-      $117 = $1; //@line 679 "src/types.c"
-      $118 = (($117) + 4|0); //@line 679 "src/types.c"
-      $119 = HEAP32[$118>>2]|0; //@line 679 "src/types.c"
-      $120 = ($116|0)<($119|0); //@line 679 "src/types.c"
-      if (!($120)) {
-       label = 29;
-       break;
-      }
-      $121 = $i; //@line 680 "src/types.c"
-      $122 = $1; //@line 680 "src/types.c"
-      $123 = (($122) + 8|0); //@line 680 "src/types.c"
-      $124 = HEAP32[$123>>2]|0; //@line 680 "src/types.c"
-      $125 = (($124) + ($121<<2)|0); //@line 680 "src/types.c"
-      $126 = HEAP32[$125>>2]|0; //@line 680 "src/types.c"
-      $127 = $i; //@line 680 "src/types.c"
-      $128 = $2; //@line 680 "src/types.c"
-      $129 = (($128) + 8|0); //@line 680 "src/types.c"
-      $130 = HEAP32[$129>>2]|0; //@line 680 "src/types.c"
-      $131 = (($130) + ($127<<2)|0); //@line 680 "src/types.c"
-      $132 = HEAP32[$131>>2]|0; //@line 680 "src/types.c"
-      $133 = (_awlval_eq($126,$132)|0); //@line 680 "src/types.c"
-      if (!($133)) {
-       label = 26;
-       break;
-      }
-      $134 = $i; //@line 679 "src/types.c"
-      $135 = (($134) + 1)|0; //@line 679 "src/types.c"
-      $i = $135; //@line 679 "src/types.c"
-     }
-     if ((label|0) == 26) {
-      $$expand_i1_val20 = 0; //@line 681 "src/types.c"
-      $0 = $$expand_i1_val20; //@line 681 "src/types.c"
-      break L1;
-     }
-     else if ((label|0) == 29) {
-      $$expand_i1_val22 = 1; //@line 684 "src/types.c"
-      $0 = $$expand_i1_val22; //@line 684 "src/types.c"
-      break L1;
-     }
-     break;
-    }
-    case 2:  {
-     $61 = $1; //@line 656 "src/types.c"
-     $62 = (($61) + 16|0); //@line 656 "src/types.c"
-     $63 = HEAP32[$62>>2]|0; //@line 656 "src/types.c"
-     $64 = $2; //@line 656 "src/types.c"
-     $65 = (($64) + 16|0); //@line 656 "src/types.c"
-     $66 = HEAP32[$65>>2]|0; //@line 656 "src/types.c"
-     $67 = (_streq($63,$66)|0); //@line 656 "src/types.c"
-     $$expand_i1_val10 = $67&1; //@line 656 "src/types.c"
-     $0 = $$expand_i1_val10; //@line 656 "src/types.c"
-     break L1;
-     break;
-    }
-    case 7:  {
-     $12 = $2; //@line 639 "src/types.c"
-     $13 = HEAP32[$12>>2]|0; //@line 639 "src/types.c"
-     $14 = ($13|0)==(7); //@line 639 "src/types.c"
-     if ($14) {
-      $15 = $1; //@line 639 "src/types.c"
-      $16 = (($15) + 16|0); //@line 639 "src/types.c"
-      $17 = HEAP32[$16>>2]|0; //@line 639 "src/types.c"
-      $18 = $2; //@line 639 "src/types.c"
-      $19 = (($18) + 16|0); //@line 639 "src/types.c"
-      $20 = HEAP32[$19>>2]|0; //@line 639 "src/types.c"
-      $21 = ($17|0)==($20|0); //@line 639 "src/types.c"
-      $22 = $21;
-     } else {
-      $22 = 0;
-     }
-     $$expand_i1_val2 = $22&1;
-     $0 = $$expand_i1_val2;
-     break L1;
-     break;
-    }
-    case 5:  {
-     $83 = $1; //@line 665 "src/types.c"
-     $84 = (($83) + 12|0); //@line 665 "src/types.c"
-     $85 = HEAP32[$84>>2]|0; //@line 665 "src/types.c"
-     $86 = $2; //@line 665 "src/types.c"
-     $87 = (($86) + 12|0); //@line 665 "src/types.c"
-     $88 = HEAP32[$87>>2]|0; //@line 665 "src/types.c"
-     $89 = ($85|0)==($88|0); //@line 665 "src/types.c"
-     if ($89) {
-      $90 = $1; //@line 665 "src/types.c"
-      $91 = (($90) + 16|0); //@line 665 "src/types.c"
-      $92 = HEAP32[$91>>2]|0; //@line 665 "src/types.c"
-      $93 = $2; //@line 665 "src/types.c"
-      $94 = (($93) + 16|0); //@line 665 "src/types.c"
-      $95 = HEAP32[$94>>2]|0; //@line 665 "src/types.c"
-      $96 = (_streq($92,$95)|0); //@line 665 "src/types.c"
-      $97 = $96;
-     } else {
-      $97 = 0;
-     }
-     $$expand_i1_val14 = $97&1;
-     $0 = $$expand_i1_val14;
-     break L1;
-     break;
-    }
-    case 1:  {
-     $54 = $1; //@line 652 "src/types.c"
-     $55 = (($54) + 16|0); //@line 652 "src/types.c"
-     $56 = +HEAPF64[$55>>3]; //@line 652 "src/types.c"
-     $57 = $2; //@line 652 "src/types.c"
-     $58 = (($57) + 16|0); //@line 652 "src/types.c"
-     $59 = +HEAPF64[$58>>3]; //@line 652 "src/types.c"
-     $60 = $56 == $59; //@line 652 "src/types.c"
-     $$expand_i1_val8 = $60&1; //@line 652 "src/types.c"
-     $0 = $$expand_i1_val8; //@line 652 "src/types.c"
-     break L1;
-     break;
-    }
-    case 6:  {
-     $98 = $1; //@line 669 "src/types.c"
-     $99 = (($98) + 16|0); //@line 669 "src/types.c"
-     $100 = HEAP8[$99>>0]|0; //@line 669 "src/types.c"
-     $101 = $100&1; //@line 669 "src/types.c"
-     $102 = $101&1; //@line 669 "src/types.c"
-     $103 = $2; //@line 669 "src/types.c"
-     $104 = (($103) + 16|0); //@line 669 "src/types.c"
-     $105 = HEAP8[$104>>0]|0; //@line 669 "src/types.c"
-     $106 = $105&1; //@line 669 "src/types.c"
-     $107 = $106&1; //@line 669 "src/types.c"
-     $108 = ($102|0)==($107|0); //@line 669 "src/types.c"
-     $$expand_i1_val16 = $108&1; //@line 669 "src/types.c"
-     $0 = $$expand_i1_val16; //@line 669 "src/types.c"
-     break L1;
-     break;
-    }
     default: {
-     $$expand_i1_val24 = 0; //@line 687 "src/types.c"
-     $0 = $$expand_i1_val24; //@line 687 "src/types.c"
+     $$expand_i1_val24 = 0; //@line 689 "src/types.c"
+     $0 = $$expand_i1_val24; //@line 689 "src/types.c"
      break L1;
     }
     }
    } while(0);
   }
  } while(0);
- $$pre_trunc = $0; //@line 688 "src/types.c"
- $136 = $$pre_trunc&1; //@line 688 "src/types.c"
- STACKTOP = sp;return ($136|0); //@line 688 "src/types.c"
+ $$pre_trunc = $0; //@line 690 "src/types.c"
+ $136 = $$pre_trunc&1; //@line 690 "src/types.c"
+ STACKTOP = sp;return ($136|0); //@line 690 "src/types.c"
 }
 function _awlenv_new_top_level() {
  var $0 = 0, $1 = 0, $2 = 0, $3 = 0, $4 = 0, $5 = 0, $e = 0, label = 0, sp = 0;
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
- $0 = (_awlenv_new()|0); //@line 706 "src/types.c"
- $e = $0; //@line 706 "src/types.c"
- $1 = $e; //@line 707 "src/types.c"
- $2 = (($1) + 24|0); //@line 707 "src/types.c"
- HEAP8[$2>>0] = 1; //@line 707 "src/types.c"
- $3 = $e; //@line 708 "src/types.c"
- _awlenv_add_builtins($3); //@line 708 "src/types.c"
- $4 = $e; //@line 709 "src/types.c"
- _awlenv_add_core_lib($4); //@line 709 "src/types.c"
- $5 = $e; //@line 710 "src/types.c"
- STACKTOP = sp;return ($5|0); //@line 710 "src/types.c"
+ $0 = (_awlenv_new()|0); //@line 708 "src/types.c"
+ $e = $0; //@line 708 "src/types.c"
+ $1 = $e; //@line 709 "src/types.c"
+ $2 = (($1) + 24|0); //@line 709 "src/types.c"
+ HEAP8[$2>>0] = 1; //@line 709 "src/types.c"
+ $3 = $e; //@line 710 "src/types.c"
+ _awlenv_add_builtins($3); //@line 710 "src/types.c"
+ $4 = $e; //@line 711 "src/types.c"
+ _awlenv_add_core_lib($4); //@line 711 "src/types.c"
+ $5 = $e; //@line 712 "src/types.c"
+ STACKTOP = sp;return ($5|0); //@line 712 "src/types.c"
 }
 function _awlenv_add_builtins($e) {
  $e = $e|0;
@@ -25878,93 +25912,93 @@ function _awlenv_add_builtins($e) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
  $0 = $e;
- $1 = $0; //@line 868 "src/types.c"
- _awlenv_add_builtin($1,5576,40); //@line 868 "src/types.c"
- $2 = $0; //@line 869 "src/types.c"
- _awlenv_add_builtin($2,5584,41); //@line 869 "src/types.c"
- $3 = $0; //@line 870 "src/types.c"
- _awlenv_add_builtin($3,5592,42); //@line 870 "src/types.c"
- $4 = $0; //@line 871 "src/types.c"
- _awlenv_add_builtin($4,5600,43); //@line 871 "src/types.c"
- $5 = $0; //@line 872 "src/types.c"
- _awlenv_add_builtin($5,5608,44); //@line 872 "src/types.c"
- $6 = $0; //@line 873 "src/types.c"
- _awlenv_add_builtin($6,5616,45); //@line 873 "src/types.c"
- $7 = $0; //@line 874 "src/types.c"
- _awlenv_add_builtin($7,5624,46); //@line 874 "src/types.c"
- $8 = $0; //@line 876 "src/types.c"
- _awlenv_add_builtin($8,5632,47); //@line 876 "src/types.c"
- $9 = $0; //@line 877 "src/types.c"
- _awlenv_add_builtin($9,5640,48); //@line 877 "src/types.c"
- $10 = $0; //@line 878 "src/types.c"
- _awlenv_add_builtin($10,5648,49); //@line 878 "src/types.c"
- $11 = $0; //@line 879 "src/types.c"
- _awlenv_add_builtin($11,5656,50); //@line 879 "src/types.c"
- $12 = $0; //@line 881 "src/types.c"
- _awlenv_add_builtin($12,5664,51); //@line 881 "src/types.c"
- $13 = $0; //@line 882 "src/types.c"
- _awlenv_add_builtin($13,5672,52); //@line 882 "src/types.c"
- $14 = $0; //@line 884 "src/types.c"
- _awlenv_add_builtin($14,5680,53); //@line 884 "src/types.c"
- $15 = $0; //@line 885 "src/types.c"
- _awlenv_add_builtin($15,5688,54); //@line 885 "src/types.c"
- $16 = $0; //@line 886 "src/types.c"
- _awlenv_add_builtin($16,5696,55); //@line 886 "src/types.c"
- $17 = $0; //@line 888 "src/types.c"
- _awlenv_add_builtin($17,5704,56); //@line 888 "src/types.c"
- $18 = $0; //@line 889 "src/types.c"
- _awlenv_add_builtin($18,5712,57); //@line 889 "src/types.c"
- $19 = $0; //@line 890 "src/types.c"
- _awlenv_add_builtin($19,5720,58); //@line 890 "src/types.c"
- $20 = $0; //@line 891 "src/types.c"
- _awlenv_add_builtin($20,5728,59); //@line 891 "src/types.c"
- $21 = $0; //@line 892 "src/types.c"
- _awlenv_add_builtin($21,5736,60); //@line 892 "src/types.c"
- $22 = $0; //@line 893 "src/types.c"
- _awlenv_add_builtin($22,5744,61); //@line 893 "src/types.c"
- $23 = $0; //@line 894 "src/types.c"
- _awlenv_add_builtin($23,5752,62); //@line 894 "src/types.c"
- $24 = $0; //@line 895 "src/types.c"
- _awlenv_add_builtin($24,5760,63); //@line 895 "src/types.c"
- $25 = $0; //@line 896 "src/types.c"
- _awlenv_add_builtin($25,5768,64); //@line 896 "src/types.c"
- $26 = $0; //@line 897 "src/types.c"
- _awlenv_add_builtin($26,5776,65); //@line 897 "src/types.c"
- $27 = $0; //@line 899 "src/types.c"
- _awlenv_add_builtin($27,5792,66); //@line 899 "src/types.c"
- $28 = $0; //@line 900 "src/types.c"
- _awlenv_add_builtin($28,5800,67); //@line 900 "src/types.c"
- $29 = $0; //@line 901 "src/types.c"
- _awlenv_add_builtin($29,5808,68); //@line 901 "src/types.c"
- $30 = $0; //@line 903 "src/types.c"
- _awlenv_add_builtin($30,5816,69); //@line 903 "src/types.c"
- $31 = $0; //@line 904 "src/types.c"
- _awlenv_add_builtin($31,5824,70); //@line 904 "src/types.c"
- $32 = $0; //@line 905 "src/types.c"
- _awlenv_add_builtin($32,5832,71); //@line 905 "src/types.c"
- $33 = $0; //@line 907 "src/types.c"
- _awlenv_add_builtin($33,5840,72); //@line 907 "src/types.c"
- $34 = $0; //@line 908 "src/types.c"
- _awlenv_add_builtin($34,5328,73); //@line 908 "src/types.c"
- $35 = $0; //@line 909 "src/types.c"
- _awlenv_add_builtin($35,5336,74); //@line 909 "src/types.c"
- $36 = $0; //@line 911 "src/types.c"
- _awlenv_add_builtin($36,5848,75); //@line 911 "src/types.c"
- $37 = $0; //@line 912 "src/types.c"
- _awlenv_add_builtin($37,5856,76); //@line 912 "src/types.c"
- $38 = $0; //@line 913 "src/types.c"
- _awlenv_add_builtin($38,5864,77); //@line 913 "src/types.c"
- $39 = $0; //@line 914 "src/types.c"
- _awlenv_add_builtin($39,5872,78); //@line 914 "src/types.c"
- $40 = $0; //@line 915 "src/types.c"
- _awlenv_add_builtin($40,5880,79); //@line 915 "src/types.c"
- $41 = $0; //@line 916 "src/types.c"
- _awlenv_add_builtin($41,5888,80); //@line 916 "src/types.c"
- $42 = $0; //@line 917 "src/types.c"
- _awlenv_add_builtin($42,5896,81); //@line 917 "src/types.c"
- $43 = $0; //@line 918 "src/types.c"
- _awlenv_add_builtin($43,5904,82); //@line 918 "src/types.c"
- STACKTOP = sp;return; //@line 919 "src/types.c"
+ $1 = $0; //@line 870 "src/types.c"
+ _awlenv_add_builtin($1,5576,40); //@line 870 "src/types.c"
+ $2 = $0; //@line 871 "src/types.c"
+ _awlenv_add_builtin($2,5584,41); //@line 871 "src/types.c"
+ $3 = $0; //@line 872 "src/types.c"
+ _awlenv_add_builtin($3,5592,42); //@line 872 "src/types.c"
+ $4 = $0; //@line 873 "src/types.c"
+ _awlenv_add_builtin($4,5600,43); //@line 873 "src/types.c"
+ $5 = $0; //@line 874 "src/types.c"
+ _awlenv_add_builtin($5,5608,44); //@line 874 "src/types.c"
+ $6 = $0; //@line 875 "src/types.c"
+ _awlenv_add_builtin($6,5616,45); //@line 875 "src/types.c"
+ $7 = $0; //@line 876 "src/types.c"
+ _awlenv_add_builtin($7,5624,46); //@line 876 "src/types.c"
+ $8 = $0; //@line 878 "src/types.c"
+ _awlenv_add_builtin($8,5632,47); //@line 878 "src/types.c"
+ $9 = $0; //@line 879 "src/types.c"
+ _awlenv_add_builtin($9,5640,48); //@line 879 "src/types.c"
+ $10 = $0; //@line 880 "src/types.c"
+ _awlenv_add_builtin($10,5648,49); //@line 880 "src/types.c"
+ $11 = $0; //@line 881 "src/types.c"
+ _awlenv_add_builtin($11,5656,50); //@line 881 "src/types.c"
+ $12 = $0; //@line 883 "src/types.c"
+ _awlenv_add_builtin($12,5664,51); //@line 883 "src/types.c"
+ $13 = $0; //@line 884 "src/types.c"
+ _awlenv_add_builtin($13,5672,52); //@line 884 "src/types.c"
+ $14 = $0; //@line 886 "src/types.c"
+ _awlenv_add_builtin($14,5680,53); //@line 886 "src/types.c"
+ $15 = $0; //@line 887 "src/types.c"
+ _awlenv_add_builtin($15,5688,54); //@line 887 "src/types.c"
+ $16 = $0; //@line 888 "src/types.c"
+ _awlenv_add_builtin($16,5696,55); //@line 888 "src/types.c"
+ $17 = $0; //@line 890 "src/types.c"
+ _awlenv_add_builtin($17,5704,56); //@line 890 "src/types.c"
+ $18 = $0; //@line 891 "src/types.c"
+ _awlenv_add_builtin($18,5712,57); //@line 891 "src/types.c"
+ $19 = $0; //@line 892 "src/types.c"
+ _awlenv_add_builtin($19,5720,58); //@line 892 "src/types.c"
+ $20 = $0; //@line 893 "src/types.c"
+ _awlenv_add_builtin($20,5728,59); //@line 893 "src/types.c"
+ $21 = $0; //@line 894 "src/types.c"
+ _awlenv_add_builtin($21,5736,60); //@line 894 "src/types.c"
+ $22 = $0; //@line 895 "src/types.c"
+ _awlenv_add_builtin($22,5744,61); //@line 895 "src/types.c"
+ $23 = $0; //@line 896 "src/types.c"
+ _awlenv_add_builtin($23,5752,62); //@line 896 "src/types.c"
+ $24 = $0; //@line 897 "src/types.c"
+ _awlenv_add_builtin($24,5760,63); //@line 897 "src/types.c"
+ $25 = $0; //@line 898 "src/types.c"
+ _awlenv_add_builtin($25,5768,64); //@line 898 "src/types.c"
+ $26 = $0; //@line 899 "src/types.c"
+ _awlenv_add_builtin($26,5776,65); //@line 899 "src/types.c"
+ $27 = $0; //@line 901 "src/types.c"
+ _awlenv_add_builtin($27,5792,66); //@line 901 "src/types.c"
+ $28 = $0; //@line 902 "src/types.c"
+ _awlenv_add_builtin($28,5800,67); //@line 902 "src/types.c"
+ $29 = $0; //@line 903 "src/types.c"
+ _awlenv_add_builtin($29,5808,68); //@line 903 "src/types.c"
+ $30 = $0; //@line 905 "src/types.c"
+ _awlenv_add_builtin($30,5816,69); //@line 905 "src/types.c"
+ $31 = $0; //@line 906 "src/types.c"
+ _awlenv_add_builtin($31,5824,70); //@line 906 "src/types.c"
+ $32 = $0; //@line 907 "src/types.c"
+ _awlenv_add_builtin($32,5832,71); //@line 907 "src/types.c"
+ $33 = $0; //@line 909 "src/types.c"
+ _awlenv_add_builtin($33,5840,72); //@line 909 "src/types.c"
+ $34 = $0; //@line 910 "src/types.c"
+ _awlenv_add_builtin($34,5328,73); //@line 910 "src/types.c"
+ $35 = $0; //@line 911 "src/types.c"
+ _awlenv_add_builtin($35,5336,74); //@line 911 "src/types.c"
+ $36 = $0; //@line 913 "src/types.c"
+ _awlenv_add_builtin($36,5848,75); //@line 913 "src/types.c"
+ $37 = $0; //@line 914 "src/types.c"
+ _awlenv_add_builtin($37,5856,76); //@line 914 "src/types.c"
+ $38 = $0; //@line 915 "src/types.c"
+ _awlenv_add_builtin($38,5864,77); //@line 915 "src/types.c"
+ $39 = $0; //@line 916 "src/types.c"
+ _awlenv_add_builtin($39,5872,78); //@line 916 "src/types.c"
+ $40 = $0; //@line 917 "src/types.c"
+ _awlenv_add_builtin($40,5880,79); //@line 917 "src/types.c"
+ $41 = $0; //@line 918 "src/types.c"
+ _awlenv_add_builtin($41,5888,80); //@line 918 "src/types.c"
+ $42 = $0; //@line 919 "src/types.c"
+ _awlenv_add_builtin($42,5896,81); //@line 919 "src/types.c"
+ $43 = $0; //@line 920 "src/types.c"
+ _awlenv_add_builtin($43,5904,82); //@line 920 "src/types.c"
+ STACKTOP = sp;return; //@line 921 "src/types.c"
 }
 function _awlenv_add_core_lib($e) {
  $e = $e|0;
@@ -25972,27 +26006,27 @@ function _awlenv_add_core_lib($e) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
  $0 = $e;
- $1 = (_get_base_path()|0); //@line 922 "src/types.c"
- $awl_base = $1; //@line 922 "src/types.c"
- $2 = $awl_base; //@line 924 "src/types.c"
- $3 = (_path_join($2,5912)|0); //@line 924 "src/types.c"
- $corelib = $3; //@line 924 "src/types.c"
- $4 = (_awlval_sexpr()|0); //@line 926 "src/types.c"
- $args = $4; //@line 926 "src/types.c"
- $5 = $args; //@line 927 "src/types.c"
- $6 = $corelib; //@line 927 "src/types.c"
- $7 = (_awlval_str($6)|0); //@line 927 "src/types.c"
- $8 = (_awlval_add($5,$7)|0); //@line 927 "src/types.c"
- $args = $8; //@line 927 "src/types.c"
- $9 = $0; //@line 928 "src/types.c"
- $10 = $args; //@line 928 "src/types.c"
- $11 = (_builtin_import($9,$10)|0); //@line 928 "src/types.c"
- _awlval_del($11); //@line 928 "src/types.c"
- $12 = $awl_base; //@line 930 "src/types.c"
- _free($12); //@line 930 "src/types.c"
- $13 = $corelib; //@line 931 "src/types.c"
- _free($13); //@line 931 "src/types.c"
- STACKTOP = sp;return; //@line 932 "src/types.c"
+ $1 = (_get_base_path()|0); //@line 924 "src/types.c"
+ $awl_base = $1; //@line 924 "src/types.c"
+ $2 = $awl_base; //@line 926 "src/types.c"
+ $3 = (_path_join($2,5912)|0); //@line 926 "src/types.c"
+ $corelib = $3; //@line 926 "src/types.c"
+ $4 = (_awlval_sexpr()|0); //@line 928 "src/types.c"
+ $args = $4; //@line 928 "src/types.c"
+ $5 = $args; //@line 929 "src/types.c"
+ $6 = $corelib; //@line 929 "src/types.c"
+ $7 = (_awlval_str($6)|0); //@line 929 "src/types.c"
+ $8 = (_awlval_add($5,$7)|0); //@line 929 "src/types.c"
+ $args = $8; //@line 929 "src/types.c"
+ $9 = $0; //@line 930 "src/types.c"
+ $10 = $args; //@line 930 "src/types.c"
+ $11 = (_builtin_import($9,$10)|0); //@line 930 "src/types.c"
+ _awlval_del($11); //@line 930 "src/types.c"
+ $12 = $awl_base; //@line 932 "src/types.c"
+ _free($12); //@line 932 "src/types.c"
+ $13 = $corelib; //@line 933 "src/types.c"
+ _free($13); //@line 933 "src/types.c"
+ STACKTOP = sp;return; //@line 934 "src/types.c"
 }
 function _awlenv_index($e,$k) {
  $e = $e|0;
@@ -26002,26 +26036,26 @@ function _awlenv_index($e,$k) {
  STACKTOP = STACKTOP + 16|0;
  $0 = $e;
  $1 = $k;
- $2 = $0; //@line 815 "src/types.c"
- $3 = $1; //@line 815 "src/types.c"
- $4 = (($3) + 16|0); //@line 815 "src/types.c"
- $5 = HEAP32[$4>>2]|0; //@line 815 "src/types.c"
- $6 = (_awlenv_findslot($2,$5)|0); //@line 815 "src/types.c"
- $i = $6; //@line 815 "src/types.c"
- $7 = $i; //@line 816 "src/types.c"
- $8 = $0; //@line 816 "src/types.c"
- $9 = (($8) + 12|0); //@line 816 "src/types.c"
- $10 = HEAP32[$9>>2]|0; //@line 816 "src/types.c"
- $11 = (($10) + ($7<<2)|0); //@line 816 "src/types.c"
- $12 = HEAP32[$11>>2]|0; //@line 816 "src/types.c"
- $13 = ($12|0)!=(0|0); //@line 816 "src/types.c"
+ $2 = $0; //@line 817 "src/types.c"
+ $3 = $1; //@line 817 "src/types.c"
+ $4 = (($3) + 16|0); //@line 817 "src/types.c"
+ $5 = HEAP32[$4>>2]|0; //@line 817 "src/types.c"
+ $6 = (_awlenv_findslot($2,$5)|0); //@line 817 "src/types.c"
+ $i = $6; //@line 817 "src/types.c"
+ $7 = $i; //@line 818 "src/types.c"
+ $8 = $0; //@line 818 "src/types.c"
+ $9 = (($8) + 12|0); //@line 818 "src/types.c"
+ $10 = HEAP32[$9>>2]|0; //@line 818 "src/types.c"
+ $11 = (($10) + ($7<<2)|0); //@line 818 "src/types.c"
+ $12 = HEAP32[$11>>2]|0; //@line 818 "src/types.c"
+ $13 = ($12|0)!=(0|0); //@line 818 "src/types.c"
  if ($13) {
-  $14 = $i; //@line 819 "src/types.c"
-  STACKTOP = sp;return ($14|0); //@line 819 "src/types.c"
+  $14 = $i; //@line 821 "src/types.c"
+  STACKTOP = sp;return ($14|0); //@line 821 "src/types.c"
  }
- $i = -1; //@line 817 "src/types.c"
- $14 = $i; //@line 819 "src/types.c"
- STACKTOP = sp;return ($14|0); //@line 819 "src/types.c"
+ $i = -1; //@line 819 "src/types.c"
+ $14 = $i; //@line 821 "src/types.c"
+ STACKTOP = sp;return ($14|0); //@line 821 "src/types.c"
 }
 function _awlenv_findslot($e,$k) {
  $e = $e|0;
@@ -26032,32 +26066,32 @@ function _awlenv_findslot($e,$k) {
  STACKTOP = STACKTOP + 16|0;
  $0 = $e;
  $1 = $k;
- $2 = $1; //@line 740 "src/types.c"
- $3 = (_awlenv_hash($2)|0); //@line 740 "src/types.c"
- $4 = $0; //@line 740 "src/types.c"
- $5 = (($4) + 4|0); //@line 740 "src/types.c"
- $6 = HEAP32[$5>>2]|0; //@line 740 "src/types.c"
- $7 = (($3>>>0) % ($6>>>0))&-1; //@line 740 "src/types.c"
- $i = $7; //@line 740 "src/types.c"
- $probe = 1; //@line 741 "src/types.c"
+ $2 = $1; //@line 742 "src/types.c"
+ $3 = (_awlenv_hash($2)|0); //@line 742 "src/types.c"
+ $4 = $0; //@line 742 "src/types.c"
+ $5 = (($4) + 4|0); //@line 742 "src/types.c"
+ $6 = HEAP32[$5>>2]|0; //@line 742 "src/types.c"
+ $7 = (($3>>>0) % ($6>>>0))&-1; //@line 742 "src/types.c"
+ $i = $7; //@line 742 "src/types.c"
+ $probe = 1; //@line 743 "src/types.c"
  while(1) {
-  $8 = $i; //@line 742 "src/types.c"
-  $9 = $0; //@line 742 "src/types.c"
-  $10 = (($9) + 12|0); //@line 742 "src/types.c"
-  $11 = HEAP32[$10>>2]|0; //@line 742 "src/types.c"
-  $12 = (($11) + ($8<<2)|0); //@line 742 "src/types.c"
-  $13 = HEAP32[$12>>2]|0; //@line 742 "src/types.c"
-  $14 = ($13|0)!=(0|0); //@line 742 "src/types.c"
+  $8 = $i; //@line 744 "src/types.c"
+  $9 = $0; //@line 744 "src/types.c"
+  $10 = (($9) + 12|0); //@line 744 "src/types.c"
+  $11 = HEAP32[$10>>2]|0; //@line 744 "src/types.c"
+  $12 = (($11) + ($8<<2)|0); //@line 744 "src/types.c"
+  $13 = HEAP32[$12>>2]|0; //@line 744 "src/types.c"
+  $14 = ($13|0)!=(0|0); //@line 744 "src/types.c"
   if ($14) {
-   $15 = $i; //@line 742 "src/types.c"
-   $16 = $0; //@line 742 "src/types.c"
-   $17 = (($16) + 12|0); //@line 742 "src/types.c"
-   $18 = HEAP32[$17>>2]|0; //@line 742 "src/types.c"
-   $19 = (($18) + ($15<<2)|0); //@line 742 "src/types.c"
-   $20 = HEAP32[$19>>2]|0; //@line 742 "src/types.c"
-   $21 = $1; //@line 742 "src/types.c"
-   $22 = (_streq($20,$21)|0); //@line 742 "src/types.c"
-   $23 = $22 ^ 1; //@line 742 "src/types.c"
+   $15 = $i; //@line 744 "src/types.c"
+   $16 = $0; //@line 744 "src/types.c"
+   $17 = (($16) + 12|0); //@line 744 "src/types.c"
+   $18 = HEAP32[$17>>2]|0; //@line 744 "src/types.c"
+   $19 = (($18) + ($15<<2)|0); //@line 744 "src/types.c"
+   $20 = HEAP32[$19>>2]|0; //@line 744 "src/types.c"
+   $21 = $1; //@line 744 "src/types.c"
+   $22 = (_streq($20,$21)|0); //@line 744 "src/types.c"
+   $23 = $22 ^ 1; //@line 744 "src/types.c"
    $34 = $23;
   } else {
    $34 = 0;
@@ -26065,20 +26099,20 @@ function _awlenv_findslot($e,$k) {
   if (!($34)) {
    break;
   }
-  $24 = $i; //@line 743 "src/types.c"
-  $25 = $probe; //@line 743 "src/types.c"
-  $26 = (($24) + ($25))|0; //@line 743 "src/types.c"
-  $27 = $0; //@line 743 "src/types.c"
-  $28 = (($27) + 4|0); //@line 743 "src/types.c"
-  $29 = HEAP32[$28>>2]|0; //@line 743 "src/types.c"
-  $30 = (($26>>>0) % ($29>>>0))&-1; //@line 743 "src/types.c"
-  $i = $30; //@line 743 "src/types.c"
-  $31 = $probe; //@line 744 "src/types.c"
-  $32 = (($31) + 1)|0; //@line 744 "src/types.c"
-  $probe = $32; //@line 744 "src/types.c"
+  $24 = $i; //@line 745 "src/types.c"
+  $25 = $probe; //@line 745 "src/types.c"
+  $26 = (($24) + ($25))|0; //@line 745 "src/types.c"
+  $27 = $0; //@line 745 "src/types.c"
+  $28 = (($27) + 4|0); //@line 745 "src/types.c"
+  $29 = HEAP32[$28>>2]|0; //@line 745 "src/types.c"
+  $30 = (($26>>>0) % ($29>>>0))&-1; //@line 745 "src/types.c"
+  $i = $30; //@line 745 "src/types.c"
+  $31 = $probe; //@line 746 "src/types.c"
+  $32 = (($31) + 1)|0; //@line 746 "src/types.c"
+  $probe = $32; //@line 746 "src/types.c"
  }
- $33 = $i; //@line 746 "src/types.c"
- STACKTOP = sp;return ($33|0); //@line 746 "src/types.c"
+ $33 = $i; //@line 748 "src/types.c"
+ STACKTOP = sp;return ($33|0); //@line 748 "src/types.c"
 }
 function _awlenv_get($e,$k) {
  $e = $e|0;
@@ -26088,12 +26122,12 @@ function _awlenv_get($e,$k) {
  STACKTOP = STACKTOP + 16|0;
  $0 = $e;
  $1 = $k;
- $2 = $0; //@line 823 "src/types.c"
- $3 = $1; //@line 823 "src/types.c"
- $4 = (($3) + 16|0); //@line 823 "src/types.c"
- $5 = HEAP32[$4>>2]|0; //@line 823 "src/types.c"
- $6 = (_awlenv_lookup($2,$5)|0); //@line 823 "src/types.c"
- STACKTOP = sp;return ($6|0); //@line 823 "src/types.c"
+ $2 = $0; //@line 825 "src/types.c"
+ $3 = $1; //@line 825 "src/types.c"
+ $4 = (($3) + 16|0); //@line 825 "src/types.c"
+ $5 = HEAP32[$4>>2]|0; //@line 825 "src/types.c"
+ $6 = (_awlenv_lookup($2,$5)|0); //@line 825 "src/types.c"
+ STACKTOP = sp;return ($6|0); //@line 825 "src/types.c"
 }
 function _awlenv_lookup($e,$k) {
  $e = $e|0;
@@ -26105,47 +26139,47 @@ function _awlenv_lookup($e,$k) {
  $vararg_buffer = sp;
  $1 = $e;
  $2 = $k;
- $3 = $1; //@line 750 "src/types.c"
- $4 = $2; //@line 750 "src/types.c"
- $5 = (_awlenv_findslot($3,$4)|0); //@line 750 "src/types.c"
- $i = $5; //@line 750 "src/types.c"
- $6 = $i; //@line 751 "src/types.c"
- $7 = $1; //@line 751 "src/types.c"
- $8 = (($7) + 12|0); //@line 751 "src/types.c"
- $9 = HEAP32[$8>>2]|0; //@line 751 "src/types.c"
- $10 = (($9) + ($6<<2)|0); //@line 751 "src/types.c"
- $11 = HEAP32[$10>>2]|0; //@line 751 "src/types.c"
- $12 = ($11|0)!=(0|0); //@line 751 "src/types.c"
+ $3 = $1; //@line 752 "src/types.c"
+ $4 = $2; //@line 752 "src/types.c"
+ $5 = (_awlenv_findslot($3,$4)|0); //@line 752 "src/types.c"
+ $i = $5; //@line 752 "src/types.c"
+ $6 = $i; //@line 753 "src/types.c"
+ $7 = $1; //@line 753 "src/types.c"
+ $8 = (($7) + 12|0); //@line 753 "src/types.c"
+ $9 = HEAP32[$8>>2]|0; //@line 753 "src/types.c"
+ $10 = (($9) + ($6<<2)|0); //@line 753 "src/types.c"
+ $11 = HEAP32[$10>>2]|0; //@line 753 "src/types.c"
+ $12 = ($11|0)!=(0|0); //@line 753 "src/types.c"
  if ($12) {
-  $13 = $i; //@line 752 "src/types.c"
-  $14 = $1; //@line 752 "src/types.c"
-  $15 = (($14) + 16|0); //@line 752 "src/types.c"
-  $16 = HEAP32[$15>>2]|0; //@line 752 "src/types.c"
-  $17 = (($16) + ($13<<2)|0); //@line 752 "src/types.c"
-  $18 = HEAP32[$17>>2]|0; //@line 752 "src/types.c"
-  $19 = (_awlval_copy($18)|0); //@line 752 "src/types.c"
-  $0 = $19; //@line 752 "src/types.c"
-  $29 = $0; //@line 761 "src/types.c"
-  STACKTOP = sp;return ($29|0); //@line 761 "src/types.c"
+  $13 = $i; //@line 754 "src/types.c"
+  $14 = $1; //@line 754 "src/types.c"
+  $15 = (($14) + 16|0); //@line 754 "src/types.c"
+  $16 = HEAP32[$15>>2]|0; //@line 754 "src/types.c"
+  $17 = (($16) + ($13<<2)|0); //@line 754 "src/types.c"
+  $18 = HEAP32[$17>>2]|0; //@line 754 "src/types.c"
+  $19 = (_awlval_copy($18)|0); //@line 754 "src/types.c"
+  $0 = $19; //@line 754 "src/types.c"
+  $29 = $0; //@line 763 "src/types.c"
+  STACKTOP = sp;return ($29|0); //@line 763 "src/types.c"
  }
- $20 = $1; //@line 756 "src/types.c"
- $21 = HEAP32[$20>>2]|0; //@line 756 "src/types.c"
- $22 = ($21|0)!=(0|0); //@line 756 "src/types.c"
+ $20 = $1; //@line 758 "src/types.c"
+ $21 = HEAP32[$20>>2]|0; //@line 758 "src/types.c"
+ $22 = ($21|0)!=(0|0); //@line 758 "src/types.c"
  if ($22) {
-  $23 = $1; //@line 757 "src/types.c"
-  $24 = HEAP32[$23>>2]|0; //@line 757 "src/types.c"
-  $25 = $2; //@line 757 "src/types.c"
-  $26 = (_awlenv_lookup($24,$25)|0); //@line 757 "src/types.c"
-  $0 = $26; //@line 757 "src/types.c"
-  $29 = $0; //@line 761 "src/types.c"
-  STACKTOP = sp;return ($29|0); //@line 761 "src/types.c"
+  $23 = $1; //@line 759 "src/types.c"
+  $24 = HEAP32[$23>>2]|0; //@line 759 "src/types.c"
+  $25 = $2; //@line 759 "src/types.c"
+  $26 = (_awlenv_lookup($24,$25)|0); //@line 759 "src/types.c"
+  $0 = $26; //@line 759 "src/types.c"
+  $29 = $0; //@line 763 "src/types.c"
+  STACKTOP = sp;return ($29|0); //@line 763 "src/types.c"
  } else {
-  $27 = $2; //@line 759 "src/types.c"
-  HEAP32[$vararg_buffer>>2] = $27; //@line 759 "src/types.c"
-  $28 = (_awlval_err(5928,$vararg_buffer)|0); //@line 759 "src/types.c"
-  $0 = $28; //@line 759 "src/types.c"
-  $29 = $0; //@line 761 "src/types.c"
-  STACKTOP = sp;return ($29|0); //@line 761 "src/types.c"
+  $27 = $2; //@line 761 "src/types.c"
+  HEAP32[$vararg_buffer>>2] = $27; //@line 761 "src/types.c"
+  $28 = (_awlval_err(5928,$vararg_buffer)|0); //@line 761 "src/types.c"
+  $0 = $28; //@line 761 "src/types.c"
+  $29 = $0; //@line 763 "src/types.c"
+  STACKTOP = sp;return ($29|0); //@line 763 "src/types.c"
  }
  return 0|0;
 }
@@ -26162,15 +26196,15 @@ function _awlenv_put($e,$k,$v,$locked) {
  $2 = $v;
  $4 = $locked&1;
  $3 = $4;
- $5 = $0; //@line 827 "src/types.c"
- $6 = $1; //@line 827 "src/types.c"
- $7 = (($6) + 16|0); //@line 827 "src/types.c"
- $8 = HEAP32[$7>>2]|0; //@line 827 "src/types.c"
- $9 = $2; //@line 827 "src/types.c"
- $10 = $3; //@line 827 "src/types.c"
- $11 = $10&1; //@line 827 "src/types.c"
- _awlenv_set($5,$8,$9,$11); //@line 827 "src/types.c"
- STACKTOP = sp;return; //@line 828 "src/types.c"
+ $5 = $0; //@line 829 "src/types.c"
+ $6 = $1; //@line 829 "src/types.c"
+ $7 = (($6) + 16|0); //@line 829 "src/types.c"
+ $8 = HEAP32[$7>>2]|0; //@line 829 "src/types.c"
+ $9 = $2; //@line 829 "src/types.c"
+ $10 = $3; //@line 829 "src/types.c"
+ $11 = $10&1; //@line 829 "src/types.c"
+ _awlenv_set($5,$8,$9,$11); //@line 829 "src/types.c"
+ STACKTOP = sp;return; //@line 830 "src/types.c"
 }
 function _awlenv_set($e,$k,$v,$locked) {
  $e = $e|0;
@@ -26189,95 +26223,95 @@ function _awlenv_set($e,$k,$v,$locked) {
  $2 = $v;
  $4 = $locked&1;
  $3 = $4;
- $5 = $0; //@line 767 "src/types.c"
- $6 = $1; //@line 767 "src/types.c"
- $7 = (_awlenv_findslot($5,$6)|0); //@line 767 "src/types.c"
- $i = $7; //@line 767 "src/types.c"
- $8 = $i; //@line 768 "src/types.c"
- $9 = $0; //@line 768 "src/types.c"
- $10 = (($9) + 12|0); //@line 768 "src/types.c"
- $11 = HEAP32[$10>>2]|0; //@line 768 "src/types.c"
- $12 = (($11) + ($8<<2)|0); //@line 768 "src/types.c"
- $13 = HEAP32[$12>>2]|0; //@line 768 "src/types.c"
- $14 = ($13|0)!=(0|0); //@line 768 "src/types.c"
+ $5 = $0; //@line 769 "src/types.c"
+ $6 = $1; //@line 769 "src/types.c"
+ $7 = (_awlenv_findslot($5,$6)|0); //@line 769 "src/types.c"
+ $i = $7; //@line 769 "src/types.c"
+ $8 = $i; //@line 770 "src/types.c"
+ $9 = $0; //@line 770 "src/types.c"
+ $10 = (($9) + 12|0); //@line 770 "src/types.c"
+ $11 = HEAP32[$10>>2]|0; //@line 770 "src/types.c"
+ $12 = (($11) + ($8<<2)|0); //@line 770 "src/types.c"
+ $13 = HEAP32[$12>>2]|0; //@line 770 "src/types.c"
+ $14 = ($13|0)!=(0|0); //@line 770 "src/types.c"
  if ($14) {
-  $15 = $i; //@line 769 "src/types.c"
-  $16 = $0; //@line 769 "src/types.c"
-  $17 = (($16) + 16|0); //@line 769 "src/types.c"
-  $18 = HEAP32[$17>>2]|0; //@line 769 "src/types.c"
-  $19 = (($18) + ($15<<2)|0); //@line 769 "src/types.c"
-  $20 = HEAP32[$19>>2]|0; //@line 769 "src/types.c"
-  _awlval_del($20); //@line 769 "src/types.c"
-  $21 = $2; //@line 770 "src/types.c"
-  $22 = (_awlval_copy($21)|0); //@line 770 "src/types.c"
-  $23 = $i; //@line 770 "src/types.c"
-  $24 = $0; //@line 770 "src/types.c"
-  $25 = (($24) + 16|0); //@line 770 "src/types.c"
-  $26 = HEAP32[$25>>2]|0; //@line 770 "src/types.c"
-  $27 = (($26) + ($23<<2)|0); //@line 770 "src/types.c"
-  HEAP32[$27>>2] = $22; //@line 770 "src/types.c"
-  STACKTOP = sp;return; //@line 784 "src/types.c"
+  $15 = $i; //@line 771 "src/types.c"
+  $16 = $0; //@line 771 "src/types.c"
+  $17 = (($16) + 16|0); //@line 771 "src/types.c"
+  $18 = HEAP32[$17>>2]|0; //@line 771 "src/types.c"
+  $19 = (($18) + ($15<<2)|0); //@line 771 "src/types.c"
+  $20 = HEAP32[$19>>2]|0; //@line 771 "src/types.c"
+  _awlval_del($20); //@line 771 "src/types.c"
+  $21 = $2; //@line 772 "src/types.c"
+  $22 = (_awlval_copy($21)|0); //@line 772 "src/types.c"
+  $23 = $i; //@line 772 "src/types.c"
+  $24 = $0; //@line 772 "src/types.c"
+  $25 = (($24) + 16|0); //@line 772 "src/types.c"
+  $26 = HEAP32[$25>>2]|0; //@line 772 "src/types.c"
+  $27 = (($26) + ($23<<2)|0); //@line 772 "src/types.c"
+  HEAP32[$27>>2] = $22; //@line 772 "src/types.c"
+  STACKTOP = sp;return; //@line 786 "src/types.c"
  }
- $28 = $0; //@line 775 "src/types.c"
- $29 = (($28) + 8|0); //@line 775 "src/types.c"
- $30 = HEAP32[$29>>2]|0; //@line 775 "src/types.c"
- $31 = (($30) + 1)|0; //@line 775 "src/types.c"
- HEAP32[$29>>2] = $31; //@line 775 "src/types.c"
- $32 = $0; //@line 777 "src/types.c"
- $33 = (($32) + 8|0); //@line 777 "src/types.c"
- $34 = HEAP32[$33>>2]|0; //@line 777 "src/types.c"
- $35 = (+($34|0)); //@line 777 "src/types.c"
- $36 = $0; //@line 777 "src/types.c"
- $37 = (($36) + 4|0); //@line 777 "src/types.c"
- $38 = HEAP32[$37>>2]|0; //@line 777 "src/types.c"
- $39 = (+($38|0)); //@line 777 "src/types.c"
- $40 = $35 / $39; //@line 777 "src/types.c"
- $41 = $40; //@line 777 "src/types.c"
- $42 = $41 >= 0.75; //@line 777 "src/types.c"
+ $28 = $0; //@line 777 "src/types.c"
+ $29 = (($28) + 8|0); //@line 777 "src/types.c"
+ $30 = HEAP32[$29>>2]|0; //@line 777 "src/types.c"
+ $31 = (($30) + 1)|0; //@line 777 "src/types.c"
+ HEAP32[$29>>2] = $31; //@line 777 "src/types.c"
+ $32 = $0; //@line 779 "src/types.c"
+ $33 = (($32) + 8|0); //@line 779 "src/types.c"
+ $34 = HEAP32[$33>>2]|0; //@line 779 "src/types.c"
+ $35 = (+($34|0)); //@line 779 "src/types.c"
+ $36 = $0; //@line 779 "src/types.c"
+ $37 = (($36) + 4|0); //@line 779 "src/types.c"
+ $38 = HEAP32[$37>>2]|0; //@line 779 "src/types.c"
+ $39 = (+($38|0)); //@line 779 "src/types.c"
+ $40 = $35 / $39; //@line 779 "src/types.c"
+ $41 = $40; //@line 779 "src/types.c"
+ $42 = $41 >= 0.75; //@line 779 "src/types.c"
  if ($42) {
-  $43 = $0; //@line 778 "src/types.c"
-  _awlenv_resize($43); //@line 778 "src/types.c"
-  $44 = $0; //@line 779 "src/types.c"
-  $45 = $1; //@line 779 "src/types.c"
-  $46 = (_awlenv_findslot($44,$45)|0); //@line 779 "src/types.c"
-  $i = $46; //@line 779 "src/types.c"
+  $43 = $0; //@line 780 "src/types.c"
+  _awlenv_resize($43); //@line 780 "src/types.c"
+  $44 = $0; //@line 781 "src/types.c"
+  $45 = $1; //@line 781 "src/types.c"
+  $46 = (_awlenv_findslot($44,$45)|0); //@line 781 "src/types.c"
+  $i = $46; //@line 781 "src/types.c"
  }
- $47 = $1; //@line 781 "src/types.c"
- $48 = (_strlen(($47|0))|0); //@line 781 "src/types.c"
- $49 = (($48) + 1)|0; //@line 781 "src/types.c"
- $50 = (_malloc($49)|0); //@line 781 "src/types.c"
- $51 = $i; //@line 781 "src/types.c"
- $52 = $0; //@line 781 "src/types.c"
- $53 = (($52) + 12|0); //@line 781 "src/types.c"
- $54 = HEAP32[$53>>2]|0; //@line 781 "src/types.c"
- $55 = (($54) + ($51<<2)|0); //@line 781 "src/types.c"
- HEAP32[$55>>2] = $50; //@line 781 "src/types.c"
- $56 = $i; //@line 782 "src/types.c"
- $57 = $0; //@line 782 "src/types.c"
- $58 = (($57) + 12|0); //@line 782 "src/types.c"
- $59 = HEAP32[$58>>2]|0; //@line 782 "src/types.c"
- $60 = (($59) + ($56<<2)|0); //@line 782 "src/types.c"
- $61 = HEAP32[$60>>2]|0; //@line 782 "src/types.c"
- $62 = $1; //@line 782 "src/types.c"
- (_strcpy(($61|0),($62|0))|0); //@line 782 "src/types.c"
- $63 = $2; //@line 783 "src/types.c"
- $64 = (_awlval_copy($63)|0); //@line 783 "src/types.c"
- $65 = $i; //@line 783 "src/types.c"
- $66 = $0; //@line 783 "src/types.c"
- $67 = (($66) + 16|0); //@line 783 "src/types.c"
- $68 = HEAP32[$67>>2]|0; //@line 783 "src/types.c"
- $69 = (($68) + ($65<<2)|0); //@line 783 "src/types.c"
- HEAP32[$69>>2] = $64; //@line 783 "src/types.c"
- $70 = $3; //@line 784 "src/types.c"
- $71 = $70&1; //@line 784 "src/types.c"
- $72 = $i; //@line 784 "src/types.c"
- $73 = $0; //@line 784 "src/types.c"
- $74 = (($73) + 20|0); //@line 784 "src/types.c"
- $75 = HEAP32[$74>>2]|0; //@line 784 "src/types.c"
- $76 = (($75) + ($72)|0); //@line 784 "src/types.c"
- $77 = $71&1; //@line 784 "src/types.c"
- HEAP8[$76>>0] = $77; //@line 784 "src/types.c"
- STACKTOP = sp;return; //@line 784 "src/types.c"
+ $47 = $1; //@line 783 "src/types.c"
+ $48 = (_strlen(($47|0))|0); //@line 783 "src/types.c"
+ $49 = (($48) + 1)|0; //@line 783 "src/types.c"
+ $50 = (_malloc($49)|0); //@line 783 "src/types.c"
+ $51 = $i; //@line 783 "src/types.c"
+ $52 = $0; //@line 783 "src/types.c"
+ $53 = (($52) + 12|0); //@line 783 "src/types.c"
+ $54 = HEAP32[$53>>2]|0; //@line 783 "src/types.c"
+ $55 = (($54) + ($51<<2)|0); //@line 783 "src/types.c"
+ HEAP32[$55>>2] = $50; //@line 783 "src/types.c"
+ $56 = $i; //@line 784 "src/types.c"
+ $57 = $0; //@line 784 "src/types.c"
+ $58 = (($57) + 12|0); //@line 784 "src/types.c"
+ $59 = HEAP32[$58>>2]|0; //@line 784 "src/types.c"
+ $60 = (($59) + ($56<<2)|0); //@line 784 "src/types.c"
+ $61 = HEAP32[$60>>2]|0; //@line 784 "src/types.c"
+ $62 = $1; //@line 784 "src/types.c"
+ (_strcpy(($61|0),($62|0))|0); //@line 784 "src/types.c"
+ $63 = $2; //@line 785 "src/types.c"
+ $64 = (_awlval_copy($63)|0); //@line 785 "src/types.c"
+ $65 = $i; //@line 785 "src/types.c"
+ $66 = $0; //@line 785 "src/types.c"
+ $67 = (($66) + 16|0); //@line 785 "src/types.c"
+ $68 = HEAP32[$67>>2]|0; //@line 785 "src/types.c"
+ $69 = (($68) + ($65<<2)|0); //@line 785 "src/types.c"
+ HEAP32[$69>>2] = $64; //@line 785 "src/types.c"
+ $70 = $3; //@line 786 "src/types.c"
+ $71 = $70&1; //@line 786 "src/types.c"
+ $72 = $i; //@line 786 "src/types.c"
+ $73 = $0; //@line 786 "src/types.c"
+ $74 = (($73) + 20|0); //@line 786 "src/types.c"
+ $75 = HEAP32[$74>>2]|0; //@line 786 "src/types.c"
+ $76 = (($75) + ($72)|0); //@line 786 "src/types.c"
+ $77 = $71&1; //@line 786 "src/types.c"
+ HEAP8[$76>>0] = $77; //@line 786 "src/types.c"
+ STACKTOP = sp;return; //@line 786 "src/types.c"
 }
 function _awlenv_put_global($e,$k,$v,$locked) {
  $e = $e|0;
@@ -26293,25 +26327,25 @@ function _awlenv_put_global($e,$k,$v,$locked) {
  $4 = $locked&1;
  $3 = $4;
  while(1) {
-  $5 = $0; //@line 831 "src/types.c"
-  $6 = HEAP32[$5>>2]|0; //@line 831 "src/types.c"
-  $7 = ($6|0)!=(0|0); //@line 831 "src/types.c"
+  $5 = $0; //@line 833 "src/types.c"
+  $6 = HEAP32[$5>>2]|0; //@line 833 "src/types.c"
+  $7 = ($6|0)!=(0|0); //@line 833 "src/types.c"
   if (!($7)) {
    break;
   }
-  $8 = $0; //@line 832 "src/types.c"
-  $9 = HEAP32[$8>>2]|0; //@line 832 "src/types.c"
-  $0 = $9; //@line 832 "src/types.c"
+  $8 = $0; //@line 834 "src/types.c"
+  $9 = HEAP32[$8>>2]|0; //@line 834 "src/types.c"
+  $0 = $9; //@line 834 "src/types.c"
  }
- $10 = $0; //@line 834 "src/types.c"
- $11 = $1; //@line 834 "src/types.c"
- $12 = (($11) + 16|0); //@line 834 "src/types.c"
- $13 = HEAP32[$12>>2]|0; //@line 834 "src/types.c"
- $14 = $2; //@line 834 "src/types.c"
- $15 = $3; //@line 834 "src/types.c"
- $16 = $15&1; //@line 834 "src/types.c"
- _awlenv_set($10,$13,$14,$16); //@line 834 "src/types.c"
- STACKTOP = sp;return; //@line 835 "src/types.c"
+ $10 = $0; //@line 836 "src/types.c"
+ $11 = $1; //@line 836 "src/types.c"
+ $12 = (($11) + 16|0); //@line 836 "src/types.c"
+ $13 = HEAP32[$12>>2]|0; //@line 836 "src/types.c"
+ $14 = $2; //@line 836 "src/types.c"
+ $15 = $3; //@line 836 "src/types.c"
+ $16 = $15&1; //@line 836 "src/types.c"
+ _awlenv_set($10,$13,$14,$16); //@line 836 "src/types.c"
+ STACKTOP = sp;return; //@line 837 "src/types.c"
 }
 function _awlenv_add_builtin($e,$name,$builtin) {
  $e = $e|0;
@@ -26323,22 +26357,22 @@ function _awlenv_add_builtin($e,$name,$builtin) {
  $0 = $e;
  $1 = $name;
  $2 = $builtin;
- $3 = $1; //@line 860 "src/types.c"
- $4 = (_awlval_sym($3)|0); //@line 860 "src/types.c"
- $k = $4; //@line 860 "src/types.c"
- $5 = $2; //@line 861 "src/types.c"
- $6 = $1; //@line 861 "src/types.c"
- $7 = (_awlval_fun($5,$6)|0); //@line 861 "src/types.c"
- $v = $7; //@line 861 "src/types.c"
- $8 = $0; //@line 862 "src/types.c"
- $9 = $k; //@line 862 "src/types.c"
- $10 = $v; //@line 862 "src/types.c"
- _awlenv_put($8,$9,$10,1); //@line 862 "src/types.c"
- $11 = $k; //@line 863 "src/types.c"
- _awlval_del($11); //@line 863 "src/types.c"
- $12 = $v; //@line 864 "src/types.c"
- _awlval_del($12); //@line 864 "src/types.c"
- STACKTOP = sp;return; //@line 865 "src/types.c"
+ $3 = $1; //@line 862 "src/types.c"
+ $4 = (_awlval_sym($3)|0); //@line 862 "src/types.c"
+ $k = $4; //@line 862 "src/types.c"
+ $5 = $2; //@line 863 "src/types.c"
+ $6 = $1; //@line 863 "src/types.c"
+ $7 = (_awlval_fun($5,$6)|0); //@line 863 "src/types.c"
+ $v = $7; //@line 863 "src/types.c"
+ $8 = $0; //@line 864 "src/types.c"
+ $9 = $k; //@line 864 "src/types.c"
+ $10 = $v; //@line 864 "src/types.c"
+ _awlenv_put($8,$9,$10,1); //@line 864 "src/types.c"
+ $11 = $k; //@line 865 "src/types.c"
+ _awlval_del($11); //@line 865 "src/types.c"
+ $12 = $v; //@line 866 "src/types.c"
+ _awlval_del($12); //@line 866 "src/types.c"
+ STACKTOP = sp;return; //@line 867 "src/types.c"
 }
 function _awlenv_resize($e) {
  $e = $e|0;
@@ -26350,124 +26384,124 @@ function _awlenv_resize($e) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 32|0;
  $0 = $e;
- $1 = $0; //@line 788 "src/types.c"
- $2 = (($1) + 4|0); //@line 788 "src/types.c"
- $3 = HEAP32[$2>>2]|0; //@line 788 "src/types.c"
- $oldsize = $3; //@line 788 "src/types.c"
- $4 = $0; //@line 789 "src/types.c"
- $5 = (($4) + 4|0); //@line 789 "src/types.c"
- $6 = HEAP32[$5>>2]|0; //@line 789 "src/types.c"
- $7 = $6<<1; //@line 789 "src/types.c"
- $8 = $0; //@line 789 "src/types.c"
- $9 = (($8) + 4|0); //@line 789 "src/types.c"
- HEAP32[$9>>2] = $7; //@line 789 "src/types.c"
- $10 = $0; //@line 791 "src/types.c"
- $11 = (($10) + 12|0); //@line 791 "src/types.c"
- $12 = HEAP32[$11>>2]|0; //@line 791 "src/types.c"
- $syms = $12; //@line 791 "src/types.c"
- $13 = $0; //@line 792 "src/types.c"
- $14 = (($13) + 16|0); //@line 792 "src/types.c"
- $15 = HEAP32[$14>>2]|0; //@line 792 "src/types.c"
- $vals = $15; //@line 792 "src/types.c"
- $16 = $0; //@line 793 "src/types.c"
- $17 = (($16) + 20|0); //@line 793 "src/types.c"
- $18 = HEAP32[$17>>2]|0; //@line 793 "src/types.c"
- $locked = $18; //@line 793 "src/types.c"
- $19 = $0; //@line 795 "src/types.c"
- $20 = (($19) + 4|0); //@line 795 "src/types.c"
- $21 = HEAP32[$20>>2]|0; //@line 795 "src/types.c"
- $22 = $21<<2; //@line 795 "src/types.c"
- $23 = (_malloc($22)|0); //@line 795 "src/types.c"
- $24 = $0; //@line 795 "src/types.c"
- $25 = (($24) + 12|0); //@line 795 "src/types.c"
- HEAP32[$25>>2] = $23; //@line 795 "src/types.c"
- $i = 0; //@line 796 "src/types.c"
+ $1 = $0; //@line 790 "src/types.c"
+ $2 = (($1) + 4|0); //@line 790 "src/types.c"
+ $3 = HEAP32[$2>>2]|0; //@line 790 "src/types.c"
+ $oldsize = $3; //@line 790 "src/types.c"
+ $4 = $0; //@line 791 "src/types.c"
+ $5 = (($4) + 4|0); //@line 791 "src/types.c"
+ $6 = HEAP32[$5>>2]|0; //@line 791 "src/types.c"
+ $7 = $6<<1; //@line 791 "src/types.c"
+ $8 = $0; //@line 791 "src/types.c"
+ $9 = (($8) + 4|0); //@line 791 "src/types.c"
+ HEAP32[$9>>2] = $7; //@line 791 "src/types.c"
+ $10 = $0; //@line 793 "src/types.c"
+ $11 = (($10) + 12|0); //@line 793 "src/types.c"
+ $12 = HEAP32[$11>>2]|0; //@line 793 "src/types.c"
+ $syms = $12; //@line 793 "src/types.c"
+ $13 = $0; //@line 794 "src/types.c"
+ $14 = (($13) + 16|0); //@line 794 "src/types.c"
+ $15 = HEAP32[$14>>2]|0; //@line 794 "src/types.c"
+ $vals = $15; //@line 794 "src/types.c"
+ $16 = $0; //@line 795 "src/types.c"
+ $17 = (($16) + 20|0); //@line 795 "src/types.c"
+ $18 = HEAP32[$17>>2]|0; //@line 795 "src/types.c"
+ $locked = $18; //@line 795 "src/types.c"
+ $19 = $0; //@line 797 "src/types.c"
+ $20 = (($19) + 4|0); //@line 797 "src/types.c"
+ $21 = HEAP32[$20>>2]|0; //@line 797 "src/types.c"
+ $22 = $21<<2; //@line 797 "src/types.c"
+ $23 = (_malloc($22)|0); //@line 797 "src/types.c"
+ $24 = $0; //@line 797 "src/types.c"
+ $25 = (($24) + 12|0); //@line 797 "src/types.c"
+ HEAP32[$25>>2] = $23; //@line 797 "src/types.c"
+ $i = 0; //@line 798 "src/types.c"
  while(1) {
-  $26 = $i; //@line 796 "src/types.c"
-  $27 = $0; //@line 796 "src/types.c"
-  $28 = (($27) + 4|0); //@line 796 "src/types.c"
-  $29 = HEAP32[$28>>2]|0; //@line 796 "src/types.c"
-  $30 = ($26|0)<($29|0); //@line 796 "src/types.c"
+  $26 = $i; //@line 798 "src/types.c"
+  $27 = $0; //@line 798 "src/types.c"
+  $28 = (($27) + 4|0); //@line 798 "src/types.c"
+  $29 = HEAP32[$28>>2]|0; //@line 798 "src/types.c"
+  $30 = ($26|0)<($29|0); //@line 798 "src/types.c"
   if (!($30)) {
    break;
   }
-  $31 = $i; //@line 797 "src/types.c"
-  $32 = $0; //@line 797 "src/types.c"
-  $33 = (($32) + 12|0); //@line 797 "src/types.c"
-  $34 = HEAP32[$33>>2]|0; //@line 797 "src/types.c"
-  $35 = (($34) + ($31<<2)|0); //@line 797 "src/types.c"
-  HEAP32[$35>>2] = 0; //@line 797 "src/types.c"
-  $36 = $i; //@line 796 "src/types.c"
-  $37 = (($36) + 1)|0; //@line 796 "src/types.c"
-  $i = $37; //@line 796 "src/types.c"
+  $31 = $i; //@line 799 "src/types.c"
+  $32 = $0; //@line 799 "src/types.c"
+  $33 = (($32) + 12|0); //@line 799 "src/types.c"
+  $34 = HEAP32[$33>>2]|0; //@line 799 "src/types.c"
+  $35 = (($34) + ($31<<2)|0); //@line 799 "src/types.c"
+  HEAP32[$35>>2] = 0; //@line 799 "src/types.c"
+  $36 = $i; //@line 798 "src/types.c"
+  $37 = (($36) + 1)|0; //@line 798 "src/types.c"
+  $i = $37; //@line 798 "src/types.c"
  }
- $38 = $0; //@line 799 "src/types.c"
- $39 = (($38) + 4|0); //@line 799 "src/types.c"
- $40 = HEAP32[$39>>2]|0; //@line 799 "src/types.c"
- $41 = $40<<2; //@line 799 "src/types.c"
- $42 = (_malloc($41)|0); //@line 799 "src/types.c"
- $43 = $0; //@line 799 "src/types.c"
- $44 = (($43) + 16|0); //@line 799 "src/types.c"
- HEAP32[$44>>2] = $42; //@line 799 "src/types.c"
- $45 = $0; //@line 800 "src/types.c"
- $46 = (($45) + 4|0); //@line 800 "src/types.c"
- $47 = HEAP32[$46>>2]|0; //@line 800 "src/types.c"
- $48 = $47; //@line 800 "src/types.c"
- $49 = (_malloc($48)|0); //@line 800 "src/types.c"
- $50 = $0; //@line 800 "src/types.c"
- $51 = (($50) + 20|0); //@line 800 "src/types.c"
- HEAP32[$51>>2] = $49; //@line 800 "src/types.c"
- $i1 = 0; //@line 802 "src/types.c"
+ $38 = $0; //@line 801 "src/types.c"
+ $39 = (($38) + 4|0); //@line 801 "src/types.c"
+ $40 = HEAP32[$39>>2]|0; //@line 801 "src/types.c"
+ $41 = $40<<2; //@line 801 "src/types.c"
+ $42 = (_malloc($41)|0); //@line 801 "src/types.c"
+ $43 = $0; //@line 801 "src/types.c"
+ $44 = (($43) + 16|0); //@line 801 "src/types.c"
+ HEAP32[$44>>2] = $42; //@line 801 "src/types.c"
+ $45 = $0; //@line 802 "src/types.c"
+ $46 = (($45) + 4|0); //@line 802 "src/types.c"
+ $47 = HEAP32[$46>>2]|0; //@line 802 "src/types.c"
+ $48 = $47; //@line 802 "src/types.c"
+ $49 = (_malloc($48)|0); //@line 802 "src/types.c"
+ $50 = $0; //@line 802 "src/types.c"
+ $51 = (($50) + 20|0); //@line 802 "src/types.c"
+ HEAP32[$51>>2] = $49; //@line 802 "src/types.c"
+ $i1 = 0; //@line 804 "src/types.c"
  while(1) {
-  $52 = $i1; //@line 802 "src/types.c"
-  $53 = $oldsize; //@line 802 "src/types.c"
-  $54 = ($52|0)<($53|0); //@line 802 "src/types.c"
+  $52 = $i1; //@line 804 "src/types.c"
+  $53 = $oldsize; //@line 804 "src/types.c"
+  $54 = ($52|0)<($53|0); //@line 804 "src/types.c"
   if (!($54)) {
    break;
   }
-  $55 = $i1; //@line 803 "src/types.c"
-  $56 = $syms; //@line 803 "src/types.c"
-  $57 = (($56) + ($55<<2)|0); //@line 803 "src/types.c"
-  $58 = HEAP32[$57>>2]|0; //@line 803 "src/types.c"
-  $59 = ($58|0)!=(0|0); //@line 803 "src/types.c"
+  $55 = $i1; //@line 805 "src/types.c"
+  $56 = $syms; //@line 805 "src/types.c"
+  $57 = (($56) + ($55<<2)|0); //@line 805 "src/types.c"
+  $58 = HEAP32[$57>>2]|0; //@line 805 "src/types.c"
+  $59 = ($58|0)!=(0|0); //@line 805 "src/types.c"
   if ($59) {
-   $60 = $0; //@line 804 "src/types.c"
-   $61 = $i1; //@line 804 "src/types.c"
-   $62 = $syms; //@line 804 "src/types.c"
-   $63 = (($62) + ($61<<2)|0); //@line 804 "src/types.c"
-   $64 = HEAP32[$63>>2]|0; //@line 804 "src/types.c"
-   $65 = $i1; //@line 804 "src/types.c"
-   $66 = $vals; //@line 804 "src/types.c"
-   $67 = (($66) + ($65<<2)|0); //@line 804 "src/types.c"
-   $68 = HEAP32[$67>>2]|0; //@line 804 "src/types.c"
-   $69 = $i1; //@line 804 "src/types.c"
-   $70 = $locked; //@line 804 "src/types.c"
-   $71 = (($70) + ($69)|0); //@line 804 "src/types.c"
-   $72 = HEAP8[$71>>0]|0; //@line 804 "src/types.c"
-   $73 = $72&1; //@line 804 "src/types.c"
-   _awlenv_set($60,$64,$68,$73); //@line 804 "src/types.c"
-   $74 = $i1; //@line 805 "src/types.c"
-   $75 = $syms; //@line 805 "src/types.c"
-   $76 = (($75) + ($74<<2)|0); //@line 805 "src/types.c"
-   $77 = HEAP32[$76>>2]|0; //@line 805 "src/types.c"
-   _free($77); //@line 805 "src/types.c"
-   $78 = $i1; //@line 806 "src/types.c"
-   $79 = $vals; //@line 806 "src/types.c"
-   $80 = (($79) + ($78<<2)|0); //@line 806 "src/types.c"
-   $81 = HEAP32[$80>>2]|0; //@line 806 "src/types.c"
-   _awlval_del($81); //@line 806 "src/types.c"
+   $60 = $0; //@line 806 "src/types.c"
+   $61 = $i1; //@line 806 "src/types.c"
+   $62 = $syms; //@line 806 "src/types.c"
+   $63 = (($62) + ($61<<2)|0); //@line 806 "src/types.c"
+   $64 = HEAP32[$63>>2]|0; //@line 806 "src/types.c"
+   $65 = $i1; //@line 806 "src/types.c"
+   $66 = $vals; //@line 806 "src/types.c"
+   $67 = (($66) + ($65<<2)|0); //@line 806 "src/types.c"
+   $68 = HEAP32[$67>>2]|0; //@line 806 "src/types.c"
+   $69 = $i1; //@line 806 "src/types.c"
+   $70 = $locked; //@line 806 "src/types.c"
+   $71 = (($70) + ($69)|0); //@line 806 "src/types.c"
+   $72 = HEAP8[$71>>0]|0; //@line 806 "src/types.c"
+   $73 = $72&1; //@line 806 "src/types.c"
+   _awlenv_set($60,$64,$68,$73); //@line 806 "src/types.c"
+   $74 = $i1; //@line 807 "src/types.c"
+   $75 = $syms; //@line 807 "src/types.c"
+   $76 = (($75) + ($74<<2)|0); //@line 807 "src/types.c"
+   $77 = HEAP32[$76>>2]|0; //@line 807 "src/types.c"
+   _free($77); //@line 807 "src/types.c"
+   $78 = $i1; //@line 808 "src/types.c"
+   $79 = $vals; //@line 808 "src/types.c"
+   $80 = (($79) + ($78<<2)|0); //@line 808 "src/types.c"
+   $81 = HEAP32[$80>>2]|0; //@line 808 "src/types.c"
+   _awlval_del($81); //@line 808 "src/types.c"
   }
-  $82 = $i1; //@line 802 "src/types.c"
-  $83 = (($82) + 1)|0; //@line 802 "src/types.c"
-  $i1 = $83; //@line 802 "src/types.c"
+  $82 = $i1; //@line 804 "src/types.c"
+  $83 = (($82) + 1)|0; //@line 804 "src/types.c"
+  $i1 = $83; //@line 804 "src/types.c"
  }
- $84 = $syms; //@line 809 "src/types.c"
- _free($84); //@line 809 "src/types.c"
- $85 = $vals; //@line 810 "src/types.c"
- _free($85); //@line 810 "src/types.c"
- $86 = $locked; //@line 811 "src/types.c"
- _free($86); //@line 811 "src/types.c"
- STACKTOP = sp;return; //@line 812 "src/types.c"
+ $84 = $syms; //@line 811 "src/types.c"
+ _free($84); //@line 811 "src/types.c"
+ $85 = $vals; //@line 812 "src/types.c"
+ _free($85); //@line 812 "src/types.c"
+ $86 = $locked; //@line 813 "src/types.c"
+ _free($86); //@line 813 "src/types.c"
+ STACKTOP = sp;return; //@line 814 "src/types.c"
 }
 function _awlenv_hash($str) {
  $str = $str|0;
@@ -26476,34 +26510,34 @@ function _awlenv_hash($str) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0;
  $0 = $str;
- $hash = 5381; //@line 731 "src/types.c"
- $i = 0; //@line 732 "src/types.c"
+ $hash = 5381; //@line 733 "src/types.c"
+ $i = 0; //@line 734 "src/types.c"
  while(1) {
-  $1 = $i; //@line 732 "src/types.c"
-  $2 = $0; //@line 732 "src/types.c"
-  $3 = (($2) + ($1)|0); //@line 732 "src/types.c"
-  $4 = HEAP8[$3>>0]|0; //@line 732 "src/types.c"
-  $5 = ($4<<24>>24)!=(0); //@line 732 "src/types.c"
+  $1 = $i; //@line 734 "src/types.c"
+  $2 = $0; //@line 734 "src/types.c"
+  $3 = (($2) + ($1)|0); //@line 734 "src/types.c"
+  $4 = HEAP8[$3>>0]|0; //@line 734 "src/types.c"
+  $5 = ($4<<24>>24)!=(0); //@line 734 "src/types.c"
   if (!($5)) {
    break;
   }
-  $6 = $hash; //@line 734 "src/types.c"
-  $7 = $6 << 5; //@line 734 "src/types.c"
-  $8 = $hash; //@line 734 "src/types.c"
-  $9 = (($7) + ($8))|0; //@line 734 "src/types.c"
-  $10 = $i; //@line 734 "src/types.c"
-  $11 = $0; //@line 734 "src/types.c"
-  $12 = (($11) + ($10)|0); //@line 734 "src/types.c"
-  $13 = HEAP8[$12>>0]|0; //@line 734 "src/types.c"
-  $14 = $13 << 24 >> 24; //@line 734 "src/types.c"
-  $15 = $9 ^ $14; //@line 734 "src/types.c"
-  $hash = $15; //@line 734 "src/types.c"
-  $16 = $i; //@line 732 "src/types.c"
-  $17 = (($16) + 1)|0; //@line 732 "src/types.c"
-  $i = $17; //@line 732 "src/types.c"
+  $6 = $hash; //@line 736 "src/types.c"
+  $7 = $6 << 5; //@line 736 "src/types.c"
+  $8 = $hash; //@line 736 "src/types.c"
+  $9 = (($7) + ($8))|0; //@line 736 "src/types.c"
+  $10 = $i; //@line 736 "src/types.c"
+  $11 = $0; //@line 736 "src/types.c"
+  $12 = (($11) + ($10)|0); //@line 736 "src/types.c"
+  $13 = HEAP8[$12>>0]|0; //@line 736 "src/types.c"
+  $14 = $13 << 24 >> 24; //@line 736 "src/types.c"
+  $15 = $9 ^ $14; //@line 736 "src/types.c"
+  $hash = $15; //@line 736 "src/types.c"
+  $16 = $i; //@line 734 "src/types.c"
+  $17 = (($16) + 1)|0; //@line 734 "src/types.c"
+  $i = $17; //@line 734 "src/types.c"
  }
- $18 = $hash; //@line 736 "src/types.c"
- STACKTOP = sp;return ($18|0); //@line 736 "src/types.c"
+ $18 = $hash; //@line 738 "src/types.c"
+ STACKTOP = sp;return ($18|0); //@line 738 "src/types.c"
 }
 function _stringbuilder_new() {
  var $0 = 0, $1 = 0, $2 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $sb = 0, label = 0, sp = 0;
@@ -28333,7 +28367,7 @@ function _malloc($bytes) {
      $276 = ((5960 + ($idx$0$i<<2)|0) + 304|0);
      $277 = HEAP32[$276>>2]|0;
      $278 = ($277|0)==(0|0);
-     L126: do {
+     L9: do {
       if ($278) {
        $rsize$2$i = $250;$t$1$i = 0;$v$2$i = 0;
       } else {
@@ -28357,7 +28391,7 @@ function _malloc($bytes) {
          $289 = ($286|0)==($247|0);
          if ($289) {
           $rsize$2$i = $287;$t$1$i = $t$0$i14;$v$2$i = $t$0$i14;
-          break L126;
+          break L9;
          } else {
           $rsize$1$i = $287;$v$1$i = $t$0$i14;
          }
@@ -28642,7 +28676,7 @@ function _malloc($bytes) {
         }
        } while(0);
        $412 = ($rsize$3$lcssa$i>>>0)<(16);
-       L204: do {
+       L87: do {
         if ($412) {
          $413 = (($rsize$3$lcssa$i) + ($247))|0;
          $414 = $413 | 3;
@@ -28781,7 +28815,7 @@ function _malloc($bytes) {
          $482 = HEAP32[$481>>2]|0;
          $483 = $482 & -8;
          $484 = ($483|0)==($rsize$3$lcssa$i|0);
-         L225: do {
+         L108: do {
           if ($484) {
            $T$0$lcssa$i = $477;
           } else {
@@ -28802,7 +28836,7 @@ function _malloc($bytes) {
             $492 = ($491|0)==($rsize$3$lcssa$i|0);
             if ($492) {
              $T$0$lcssa$i = $489;
-             break L225;
+             break L108;
             } else {
              $K12$025$i = $487;$T$024$i = $489;
             }
@@ -28823,7 +28857,7 @@ function _malloc($bytes) {
             $$sum13$i = (($247) + 8)|0;
             $500 = (($v$3$lcssa$i) + ($$sum13$i)|0);
             HEAP32[$500>>2] = $349;
-            break L204;
+            break L87;
            }
           }
          } while(0);
@@ -32989,9 +33023,9 @@ function ___floatscan($f,$prec,$pok) {
  sp = STACKTOP;
  STACKTOP = STACKTOP + 512|0;
  $x$i = sp;
- if ((($prec|0) == 1)) {
+ if ((($prec|0) == 2)) {
   $bits$0$ph = 53;$emin$0$ph = -1074;
- } else if ((($prec|0) == 2)) {
+ } else if ((($prec|0) == 1)) {
   $bits$0$ph = 53;$emin$0$ph = -1074;
  } else if ((($prec|0) == 0)) {
   $bits$0$ph = 24;$emin$0$ph = -149;
@@ -33153,7 +33187,109 @@ function ___floatscan($f,$prec,$pok) {
      $c$5 = $c$1$lcssa;$i$3 = $i$0$lcssa;
     }
    } while(0);
-   if ((($i$3|0) == 0)) {
+   if ((($i$3|0) == 3)) {
+    $68 = HEAP32[$0>>2]|0;
+    $69 = HEAP32[$1>>2]|0;
+    $70 = ($68>>>0)<($69>>>0);
+    if ($70) {
+     $71 = (($68) + 1|0);
+     HEAP32[$0>>2] = $71;
+     $72 = HEAP8[$68>>0]|0;
+     $73 = $72&255;
+     $76 = $73;
+    } else {
+     $74 = (___shgetc($f)|0);
+     $76 = $74;
+    }
+    $75 = ($76|0)==(40);
+    if ($75) {
+     $i$4 = 1;
+    } else {
+     $77 = HEAP32[$1>>2]|0;
+     $78 = ($77|0)==(0|0);
+     if ($78) {
+      $$0 = nan;
+      STACKTOP = sp;return (+$$0);
+     }
+     $79 = HEAP32[$0>>2]|0;
+     $80 = (($79) + -1|0);
+     HEAP32[$0>>2] = $80;
+     $$0 = nan;
+     STACKTOP = sp;return (+$$0);
+    }
+    while(1) {
+     $81 = HEAP32[$0>>2]|0;
+     $82 = HEAP32[$1>>2]|0;
+     $83 = ($81>>>0)<($82>>>0);
+     if ($83) {
+      $84 = (($81) + 1|0);
+      HEAP32[$0>>2] = $84;
+      $85 = HEAP8[$81>>0]|0;
+      $86 = $85&255;
+      $89 = $86;
+     } else {
+      $87 = (___shgetc($f)|0);
+      $89 = $87;
+     }
+     $88 = (($89) + -48)|0;
+     $90 = ($88>>>0)<(10);
+     $91 = (($89) + -65)|0;
+     $92 = ($91>>>0)<(26);
+     $or$cond8 = $90 | $92;
+     if (!($or$cond8)) {
+      $93 = (($89) + -97)|0;
+      $94 = ($93>>>0)<(26);
+      $95 = ($89|0)==(95);
+      $or$cond5 = $94 | $95;
+      if (!($or$cond5)) {
+       break;
+      }
+     }
+     $107 = (($i$4) + 1)|0;
+     $i$4 = $107;
+    }
+    $96 = ($89|0)==(41);
+    if ($96) {
+     $$0 = nan;
+     STACKTOP = sp;return (+$$0);
+    }
+    $97 = HEAP32[$1>>2]|0;
+    $98 = ($97|0)==(0|0);
+    if (!($98)) {
+     $99 = HEAP32[$0>>2]|0;
+     $100 = (($99) + -1|0);
+     HEAP32[$0>>2] = $100;
+    }
+    if ($39) {
+     $102 = (___errno_location()|0);
+     HEAP32[$102>>2] = 22;
+     ___shlim($f,0);
+     $$0 = 0.0;
+     STACKTOP = sp;return (+$$0);
+    }
+    $101 = ($i$4|0)==(0);
+    $brmerge107 = $101 | $98;
+    if ($brmerge107) {
+     $$0 = nan;
+     STACKTOP = sp;return (+$$0);
+    } else {
+     $$in = $i$4;
+    }
+    while(1) {
+     $103 = (($$in) + -1)|0;
+     $104 = HEAP32[$0>>2]|0;
+     $105 = (($104) + -1|0);
+     HEAP32[$0>>2] = $105;
+     $106 = ($103|0)==(0);
+     if ($106) {
+      $$0 = nan;
+      break;
+     } else {
+      $$in = $103;
+     }
+    }
+    STACKTOP = sp;return (+$$0);
+   } else if ((($i$3|0) == 0)) {
     $113 = ($c$5|0)==(48);
     do {
      if ($113) {
@@ -33222,7 +33358,7 @@ function ___floatscan($f,$prec,$pok) {
         continue;
        }
       }
-      L66: do {
+      L107: do {
        if ((label|0) == 70) {
         $138 = HEAP32[$0>>2]|0;
         $139 = HEAP32[$1>>2]|0;
@@ -33257,7 +33393,7 @@ function ___floatscan($f,$prec,$pok) {
           $153 = ($154|0)==(48);
           if (!($153)) {
            $169 = 0;$172 = 0;$212 = $155;$214 = $156;$c$2$i = $154;$gotdig$2$i = 1;$gotrad$0$i = 1;$gottail$0$i = 0;$scale$0$i = 1.0;$x$0$i = 0;$y$0$i = 0.0;
-           break L66;
+           break L107;
           }
           $157 = (_i64Add(($155|0),($156|0),-1,-1)|0);
           $158 = tempRet0;
@@ -33268,7 +33404,7 @@ function ___floatscan($f,$prec,$pok) {
         }
        }
       } while(0);
-      L79: while(1) {
+      L120: while(1) {
        $159 = (($c$2$i) + -48)|0;
        $160 = ($159>>>0)<(10);
        do {
@@ -33283,7 +33419,7 @@ function ___floatscan($f,$prec,$pok) {
          $or$cond$i = $163 | $164;
          if (!($or$cond$i)) {
           $c$2$lcssa$i = $c$2$i;
-          break L79;
+          break L120;
          }
          if ($164) {
           $165 = ($gotrad$0$i|0)==(0);
@@ -33292,7 +33428,7 @@ function ___floatscan($f,$prec,$pok) {
            break;
           } else {
            $c$2$lcssa$i = 46;
-           break L79;
+           break L120;
           }
          } else {
           $166 = ($c$2$i|0)>(57);
@@ -33622,7 +33758,7 @@ function ___floatscan($f,$prec,$pok) {
       continue;
      }
     }
-    L168: do {
+    L209: do {
      if ((label|0) == 139) {
       $333 = HEAP32[$0>>2]|0;
       $334 = HEAP32[$1>>2]|0;
@@ -33657,7 +33793,7 @@ function ___floatscan($f,$prec,$pok) {
         $348 = ($$1$be$i|0)==(48);
         if (!($348)) {
          $$2$i = $$1$be$i;$716 = $349;$717 = $350;$gotdig$2$i11 = 1;$gotrad$0$i12 = 1;
-         break L168;
+         break L209;
         }
         $351 = (_i64Add(($349|0),($350|0),-1,-1)|0);
         $352 = tempRet0;
@@ -33673,7 +33809,7 @@ function ___floatscan($f,$prec,$pok) {
     $354 = ($353>>>0)<(10);
     $355 = ($$2$i|0)==(46);
     $or$cond789$i = $354 | $355;
-    L182: do {
+    L223: do {
      if ($or$cond789$i) {
       $356 = (($x$i) + 496|0);
       $$397$i = $$2$i;$358 = 0;$359 = 0;$718 = $355;$719 = $353;$720 = $716;$721 = $717;$gotdig$393$i = $gotdig$2$i11;$gotrad$194$i = $gotrad$0$i12;$j$096$i = 0;$k$095$i = 0;$lnz$092$i = 0;
@@ -33685,7 +33821,7 @@ function ___floatscan($f,$prec,$pok) {
           $722 = $358;$723 = $359;$724 = $358;$725 = $359;$gotdig$4$i = $gotdig$393$i;$gotrad$2$i = 1;$j$2$i = $j$096$i;$k$2$i = $k$095$i;$lnz$2$i = $lnz$092$i;
          } else {
           $$388$i = $$397$i;$405 = $720;$406 = $721;$421 = $358;$424 = $359;$gotdig$381$i = $gotdig$393$i;$j$086$i = $j$096$i;$k$084$i = $k$095$i;$lnz$079$i = $lnz$092$i;
-          break L182;
+          break L223;
          }
         } else {
          $357 = ($k$095$i|0)<(125);
@@ -34030,7 +34166,7 @@ function ___floatscan($f,$prec,$pok) {
      $525 = (($524) + ($rp$0$lcssa162$i))|0;
      $a$2$ph40$i = $a$0$lcssa161$i;$e2$0$ph$i = 0;$rp$2$ph38$i = $525;$z$1$ph39$i = $z$0$i;
     }
-    L280: while(1) {
+    L321: while(1) {
      $526 = ($rp$2$ph38$i|0)<(18);
      $527 = (($x$i) + ($a$2$ph40$i<<2)|0);
      if ($526) {
@@ -34102,7 +34238,7 @@ function ___floatscan($f,$prec,$pok) {
        $554 = ($553>>>0)<(9007199);
        if (!($554)) {
         $a$3$ph$i = $a$2$ph40$i;$e2$1$ph$i = $e2$0$us44$i;$rp$3$ph33$i = 18;$z$5$ph$i = $z$1$us45$i;
-        break L280;
+        break L321;
        }
        $555 = (($z$1$us45$i) + 127)|0;
        $carry1$0$us49$i = 0;$k$5$in$us48$i = $555;$z$2$us47$i = $z$1$us45$i;
@@ -34181,7 +34317,7 @@ function ___floatscan($f,$prec,$pok) {
      HEAP32[$592>>2] = $carry1$1$lcssa$lcssa$i;
      $a$2$ph40$i = $581;$e2$0$ph$i = $$lcssa43$i;$rp$2$ph38$i = $579;$z$1$ph39$i = $z$4$i;
     }
-    L311: while(1) {
+    L352: while(1) {
      $629 = (($z$5$ph$i) + 1)|0;
      $627 = $629 & 127;
      $630 = (($z$5$ph$i) + 127)|0;
@@ -34229,7 +34365,7 @@ function ___floatscan($f,$prec,$pok) {
        $604 = ($i$1$i|0)==(2);
        $or$cond13$i = $604 & $605;
        if ($or$cond13$i) {
-        break L311;
+        break L352;
        }
        $608 = (($$14$i) + ($e2$1$i))|0;
        $609 = ($a$3$i|0)==($z$5$ph$i|0);
@@ -34446,108 +34582,6 @@ function ___floatscan($f,$prec,$pok) {
     } while(0);
     $701 = (+_scalbnl($y$3$i,$e2$3$i));
     $$0 = $701;
-    STACKTOP = sp;return (+$$0);
-   } else if ((($i$3|0) == 3)) {
-    $68 = HEAP32[$0>>2]|0;
-    $69 = HEAP32[$1>>2]|0;
-    $70 = ($68>>>0)<($69>>>0);
-    if ($70) {
-     $71 = (($68) + 1|0);
-     HEAP32[$0>>2] = $71;
-     $72 = HEAP8[$68>>0]|0;
-     $73 = $72&255;
-     $76 = $73;
-    } else {
-     $74 = (___shgetc($f)|0);
-     $76 = $74;
-    }
-    $75 = ($76|0)==(40);
-    if ($75) {
-     $i$4 = 1;
-    } else {
-     $77 = HEAP32[$1>>2]|0;
-     $78 = ($77|0)==(0|0);
-     if ($78) {
-      $$0 = nan;
-      STACKTOP = sp;return (+$$0);
-     }
-     $79 = HEAP32[$0>>2]|0;
-     $80 = (($79) + -1|0);
-     HEAP32[$0>>2] = $80;
-     $$0 = nan;
-     STACKTOP = sp;return (+$$0);
-    }
-    while(1) {
-     $81 = HEAP32[$0>>2]|0;
-     $82 = HEAP32[$1>>2]|0;
-     $83 = ($81>>>0)<($82>>>0);
-     if ($83) {
-      $84 = (($81) + 1|0);
-      HEAP32[$0>>2] = $84;
-      $85 = HEAP8[$81>>0]|0;
-      $86 = $85&255;
-      $89 = $86;
-     } else {
-      $87 = (___shgetc($f)|0);
-      $89 = $87;
-     }
-     $88 = (($89) + -48)|0;
-     $90 = ($88>>>0)<(10);
-     $91 = (($89) + -65)|0;
-     $92 = ($91>>>0)<(26);
-     $or$cond8 = $90 | $92;
-     if (!($or$cond8)) {
-      $93 = (($89) + -97)|0;
-      $94 = ($93>>>0)<(26);
-      $95 = ($89|0)==(95);
-      $or$cond5 = $94 | $95;
-      if (!($or$cond5)) {
-       break;
-      }
-     }
-     $107 = (($i$4) + 1)|0;
-     $i$4 = $107;
-    }
-    $96 = ($89|0)==(41);
-    if ($96) {
-     $$0 = nan;
-     STACKTOP = sp;return (+$$0);
-    }
-    $97 = HEAP32[$1>>2]|0;
-    $98 = ($97|0)==(0|0);
-    if (!($98)) {
-     $99 = HEAP32[$0>>2]|0;
-     $100 = (($99) + -1|0);
-     HEAP32[$0>>2] = $100;
-    }
-    if ($39) {
-     $102 = (___errno_location()|0);
-     HEAP32[$102>>2] = 22;
-     ___shlim($f,0);
-     $$0 = 0.0;
-     STACKTOP = sp;return (+$$0);
-    }
-    $101 = ($i$4|0)==(0);
-    $brmerge107 = $101 | $98;
-    if ($brmerge107) {
-     $$0 = nan;
-     STACKTOP = sp;return (+$$0);
-    } else {
-     $$in = $i$4;
-    }
-    while(1) {
-     $103 = (($$in) + -1)|0;
-     $104 = HEAP32[$0>>2]|0;
-     $105 = (($104) + -1|0);
-     HEAP32[$0>>2] = $105;
-     $106 = ($103|0)==(0);
-     if ($106) {
-      $$0 = nan;
-      break;
-     } else {
-      $$in = $103;
-     }
-    }
     STACKTOP = sp;return (+$$0);
    } else {
     $108 = HEAP32[$1>>2]|0;
