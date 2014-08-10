@@ -1,0 +1,14 @@
+; Math example
+;;
+
+(func (mean l) (/ (sum l) (len l)))
+
+(func (variance l)
+    (let ((mu (mean l)))
+        (/
+            (sum (map (fn (x) (^ (- x mu) 2)) l))
+            (len l))))
+
+(define xs {1 2 3 4 5 6})
+(println (mean xs)) ; prints 3.5
+(println (variance xs)) ; prints ~2.916

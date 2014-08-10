@@ -2,6 +2,7 @@
 
 ## Language features
 - dictionaries: possible syntax
+- recursive let expressions
 - string manipulation functions
     - index-of
 - proper error handling? Propagation and try/catch
