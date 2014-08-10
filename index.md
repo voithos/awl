@@ -20,10 +20,80 @@ design, programming in C, and using
 **Note**: This naturally goes without saying, but Awl is just an experimental
 learning project, which means that it is lacking in thorough testing and
 probably has many bugs. It should *not* be used for production code, lest it
-summon Undefined Behavior&trade; to wreak havok on your code.
+summon Undefined Behavior&trade; upon you.
 
 That being said, experimenting and hacking on non-production-ready code just
-for fun is usually worthwhile!
+for fun can be worthwhile!
+
+## Examples
+
+Here are a few examples that briefly demonstrate some of Awl's features.
+
+### Math
+
+    ; Math example
+    ;;
+
+    (func (mean l) (/ (sum l) (len l)))
+
+    (func (variance l)
+        (let ((mu (mean l)))
+            (/
+                (sum (map (fn (x) (^ (- x mu) 2)) l))
+                (len l))))
+
+    (define xs {1 2 3 4 5 6})
+    (println (mean xs)) ; prints 3.5
+    (println (variance xs)) ; prints ~2.916
+
+### Recursion
+
+    ; Recursive cycle
+    ;;
+
+    (func (cycle-n xs n)
+        (let ((i (% n (len xs))))
+            (cons (head (slice xs i (+ i 1)))
+                  (list (fn () (cycle-n xs (+ n 1)))))))
+
+    (func (cycle xs)
+        (fn () (cycle-n xs 0)))
+
+    (define xs {1 2 3 4})
+    (println ((cycle xs)))
+    (println ((head (tail ((cycle xs))))))
+
+### Mergesort
+
+    ; Merge sort
+    ;;
+
+    (func (merge-sort l)
+        (if (<= (len l) 1)
+            l
+            (let ((middle (// (len l) 2))
+                  (left (slice l 0 middle))
+                  (right (slice l middle))
+                  (left-sorted (merge-sort left))
+                  (right-sorted (merge-sort right)))
+                (merge left-sorted right-sorted))))
+
+    (func (merge l r)
+        (if (nil? l)
+            r
+            (if (nil? r)
+                l
+                (let ((hl (head l))
+                      (hr (head r)))
+                    (if (< hl hr)
+                        (cons hl (merge (tail l) r))
+                        (cons hr (merge l (tail r))))))))
+
+    (println (merge-sort {4 3 2 1}))
+    ; prints -> {1 2 3 4}
+
+    (println (merge-sort {54 83 1274 83 74 218 9}))
+    ; prints -> {9 54 74 83 83 218 1274}
 
 ## Compiling
 

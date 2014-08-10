@@ -18,7 +18,7 @@ Module.expectedDataFileDownloads++;
     var PACKAGE_NAME = 'web/awl.data';
     var REMOTE_PACKAGE_NAME = (Module['filePackagePrefixURL'] || '') + 'awl.data';
     var REMOTE_PACKAGE_SIZE = 2024;
-    var PACKAGE_UUID = '8c3fe8e6-3461-49c4-9185-647106286224';
+    var PACKAGE_UUID = '076aef9e-da66-419f-bda1-ede78e9f9f65';
   
     function fetchRemotePackage(packageName, packageSize, callback, errback) {
       var xhr = new XMLHttpRequest();
