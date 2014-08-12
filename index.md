@@ -51,13 +51,12 @@ Here are a few examples that briefly demonstrate some of Awl's features.
     ; Recursive cycle
     ;;
 
-    (func (cycle-n xs n)
-        (let ((i (% n (len xs))))
-            (cons (head (slice xs i (+ i 1)))
-                  (list (fn () (cycle-n xs (+ n 1)))))))
-
     (func (cycle xs)
-        (fn () (cycle-n xs 0)))
+        (let ((f (fn (n)
+            (let ((i (% n (len xs))))
+                (cons (head (slice xs i (+ i 1)))
+                      (list (fn () (f (+ n 1)))))))))
+            (fn () (f 0))))
 
     (define xs {1 2 3 4})
     (println ((cycle xs)))
