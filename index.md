@@ -102,9 +102,11 @@ some new features in `C11`, so you will need a fairly recent C compiler.
 
 - Both `clang` (tested with version 3.5.0) and `gcc` (tested with version
   4.7.2) are known to successfully compile
+- You'll need `make`
 - To transpile to JavaScript, you'll need the emscripten toolkit, including
   `emcc`.
-- You'll also need `make`
+- To minify the output JavaScript from `emscripten`, you'll need `uglifyjs`,
+  but it isn't strictly necessary.
 
 First, clone the repository, and then compile using `make`:
 
