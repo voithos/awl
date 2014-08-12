@@ -175,7 +175,8 @@ awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
     awlval* v = malloc(sizeof(awlval));
     v->type = AWLVAL_FN;
     v->env = awlenv_new();
-    v->env->parent = closure->top_level ? closure : awlenv_copy(closure);
+    v->env->parent = closure;
+    v->env->parent->references++;
     v->formals = formals;
     v->body = body;
     v->called = false;
@@ -259,9 +260,9 @@ void awlval_del(awlval* v) {
         case AWLVAL_BOOL:
             break;
 
+        case AWLVAL_EEXPR:
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
-        case AWLVAL_EEXPR:
         case AWLVAL_CEXPR:
             for (int i = 0; i < v->count; i++) {
                 awlval_del(v->cell[i]);
@@ -701,6 +702,7 @@ awlenv* awlenv_new(void) {
     e->vals = malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
     e->locked = malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
     e->top_level = false;
+    e->references = 1;
     return e;
 }
 
@@ -713,19 +715,29 @@ awlenv* awlenv_new_top_level(void) {
 }
 
 void awlenv_del(awlenv* e) {
-    if (e->parent && !e->parent->top_level) {
-        awlenv_del(e->parent);
-    }
-    for (int i = 0; i < e->size; i++) {
-        if (e->syms[i]) {
-            free(e->syms[i]);
-            awlval_del(e->vals[i]);
+    e->references--;
+
+    if (e->references <= 0 && !e->top_level) {
+        if (e->parent && e->parent->references >= 1) {
+            awlenv_del(e->parent);
         }
+        for (int i = 0; i < e->size; i++) {
+            if (e->syms[i]) {
+                free(e->syms[i]);
+                awlval_del(e->vals[i]);
+            }
+        }
+        free(e->syms);
+        free(e->vals);
+        free(e->locked);
+        free(e);
     }
-    free(e->syms);
-    free(e->vals);
-    free(e->locked);
-    free(e);
+}
+
+void awlenv_del_top_level(awlenv* e) {
+    e->references = 1;
+    e->top_level = false;
+    awlenv_del(e);
 }
 
 static unsigned int awlenv_hash(const char* str) {
@@ -838,7 +850,10 @@ void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked) {
 
 awlenv* awlenv_copy(awlenv* e) {
     awlenv* n = malloc(sizeof(awlenv));
-    n->parent = e->parent && !e->parent->top_level ? awlenv_copy(e->parent) : e->parent;
+    n->parent = e->parent;
+    if (n->parent) {
+        n->parent->references++;
+    }
     n->size = e->size;
     n->count = e->count;
     n->syms = malloc(sizeof(char*) * e->size);
@@ -854,6 +869,7 @@ awlenv* awlenv_copy(awlenv* e) {
         }
     }
     n->top_level = e->top_level;
+    n->references = 1;
 
     return n;
 }

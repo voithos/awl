@@ -435,7 +435,7 @@ void test_builtin_reverse(void) {
 void test_builtin_slice(void) {
     awlenv* e = setup_test();
 
-    eval_string(e, "(global x {1 2 3 4 5 6})");
+    TEST_EVAL(e, "(global x {1 2 3 4 5 6})");
 
     TEST_ASSERT_EQ(e, "(slice x 0)", "{1 2 3 4 5 6}");
     TEST_ASSERT_EQ(e, "(slice x 2)", "{3 4 5 6}");
@@ -526,6 +526,8 @@ void test_builtin_let(void) {
 
     TEST_ASSERT_EQ(e, "(let ((a 5) (b (+ 2 a)) (c ((fn () b)))) c)", "7");
     TEST_ASSERT_TYPE(e, "(let ((a (+ 1 x)) (x 5)) a)", AWLVAL_ERR);
+
+    TEST_ASSERT_EQ(e, "(let ((f (fn (x) (if (nil? (tail x)) (head x) (f (tail x)))))) (f {1 2 3}))", "3");
 
     teardown_test(e);
 }

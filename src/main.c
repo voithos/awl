@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
         run_scripts(e, argc, argv);
     }
 
-    awlenv_del(e);
+    awlenv_del_top_level(e);
     teardown_awl();
     return 0;
 }

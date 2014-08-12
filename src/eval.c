@@ -73,8 +73,10 @@ awlval* awlval_eval(awlenv* e, awlval* v) {
             case AWLVAL_CEXPR:
             {
                 AWLENV_DEL_RECURSING(e);
-                return awlval_err("cannot directly evaluate %s; must be contained inside %s",
+                awlval* err = awlval_err("cannot directly evaluate %s; must be contained inside %s",
                         awlval_type_name(v->type), awlval_type_name(AWLVAL_QEXPR));
+                awlval_del(v);
+                return err;
             }
 
             default:

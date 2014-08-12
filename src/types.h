@@ -81,6 +81,8 @@ struct awlenv {
     awlval** vals;
     bool* locked;
     bool top_level;
+
+    int references;
 };
 
 /* awlval instantiation functions */
@@ -122,6 +124,7 @@ bool awlval_eq(awlval* x, awlval* y);
 awlenv* awlenv_new(void);
 awlenv* awlenv_new_top_level(void);
 void awlenv_del(awlenv* e);
+void awlenv_del_top_level(awlenv* e);
 int awlenv_index(awlenv* e, awlval* k);
 awlval* awlenv_get(awlenv* e, awlval* k);
 void awlenv_put(awlenv* e, awlval* k, awlval* v, bool locked);

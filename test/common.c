@@ -24,5 +24,5 @@ awlenv* setup_test(void) {
 }
 
 void teardown_test(awlenv* e) {
-    awlenv_del(e);
+    awlenv_del_top_level(e);
 }

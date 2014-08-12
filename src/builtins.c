@@ -643,8 +643,11 @@ awlval* builtin_let(awlenv* e, awlval* a) {
         }
     }
 
+    // TODO: Because of reference cycles, this causes garbage to build up
+    // Need to add GC
     awlenv* lenv = awlenv_new();
     lenv->parent = e;
+    lenv->parent->references++;
 
     /* Evaluate value arguments (but not the symbols) */
     for (int i = 0; i < bindings->count; i++) {
@@ -658,12 +661,14 @@ awlval* builtin_let(awlenv* e, awlval* a) {
             return err;
         }
 
-        awlenv_put(lenv, bindings->cell[i]->cell[0], bindings->cell[i]->cell[1], false);
+        awlval* sym = bindings->cell[i]->cell[0];
+        awlval* val = bindings->cell[i]->cell[1];
+
+        awlenv_put(lenv, sym, val, false);
     }
 
     awlval* v = awlval_eval(lenv, awlval_take(a, 1));
 
-    lenv->parent = NULL;
     awlenv_del(lenv);
     return v;
 }
