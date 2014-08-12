@@ -8,7 +8,7 @@ void test_eval_env(void) {
     awlenv* e = setup_test();
 
     TEST_ASSERT_TYPE(e, "x", AWLVAL_ERR);
-    TEST_ASSERT_TYPE(e, "(define x 5)", AWLVAL_QEXPR);
+    TEST_ASSERT_TYPE(e, "(define x 5)", AWLVAL_INT);
     TEST_ASSERT_TYPE(e, "x", AWLVAL_INT);
 
     teardown_test(e);

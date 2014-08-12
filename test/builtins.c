@@ -512,6 +512,9 @@ void test_builtin_var(void) {
     TEST_EVAL(e, "((fn () (global foo 'bar')))");
     TEST_ASSERT_EQ(e, "foo", "'bar'");
 
+    TEST_ASSERT_EQ(e, "(define ret-val 25)", "25");
+    TEST_ASSERT_EQ(e, "(define ret-val 'foo')", "'foo'");
+
     teardown_test(e);
 }
 

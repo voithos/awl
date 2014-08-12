@@ -571,8 +571,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
         } else {
             awlenv_put(e, a->cell[0], a->cell[1], false);
         }
-        awlval_del(a);
-        return awlval_qexpr();
+        return awlval_take(a, 1);
     }
 
     AWLASSERT_TYPE(a, 0, AWLVAL_SEXPR, op);
@@ -608,8 +607,7 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
         }
     }
 
-    awlval_del(a);
-    return awlval_qexpr();
+    return awlval_take(a, a->count - 1);
 }
 
 awlval* builtin_define(awlenv* e, awlval* a) {
