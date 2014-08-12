@@ -4,7 +4,7 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" == "master" ]; then
 
     LAYOUT_PREFIX='---\nlayout: index\n---\n'
 
-    make web
+    make webrelease
 
     git checkout gh-pages
 

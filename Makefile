@@ -52,14 +52,21 @@ debug: $(TARGET)
 release: CFLAGS += -O2
 release: $(TARGET)
 
-web: CC := emcc
 web: CFLAGS += -g
-web: LDFLAGS := -g --preload-file $(LIBDIR) -s EXPORTED_FUNCTIONS=$(WEBFUNCS) -s RESERVED_FUNCTION_POINTERS=1
-web: clean $(WEBTARGET)
+web: webmake
+
+webrelease: CFLAGS += -O2
+webrelease: webmake
+	@type uglifyjs >/dev/null 2>&1 || { echo "UglifyJS not found, not using"; exit; }
+	uglifyjs $(WEBTARGET) --in-source-map $(WEBMAP) -o $(WEBTARGET)
+
+webmake: clean $(WEBTARGET)
 	$(CLEAN)
 	mv $(WEBTARGET).tmp $(WEBTARGET)
 	mv $(WEBMAP).tmp $(WEBMAP)
 
+$(WEBTARGET): CC := emcc
+$(WEBTARGET): LDFLAGS := -g --preload-file $(LIBDIR) -s EXPORTED_FUNCTIONS=$(WEBFUNCS) -s RESERVED_FUNCTION_POINTERS=1
 $(WEBTARGET): $(TARGET)
 	mv $(TARGET) $(BITCODE)
 	$(CC) $(LDFLAGS) $(BITCODE) -o $(WEBTARGET)
@@ -86,7 +93,7 @@ $(MAINOBJDIR)/%.o:
 	$(CC) $(CFLAGS) -c $(@:$(MAINOBJDIR)%.o=$(SRCDIR)%.c) -o $@
 
 $(TARGET): $(OBJECTS) | $(BINDIR)
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+	$(CC) $(OBJECTS) $(CFLAGS) $(LDFLAGS) -o $@
 
 # Tests dependency management
 $(TESTDIR)/%.d: $(TESTDIR)/%.c
