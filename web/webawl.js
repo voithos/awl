@@ -1,115 +1,122 @@
 /**
  * JavaScript wrapper and REPL for the awl programming language
  */
-if (typeof Module !== 'undefined') {
-    (function(global, $, Module, Runtime) {
-        Module.postRun.push(initialize);
+if (typeof Worker !== 'undefined') {
+    (function(global, $) {
+        // Initialize Awl REPL
+        //
+        var worker = initializeWorker();
+        initializeConsole(worker);
 
-        function initialize() {
-            var awl = initializeAwl();
-            initializeConsole(awl);
+        /**
+         * Represents an interactive terminal that communicates with
+         * an async web worker
+         */
+        function AwlTerminal(worker) {
+            var self = this;
+            self.worker = worker;
+            self.echoBuffer = [];
+            self.dom = setupTerminalElement();
 
-            /**
-             * Initialize Awl module bindings and evaluation functions
-             */
-            function initializeAwl() {
-                // Util functions
-                var extractString = function(ptr) {
-                    var cstr = [];
-                    while (true) {
-                        var c = Module.getValue(ptr, 'i8');
-                        if (c === 0) {
-                            break;
-                        }
-                        cstr.push(String.fromCharCode(c));
-                        ptr++;
-                    }
-                    return cstr.join('');
-                };
+            function setupTerminalElement() {
+                var dom = $('#interpreter');
 
-                // Wrap exported functions
-                var setupAwl = Module.cwrap('setup_awl', null, []);
-                var teardownAwl = Module.cwrap('teardown_awl', null, []);
-                var getAwlVersion = Module.cwrap('get_awl_version', null, []);
-                var registerPrintFn = Module.cwrap('register_print_fn', null, ['number']);
-                var awlenvNewTopLevel = Module.cwrap('awlenv_new_top_level', 'number', []);
-                var evalReplStr = Module.cwrap('eval_repl_str', 'void', ['number', 'string']);
+                if (!dom.length) {
+                    var marker = $('h3').first();
 
-                // Initialize
-                setupAwl();
-                var version = extractString(getAwlVersion());
-                var env = awlenvNewTopLevel();
-
-                // Return awl API
-                return {
-                    version: version,
-                    eval: function(s) {
-                        evalReplStr(env, s);
-                    },
-                    setupPrintFn: function(fn) {
-                        var fnPtr = Runtime.addFunction(function(ptr) {
-                            fn(extractString(ptr));
-                        });
-                        registerPrintFn(fnPtr);
-                    }
-                };
+                    dom = $('<div />').
+                        attr('id', 'interpreter').
+                        addClass('terminal').
+                        css({ height: 300, marginBottom: '1em' }).
+                        text('Loading...').
+                        insertBefore(marker);
+                }
+                return dom;
             }
 
-            /**
-             * Initialize the console UI
-             */
-            function initializeConsole(awl) {
-                $(function() {
-                    var dom = $('#interpreter');
+            self.worker.addHandler('version', self.setupTerminal.bind(self));
+            self.worker.addHandler('print', self.terminalPrintFn.bind(self));
 
-                    if (!dom.length) {
-                        var marker = $('h3').first();
-
-                        dom = $('<div />').
-                            attr('id', 'interpreter').
-                            addClass('terminal').
-                            css({ height: 300, marginBottom: '1em' }).
-                            insertBefore(marker);
-                    }
-
-                    var term = dom.terminal(function(command, term) {
-                        awl.eval(command);
-                    }, {
-                        greetings: 'awl ' + awl.version + '\n',
-                        name: 'awl',
-                        height: 300,
-                        prompt: 'awl> '
-                    });
-
-                    var echoBuffer = [];
-
-                    awl.setupPrintFn(function(s) {
-                        // Buffer the output, because term.echo() adds newline
-                        var parts = s.split('\n'),
-                            i, l;
-
-                        // Will always be at least a single element
-                        echoBuffer.push(parts[0]);
-
-                        if (parts.length > 1) {
-                            // At least one newline, begin outputting
-                            term.echo(echoBuffer.join(''));
-
-                            for (i = 1, l = parts.length; i < l - 1; i++) {
-                                term.echo(parts[i]);
-                            }
-
-                            // Only echo last element if it isn't empty
-                            if (parts[parts.length - 1] !== '') {
-                                term.echo(parts[parts.length - 1]);
-                            }
-
-                            // Reset buffer
-                            echoBuffer = [];
-                        }
-                    });
-                });
-            }
+            // Query for Awl version
+            self.worker.postMessage({ message: 'version' });
         }
-    })(this, jQuery, Module, Runtime);
+
+        AwlTerminal.prototype.setupTerminal = function(v) {
+            var self = this;
+            self.dom.text('');
+            self.term = self.dom.terminal(function(command, term) {
+                self.worker.postMessage({ message: 'eval', value: command });
+            }, {
+                greetings: 'awl ' + v + '\n',
+                name: 'awl',
+                height: 300,
+                prompt: 'awl> '
+            });
+        };
+
+        AwlTerminal.prototype.terminalPrintFn = function(s) {
+            // Buffer the output, because term.echo() adds newline
+            var self = this,
+                parts = s.split('\n'),
+                i, l;
+
+            // Will always be at least a single element
+            self.echoBuffer.push(parts[0]);
+
+            if (parts.length > 1) {
+                // At least one newline, begin outputting
+                self.term.echo(self.echoBuffer.join(''));
+
+                for (i = 1, l = parts.length; i < l - 1; i++) {
+                    self.term.echo(parts[i]);
+                }
+
+                // Only echo last element if it isn't empty
+                if (parts[parts.length - 1] !== '') {
+                    self.term.echo(parts[parts.length - 1]);
+                }
+
+                // Reset buffer
+                self.echoBuffer = [];
+            }
+        };
+
+        /**
+         * Initialize background worker
+         */
+        function initializeWorker() {
+            // Keep track of registered handlers
+            var messageHandlers = {};
+
+            var worker = new Worker('workerawl.js');
+
+            worker.addEventListener('message', function(e) {
+                if (e.data.message in messageHandlers) {
+                    messageHandlers[e.data.message].call(null, e.data.value);
+                } else {
+                    console.log('message unhandled: ' + e.data.message);
+                }
+            }, false);
+
+            worker.addEventListener('error', function(e) {
+                console.log(e.message, e.filename, e.lineno);
+            }, false);
+
+            return {
+                addHandler: function(msg, fn) {
+                    messageHandlers[msg] = fn;
+                },
+                postMessage: worker.postMessage.bind(worker)
+            };
+        }
+
+        /**
+         * Initialize the console UI
+         */
+        function initializeConsole(worker) {
+            $(function() {
+                var awlTerminal = new AwlTerminal(worker);
+            });
+        }
+    })(this, jQuery);
 }
