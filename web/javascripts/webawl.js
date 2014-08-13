@@ -28,7 +28,13 @@ if (typeof Worker !== 'undefined') {
                         attr('id', 'interpreter').
                         addClass('terminal').
                         css({ height: 300, marginBottom: '1em' }).
-                        text('Loading...').
+                        append(
+                            $('<div />').
+                            addClass('loading').
+                            append($('<span>.</span>')).
+                            append($('<span>.</span>')).
+                            append($('<span>.</span>'))
+                        ).
                         insertBefore(marker);
                 }
                 return dom;
@@ -43,7 +49,7 @@ if (typeof Worker !== 'undefined') {
 
         AwlTerminal.prototype.setupTerminal = function(v) {
             var self = this;
-            self.dom.text('');
+            self.dom.empty();
             self.term = self.dom.terminal(function(command, term) {
                 self.worker.postMessage({ message: 'eval', value: command });
             }, {

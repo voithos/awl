@@ -142,3 +142,37 @@
 .terminal a:hover {
     color: red;
 }
+@-webkit-keyframes opacity {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@-moz-keyframes opacity {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@-o-keyframes opacity {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes opacity {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+.terminal .loading span {
+    -webkit-animation: opacity 1s infinite;
+       -moz-animation: opacity 1s infinite;
+        -ms-animation: opacity 1s infinite;
+            animation: opacity 1s infinite;
+}
+.terminal .loading span:nth-child(2) {
+    -webkit-animation-delay: 100ms;
+       -moz-animation-delay: 100ms;
+        -ms-animation-delay: 100ms;
+            animation-delay: 100ms;
+}
+.terminal .loading span:nth-child(3) {
+    -webkit-animation-delay: 200ms;
+       -moz-animation-delay: 200ms;
+        -ms-animation-delay: 200ms;
+            animation-delay: 200ms;
+}
