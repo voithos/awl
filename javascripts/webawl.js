@@ -88,7 +88,7 @@ if (typeof Worker !== 'undefined') {
             // Keep track of registered handlers
             var messageHandlers = {};
 
-            var worker = new Worker('workerawl.js');
+            var worker = new Worker('javascripts/workerawl.js');
 
             worker.addEventListener('message', function(e) {
                 if (e.data.message in messageHandlers) {

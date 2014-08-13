@@ -44,7 +44,7 @@ Here are a few examples that briefly demonstrate some of Awl's features.
 
     (define xs {1 2 3 4 5 6})
     (println (mean xs)) ; prints 3.5
-    (println (variance xs)) ; prints ~2.916
+    (println (variance xs)) ; prints 2.916
 
 ### Recursion
 
