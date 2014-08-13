@@ -14,15 +14,14 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" == "master" ]; then
     rm README.md
 
     git checkout master -- web
-    rm -rf javascripts
-    rm web/index.html
-    mv web/awl.data .
-    mv web/lib/jquery.terminal.css stylesheets
-    mv web javascripts
+    rm -r javascripts
+    mv web/stylesheets/* stylesheets
+    mv web/javascripts javascripts
+    rm -r web
 
     git reset HEAD
-    git add -A index.md awl.data javascripts stylesheets
-    git commit -m "Sync gh-pages with README.md in master"
+    git add -A index.md javascripts stylesheets
+    git commit -m "Sync gh-pages with master"
 
     git checkout master
 fi

@@ -1,8 +1,8 @@
 bin/
 obj/
-web/awl.js
-web/awl.data
-web/awl.js.map
+web/javascripts/awl.js
+web/javascripts/awl.data
+web/javascripts/awl.js.map
 _site/
 tags
 awl
