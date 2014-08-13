@@ -275,7 +275,7 @@ automatically for any unfilled arguments (this is currently not done for
 builtins).  This makes it easy to use higher-order functions quickly:
 
     awl> (define xs {1 2 3 4})
-    awl> (define square (map (fn (x))))
+    awl> (define square (map (fn (x) (* x x))))
     awl> (square xs)
     {1 4 9 16}
 
