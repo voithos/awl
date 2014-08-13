@@ -29,7 +29,7 @@ for fun can be worthwhile!
 
 Here are a few examples that briefly demonstrate some of Awl's features.
 
-### Math
+Math:
 
     ; Math example
     ;;
@@ -46,7 +46,7 @@ Here are a few examples that briefly demonstrate some of Awl's features.
     (println (mean xs)) ; prints 3.5
     (println (variance xs)) ; prints 2.916
 
-### Recursion
+Recursion:
 
     ; Recursive cycle
     ;;
@@ -62,7 +62,7 @@ Here are a few examples that briefly demonstrate some of Awl's features.
     (println ((cycle xs)))
     (println ((head (tail ((cycle xs))))))
 
-### Mergesort
+Mergesort:
 
     ; Merge sort
     ;;
@@ -843,6 +843,7 @@ and their creators:
 - linenoise
 - clang / LLVM
 - emscripten
+- JQuery Terminal
 
 Also, thanks goes to the creator of the free "Build Your Own Lisp" online book,
 which is what Awl was inspired from.

@@ -12,6 +12,7 @@ function AwlWorker() {
         },
         eval: function(s) {
             this.awl.eval(s);
+            postMessage({ message: 'evaldone' });
         }
     };
 }

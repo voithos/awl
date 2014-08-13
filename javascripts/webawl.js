@@ -42,6 +42,7 @@ if (typeof Worker !== 'undefined') {
 
             self.worker.addHandler('version', self.setupTerminal.bind(self));
             self.worker.addHandler('print', self.terminalPrintFn.bind(self));
+            self.worker.addHandler('evaldone', self.evalDone.bind(self));
 
             // Query for Awl version
             self.worker.postMessage({ message: 'version' });
@@ -51,6 +52,7 @@ if (typeof Worker !== 'undefined') {
             var self = this;
             self.dom.empty();
             self.term = self.dom.terminal(function(command, term) {
+                self.term.pause();
                 self.worker.postMessage({ message: 'eval', value: command });
             }, {
                 greetings: 'awl ' + v + '\n',
@@ -85,6 +87,11 @@ if (typeof Worker !== 'undefined') {
                 // Reset buffer
                 self.echoBuffer = [];
             }
+        };
+
+        AwlTerminal.prototype.evalDone = function() {
+            var self = this;
+            self.term.resume();
         };
 
         /**
