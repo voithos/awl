@@ -29,7 +29,7 @@ if (typeof Worker !== 'undefined') {
                         addClass('terminal').
                         css({ height: 300, marginBottom: '1em' }).
                         append(
-                            $('<div />').
+                            $('<div>Loading</div>').
                             addClass('loading').
                             append($('<span>.</span>')).
                             append($('<span>.</span>')).
