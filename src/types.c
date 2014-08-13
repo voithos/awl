@@ -690,6 +690,10 @@ bool awlval_eq(awlval* x, awlval* y) {
     return false;
 }
 
+bool is_awlval_empty_qexpr(awlval* x) {
+    return x->type == AWLVAL_QEXPR && x->count == 0;
+}
+
 awlenv* awlenv_new(void) {
     awlenv* e = malloc(sizeof(awlenv));
     e->parent = NULL;

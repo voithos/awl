@@ -74,7 +74,9 @@ void eval_repl_str(awlenv* e, const char* input) {
     char* err;
     if (awlval_parse(input, &v, &err)) {
         awlval* x = eval_repl(e, v);
-        awlval_println(x);
+        if (!is_awlval_empty_qexpr(x)) {
+            awlval_println(x);
+        }
         awlval_del(x);
     } else {
         awl_printf("%s", err);

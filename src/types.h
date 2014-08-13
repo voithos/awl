@@ -120,6 +120,9 @@ awlval* awlval_copy(const awlval* v);
 awlval* awlval_convert(awlval_type_t t, const awlval* v);
 bool awlval_eq(awlval* x, awlval* y);
 
+/* awlval utility functions */
+bool is_awlval_empty_qexpr(awlval* x);
+
 /* awlenv functions */
 awlenv* awlenv_new(void);
 awlenv* awlenv_new_top_level(void);
