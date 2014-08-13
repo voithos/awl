@@ -57,7 +57,7 @@ web: webmake
 
 webrelease: CFLAGS += -O2
 webrelease: webmake
-	@type uglifyjs >/dev/null 2>&1 || { echo "UglifyJS not found, not using"; exit; }
+	@type uglifyjs >/dev/null 2>&1 || { echo "UglifyJS not found, not using"; exit 1; }
 	uglifyjs $(WEBTARGET) --in-source-map $(WEBMAP) -o $(WEBTARGET)
 
 webmake: clean $(WEBTARGET)
