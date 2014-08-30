@@ -3,6 +3,17 @@
 
 #include <stdbool.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+static inline void* safe_malloc(size_t size) {
+    char* p = malloc(size);
+    if (p == NULL) {
+        fprintf(stderr, "failed to allocate memory\n");
+        exit(-1);
+    }
+    return p;
+}
 
 typedef struct {
     int length;

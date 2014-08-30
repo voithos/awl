@@ -10,6 +10,7 @@
 #include "parser.h"
 #include "print.h"
 #include "eval.h"
+#include "util.h"
 
 #define HIST_FILE "awl.hist"
 
@@ -26,7 +27,7 @@ char* get_input(char* prompt) {
     fflush(stdout);
     fgets(buffer, REPL_MAX_INPUT, stdin);
 
-    char* copy = malloc(strlen(buffer) + 1);
+    char* copy = safe_malloc(strlen(buffer) + 1);
     strcpy(copy, buffer);
     copy[strlen(copy) - 1] = '\0';
     return copy;

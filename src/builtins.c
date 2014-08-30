@@ -754,7 +754,7 @@ awlval* builtin_import(awlenv* e, awlval* a) {
     AWLASSERT_TYPE(a, 0, AWLVAL_STR, "import");
 
     // Check the import path
-    char* importPath = malloc(strlen(a->cell[0]->str) + 5); // extra space for extension
+    char* importPath = safe_malloc(strlen(a->cell[0]->str) + 5); // extra space for extension
     strcpy(importPath, a->cell[0]->str);
     strcat(importPath, ".awl");
 
@@ -774,7 +774,7 @@ awlval* builtin_import(awlenv* e, awlval* a) {
 
             // Try the raw path if we have once more attempt
             if (attempt == 0) {
-                importPath = malloc(strlen(a->cell[0]->str) + 1);
+                importPath = safe_malloc(strlen(a->cell[0]->str) + 1);
                 strcpy(importPath, a->cell[0]->str);
             } else {
                 // Return error otherwise

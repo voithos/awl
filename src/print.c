@@ -26,7 +26,7 @@ void register_default_print_fn(void) {
 
 void awl_printf(const char* format, ...) {
     // TODO: Make it similar to stringbuilder_t?
-    char* buffer = malloc(BUFSIZE);
+    char* buffer = safe_malloc(BUFSIZE);
     va_list arguments;
     va_start(arguments, format);
 
@@ -61,7 +61,7 @@ static void awlval_expr_print(stringbuilder_t* sb, const awlval* v, const char* 
 }
 
 static void awlval_print_str(stringbuilder_t* sb, const awlval* v) {
-    char* escaped = malloc(strlen(v->str) + 1);
+    char* escaped = safe_malloc(strlen(v->str) + 1);
     strcpy(escaped, v->str);
 
     escaped = mpcf_escape(escaped);

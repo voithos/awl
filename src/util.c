@@ -1,8 +1,6 @@
 #include "util.h"
 
 #include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <libgen.h>
 #include <unistd.h>
 
@@ -11,10 +9,10 @@
 #define SB_GROWTH_FACTOR 2
 
 stringbuilder_t* stringbuilder_new(void) {
-    stringbuilder_t* sb = malloc(sizeof(stringbuilder_t));
+    stringbuilder_t* sb = safe_malloc(sizeof(stringbuilder_t));
     sb->length = 0;
     sb->size = SB_START_SIZE;
-    sb->str = malloc(SB_START_SIZE);
+    sb->str = safe_malloc(SB_START_SIZE);
     return sb;
 }
 
@@ -22,7 +20,7 @@ static void stringbuilder_resize(stringbuilder_t* sb) {
     sb->size = sb->size * SB_GROWTH_FACTOR;
     char* str = sb->str;
 
-    sb->str = malloc(sb->size);
+    sb->str = safe_malloc(sb->size);
     memcpy(sb->str, str, sb->length);
 
     free(str);
@@ -51,7 +49,7 @@ void stringbuilder_write(stringbuilder_t* sb, const char* format, ...) {
 }
 
 char* stringbuilder_to_str(stringbuilder_t* sb) {
-    char* buffer = malloc(sb->length + 1);
+    char* buffer = safe_malloc(sb->length + 1);
     memcpy(buffer, sb->str, sb->length + 1);
     return buffer;
 }
@@ -67,7 +65,7 @@ bool streq(const char* a, const char* b) {
 
 char* strrev(const char* str) {
     int len = strlen(str);
-    char* newstr = malloc(len + 1);
+    char* newstr = safe_malloc(len + 1);
 
     char* start = newstr;
     const char* end = str + len - 1;
@@ -83,7 +81,7 @@ char* strrev(const char* str) {
 
 char* strsubstr(const char* str, int start, int end) {
     int len = end - start;
-    char* buffer = malloc(len + 1);
+    char* buffer = safe_malloc(len + 1);
     memcpy(buffer, &str[start], len);
     buffer[len] = '\0';
     return buffer;
@@ -92,7 +90,7 @@ char* strsubstr(const char* str, int start, int end) {
 char* strstep(const char* str, int step) {
     int len = strlen(str);
     int bufferlen = len / step + (len % step == 0 ? 0 : 1);
-    char* buffer = malloc(bufferlen + 1);
+    char* buffer = safe_malloc(bufferlen + 1);
     for (int i = 0, j = 0; i < bufferlen; i++, j += step) {
         buffer[i] = str[j];
     }
@@ -102,7 +100,7 @@ char* strstep(const char* str, int step) {
 
 char* get_executable_path(void) {
     /* TODO: reading /proc is definitely not cross platform */
-    char* path = malloc(BUFSIZE);
+    char* path = safe_malloc(BUFSIZE);
 
     int len = readlink("/proc/self/exe", path, BUFSIZE - 1);
     if (len == -1) {
@@ -116,7 +114,7 @@ char* get_executable_path(void) {
 
 char* get_base_path(void) {
 #ifdef EMSCRIPTEN
-    char* base_path = malloc(2);
+    char* base_path = safe_malloc(2);
     base_path[0] = '.';
     base_path[1] = '\0';
     return base_path;
@@ -130,7 +128,7 @@ char* get_base_path(void) {
 }
 
 char* path_join(const char* a, const char* b) {
-    char* buffer = malloc(BUFSIZE);
+    char* buffer = safe_malloc(BUFSIZE);
     snprintf(buffer, BUFSIZE, "%s/%s", a, b);
     return buffer;
 }

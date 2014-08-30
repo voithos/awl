@@ -86,7 +86,7 @@ static awlval* awlval_read_bool(const mpc_ast_t* t) {
 static awlval* awlval_read_string(const mpc_ast_t* t) {
     t->contents[strlen(t->contents) - 1] = '\0';
 
-    char* unescaped = malloc(strlen(t->contents + 1) + 1);
+    char* unescaped = safe_malloc(strlen(t->contents + 1) + 1);
     strcpy(unescaped, t->contents + 1);
 
     unescaped = mpcf_unescape(unescaped);

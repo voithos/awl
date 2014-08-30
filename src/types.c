@@ -94,13 +94,13 @@ awlval_type_t awlval_parse_sysname(const char* sysname) {
 }
 
 awlval* awlval_err(const char* fmt, ...) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_ERR;
 
     va_list va;
     va_start(va, fmt);
 
-    v->err = malloc(512);
+    v->err = safe_malloc(512);
     vsnprintf(v->err, 512, fmt, va);
 
     unsigned int l = strlen(v->err) + 1;
@@ -113,23 +113,23 @@ awlval* awlval_err(const char* fmt, ...) {
 }
 
 awlval* awlval_int(long x) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_INT;
     v->lng = x;
     return v;
 }
 
 awlval* awlval_float(double x) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_FLOAT;
     v->dbl = x;
     return v;
 }
 
 static awlval* awlval_sym_base(const char* s) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->length = strlen(s);
-    v->sym = malloc(strlen(s) + 1);
+    v->sym = safe_malloc(strlen(s) + 1);
     strcpy(v->sym, s);
     return v;
 }
@@ -147,32 +147,32 @@ awlval* awlval_qsym(const char* s) {
 }
 
 awlval* awlval_str(const char* s) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_STR;
     v->length = strlen(s);
-    v->str = malloc(v->length + 1);
+    v->str = safe_malloc(v->length + 1);
     strcpy(v->str, s);
     return v;
 }
 
 awlval* awlval_bool(bool b) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_BOOL;
     v->bln = b;
     return v;
 }
 
 awlval* awlval_fun(const awlbuiltin builtin, const char* builtin_name) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_BUILTIN;
     v->builtin = builtin;
-    v->builtin_name = malloc(strlen(builtin_name) + 1);
+    v->builtin_name = safe_malloc(strlen(builtin_name) + 1);
     strcpy(v->builtin_name, builtin_name);
     return v;
 }
 
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_FN;
     v->env = awlenv_new();
     v->env->parent = closure;
@@ -190,7 +190,7 @@ awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body) {
 }
 
 awlval* awlval_sexpr(void) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_SEXPR;
     v->count = 0;
     v->length = 0;
@@ -199,7 +199,7 @@ awlval* awlval_sexpr(void) {
 }
 
 awlval* awlval_qexpr(void) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_QEXPR;
     v->count = 0;
     v->length = 0;
@@ -208,7 +208,7 @@ awlval* awlval_qexpr(void) {
 }
 
 awlval* awlval_eexpr(void) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_EEXPR;
     v->count = 0;
     v->length = 0;
@@ -217,7 +217,7 @@ awlval* awlval_eexpr(void) {
 }
 
 awlval* awlval_cexpr(void) {
-    awlval* v = malloc(sizeof(awlval));
+    awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_CEXPR;
     v->count = 0;
     v->length = 0;
@@ -462,13 +462,13 @@ void awlval_demote_numeric(awlval* x) {
 }
 
 awlval* awlval_copy(const awlval* v) {
-    awlval* x = malloc(sizeof(awlval));
+    awlval* x = safe_malloc(sizeof(awlval));
     x->type = v->type;
 
     switch (v->type) {
         case AWLVAL_BUILTIN:
             x->builtin = v->builtin;
-            x->builtin_name = malloc(strlen(v->builtin_name) + 1);
+            x->builtin_name = safe_malloc(strlen(v->builtin_name) + 1);
             strcpy(x->builtin_name, v->builtin_name);
             break;
 
@@ -489,20 +489,20 @@ awlval* awlval_copy(const awlval* v) {
             break;
 
         case AWLVAL_ERR:
-            x->err = malloc(strlen(v->err) + 1);
+            x->err = safe_malloc(strlen(v->err) + 1);
             strcpy(x->err, v->err);
             break;
 
         case AWLVAL_SYM:
         case AWLVAL_QSYM:
             x->length = v->length;
-            x->sym = malloc(strlen(v->sym) + 1);
+            x->sym = safe_malloc(strlen(v->sym) + 1);
             strcpy(x->sym, v->sym);
             break;
 
         case AWLVAL_STR:
             x->length = v->length;
-            x->str = malloc(strlen(v->str) + 1);
+            x->str = safe_malloc(strlen(v->str) + 1);
             strcpy(x->str, v->str);
             break;
 
@@ -516,7 +516,7 @@ awlval* awlval_copy(const awlval* v) {
         case AWLVAL_CEXPR:
             x->count = v->count;
             x->length = v->length;
-            x->cell = malloc(sizeof(awlval*) * x->count);
+            x->cell = safe_malloc(sizeof(awlval*) * x->count);
             for (int i = 0; i < x->count; i++) {
                 x->cell[i] = awlval_copy(v->cell[i]);
             }
@@ -695,16 +695,16 @@ bool is_awlval_empty_qexpr(awlval* x) {
 }
 
 awlenv* awlenv_new(void) {
-    awlenv* e = malloc(sizeof(awlenv));
+    awlenv* e = safe_malloc(sizeof(awlenv));
     e->parent = NULL;
     e->size = AWLENV_INITIAL_SIZE;
     e->count = 0;
-    e->syms = malloc(sizeof(char*) * AWLENV_INITIAL_SIZE);
+    e->syms = safe_malloc(sizeof(char*) * AWLENV_INITIAL_SIZE);
     for (int i = 0; i < AWLENV_INITIAL_SIZE; i++) {
         e->syms[i] = NULL;
     }
-    e->vals = malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
-    e->locked = malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
+    e->vals = safe_malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
+    e->locked = safe_malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
     e->top_level = false;
     e->references = 1;
     return e;
@@ -796,7 +796,7 @@ static void awlenv_set(awlenv* e, char* k, awlval* v, bool locked) {
         awlenv_resize(e);
         i = awlenv_findslot(e, k);
     }
-    e->syms[i] = malloc(strlen(k) + 1);
+    e->syms[i] = safe_malloc(strlen(k) + 1);
     strcpy(e->syms[i], k);
     e->vals[i] = awlval_copy(v);
     e->locked[i] = locked;
@@ -810,12 +810,12 @@ static void awlenv_resize(awlenv* e) {
     awlval** vals = e->vals;
     bool* locked = e->locked;
 
-    e->syms = malloc(sizeof(char*) * e->size);
+    e->syms = safe_malloc(sizeof(char*) * e->size);
     for (int i = 0; i < e->size; i++) {
         e->syms[i] = NULL;
     }
-    e->vals = malloc(sizeof(awlval*) * e->size);
-    e->locked = malloc(sizeof(bool) * e->size);
+    e->vals = safe_malloc(sizeof(awlval*) * e->size);
+    e->locked = safe_malloc(sizeof(bool) * e->size);
 
     for (int i = 0; i < oldsize; i++) {
         if (syms[i]) {
@@ -853,19 +853,19 @@ void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked) {
 }
 
 awlenv* awlenv_copy(awlenv* e) {
-    awlenv* n = malloc(sizeof(awlenv));
+    awlenv* n = safe_malloc(sizeof(awlenv));
     n->parent = e->parent;
     if (n->parent) {
         n->parent->references++;
     }
     n->size = e->size;
     n->count = e->count;
-    n->syms = malloc(sizeof(char*) * e->size);
+    n->syms = safe_malloc(sizeof(char*) * e->size);
     for (int i = 0; i < e->size; i++) {
         n->syms[i] = NULL;
     }
-    n->vals = malloc(sizeof(awlval*) * e->size);
-    n->locked = malloc(sizeof(bool) * e->size);
+    n->vals = safe_malloc(sizeof(awlval*) * e->size);
+    n->locked = safe_malloc(sizeof(bool) * e->size);
 
     for (int i = 0; i < e->size; i++) {
         if (e->syms[i]) {
