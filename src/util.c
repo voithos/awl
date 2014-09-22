@@ -1,3 +1,6 @@
+// To allow certain functions from unistd
+#define _BSD_SOURCE 1
+
 #include "util.h"
 
 #include <string.h>
