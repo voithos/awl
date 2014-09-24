@@ -25,7 +25,7 @@ void register_default_print_fn(void) {
 }
 
 void awl_printf(const char* format, ...) {
-    // TODO: Make it similar to stringbuilder_t?
+    /* TODO: Make it similar to stringbuilder_t? */
     char* buffer = safe_malloc(BUFSIZE);
     va_list arguments;
     va_start(arguments, format);
@@ -89,7 +89,7 @@ static void awlval_write_sb(stringbuilder_t* sb, const awlval* v) {
             break;
 
         case AWLVAL_QSYM:
-            stringbuilder_write(sb, ":%s", v->sym);
+            stringbuilder_write(sb, ":'%s'", v->sym);
             break;
 
         case AWLVAL_STR:
@@ -122,6 +122,11 @@ static void awlval_write_sb(stringbuilder_t* sb, const awlval* v) {
             stringbuilder_write(sb, " ");
             awlval_write_sb(sb, v->body);
             stringbuilder_write(sb, ")");
+            break;
+
+        case AWLVAL_DICT:
+            awlval_expr_print(sb, v, "[", "]");
+            /* TODO: Hash */
             break;
 
         case AWLVAL_SEXPR:

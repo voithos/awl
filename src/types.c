@@ -12,11 +12,6 @@
 #include "print.h"
 #include "util.h"
 
-#define AWLENV_INITIAL_SIZE 16
-#define AWLENV_PROBE_INTERVAL 1
-#define AWLENV_LOAD_FACTOR 0.75
-#define AWLENV_GROWTH_FACTOR 2
-
 char* awlval_type_name(awlval_type_t t) {
     switch (t) {
         case AWLVAL_ERR: return "Error";
@@ -29,6 +24,7 @@ char* awlval_type_name(awlval_type_t t) {
         case AWLVAL_QSYM: return "Q-Symbol";
         case AWLVAL_STR: return "String";
         case AWLVAL_BOOL: return "Boolean";
+        case AWLVAL_DICT: return "Dictionary";
         case AWLVAL_SEXPR: return "S-Expression";
         case AWLVAL_QEXPR: return "Q-Expression";
         case AWLVAL_EEXPR: return "E-Expression";
@@ -49,6 +45,7 @@ char* awlval_type_sysname(awlval_type_t t) {
         case AWLVAL_QSYM: return "qsym";
         case AWLVAL_STR: return "str";
         case AWLVAL_BOOL: return "bool";
+        case AWLVAL_DICT: return "dict";
         case AWLVAL_SEXPR: return "sexpr";
         case AWLVAL_QEXPR: return "qexpr";
         case AWLVAL_EEXPR: return "eexpr";
@@ -81,6 +78,8 @@ awlval_type_t awlval_parse_sysname(const char* sysname) {
         return AWLVAL_MACRO;
     } else if (streq(sysname, "sym")) {
         return AWLVAL_SYM;
+    } else if (streq(sysname, "dict")) {
+        return AWLVAL_DICT;
     } else if (streq(sysname, "sexpr")) {
         return AWLVAL_SEXPR;
     } else if (streq(sysname, "eexpr")) {
@@ -189,6 +188,14 @@ awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body) {
     return v;
 }
 
+awlval* awlval_dict(void) {
+    awlval* v = safe_malloc(sizeof(awlval));
+    v->type = AWLVAL_DICT;
+    v->count = 0;
+    v->length = 0;
+    return v;
+}
+
 awlval* awlval_sexpr(void) {
     awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_SEXPR;
@@ -260,6 +267,9 @@ void awlval_del(awlval* v) {
         case AWLVAL_BOOL:
             break;
 
+        case AWLVAL_DICT:
+            break;
+
         case AWLVAL_EEXPR:
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
@@ -291,6 +301,11 @@ awlval* awlval_add_front(awlval* v, awlval* x) {
     }
     v->cell[0] = x;
     return v;
+}
+
+awlval* awlval_add_dict(awlval* x, awlval* k, awlval* v) {
+    /* TODO: Hash */
+    return x;
 }
 
 awlval* awlval_pop(awlval* v, int i) {
@@ -510,6 +525,12 @@ awlval* awlval_copy(const awlval* v) {
             x->bln = v->bln;
             break;
 
+        case AWLVAL_DICT:
+            x->count = v->count;
+            x->length = v->length;
+            /* TODO: Hash */
+            break;
+
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
         case AWLVAL_EEXPR:
@@ -672,6 +693,13 @@ bool awlval_eq(awlval* x, awlval* y) {
             return x->bln == y->bln;
             break;
 
+        case AWLVAL_DICT:
+            if (x->count != y->count) {
+                return false;
+            }
+            /* TODO: Hash */
+            break;
+
         case AWLVAL_SEXPR:
         case AWLVAL_QEXPR:
         case AWLVAL_EEXPR:
@@ -694,17 +722,18 @@ bool is_awlval_empty_qexpr(awlval* x) {
     return x->type == AWLVAL_QEXPR && x->count == 0;
 }
 
+static void* awlval_copy_proxy(const void* v) {
+    return awlval_copy(v);
+}
+
+static void awlval_del_proxy(void* v) {
+    awlval_del(v);
+}
+
 awlenv* awlenv_new(void) {
     awlenv* e = safe_malloc(sizeof(awlenv));
     e->parent = NULL;
-    e->size = AWLENV_INITIAL_SIZE;
-    e->count = 0;
-    e->syms = safe_malloc(sizeof(char*) * AWLENV_INITIAL_SIZE);
-    for (int i = 0; i < AWLENV_INITIAL_SIZE; i++) {
-        e->syms[i] = NULL;
-    }
-    e->vals = safe_malloc(sizeof(awlenv*) * AWLENV_INITIAL_SIZE);
-    e->locked = safe_malloc(sizeof(bool) * AWLENV_INITIAL_SIZE);
+    e->internal_dict = dict_new(awlval_copy_proxy, awlval_del_proxy);
     e->top_level = false;
     e->references = 1;
     return e;
@@ -725,15 +754,8 @@ void awlenv_del(awlenv* e) {
         if (e->parent && e->parent->references >= 1) {
             awlenv_del(e->parent);
         }
-        for (int i = 0; i < e->size; i++) {
-            if (e->syms[i]) {
-                free(e->syms[i]);
-                awlval_del(e->vals[i]);
-            }
-        }
-        free(e->syms);
-        free(e->vals);
-        free(e->locked);
+
+        dict_del(e->internal_dict);
         free(e);
     }
 }
@@ -744,33 +766,17 @@ void awlenv_del_top_level(awlenv* e) {
     awlenv_del(e);
 }
 
-static unsigned int awlenv_hash(const char* str) {
-    /* djb2 hash */
-    unsigned int hash = 5381;
-    for (int i = 0; str[i]; i++) {
-        /* XOR hash * 33 with current char val */
-        hash = ((hash << 5) + hash) ^ str[i];
-    }
-    return hash;
-}
-
-static int awlenv_findslot(awlenv* e, char* k) {
-    unsigned int i = awlenv_hash(k) % e->size;
-    unsigned int probe = 1;
-    while (e->syms[i] && !streq(e->syms[i], k)) {
-        i = (i + probe) % e->size;
-        probe += AWLENV_PROBE_INTERVAL;
-    }
-    return i;
+int awlenv_index(awlenv* e, awlval* k) {
+    return dict_index(e->internal_dict, k->sym);
 }
 
 static awlval* awlenv_lookup(awlenv* e, char* k) {
-    int i = awlenv_findslot(e, k);
-    if (e->syms[i]) {
-        return awlval_copy(e->vals[i]);
+    int i = dict_index(e->internal_dict, k);
+    if (i != -1) {
+        return dict_get_at(e->internal_dict, i);
     }
 
-    /* check parent if no symbol found */
+    /* check parent if not found */
     if (e->parent) {
         return awlenv_lookup(e->parent, k);
     } else {
@@ -778,78 +784,19 @@ static awlval* awlenv_lookup(awlenv* e, char* k) {
     }
 }
 
-/* forward declaration */
-static void awlenv_resize(awlenv* e);
-
-static void awlenv_set(awlenv* e, char* k, awlval* v, bool locked) {
-    int i = awlenv_findslot(e, k);
-    if (e->syms[i]) {
-        awlval_del(e->vals[i]);
-        e->vals[i] = awlval_copy(v);
-        return;
-    }
-
-    /* no existing entry found */
-    e->count++;
-    /* resize if needed */
-    if (e->count / (float)e->size >= AWLENV_LOAD_FACTOR) {
-        awlenv_resize(e);
-        i = awlenv_findslot(e, k);
-    }
-    e->syms[i] = safe_malloc(strlen(k) + 1);
-    strcpy(e->syms[i], k);
-    e->vals[i] = awlval_copy(v);
-    e->locked[i] = locked;
-}
-
-static void awlenv_resize(awlenv* e) {
-    int oldsize = e->size;
-    e->size = e->size * AWLENV_GROWTH_FACTOR;
-
-    char** syms = e->syms;
-    awlval** vals = e->vals;
-    bool* locked = e->locked;
-
-    e->syms = safe_malloc(sizeof(char*) * e->size);
-    for (int i = 0; i < e->size; i++) {
-        e->syms[i] = NULL;
-    }
-    e->vals = safe_malloc(sizeof(awlval*) * e->size);
-    e->locked = safe_malloc(sizeof(bool) * e->size);
-
-    for (int i = 0; i < oldsize; i++) {
-        if (syms[i]) {
-            awlenv_set(e, syms[i], vals[i], locked[i]);
-            free(syms[i]);
-            awlval_del(vals[i]);
-        }
-    }
-    free(syms);
-    free(vals);
-    free(locked);
-}
-
-int awlenv_index(awlenv* e, awlval* k) {
-    int i = awlenv_findslot(e, k->sym);
-    if (!e->syms[i]) {
-        i = -1;
-    }
-    return i;
-}
-
 awlval* awlenv_get(awlenv* e, awlval* k) {
     return awlenv_lookup(e, k->sym);
 }
 
-void awlenv_put(awlenv* e, awlval* k, awlval* v, bool locked) {
-    awlenv_set(e, k->sym, v, locked);
+void awlenv_put(awlenv* e, awlval* k, awlval* v) {
+    dict_put(e->internal_dict, k->sym, v);
 }
 
-void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked) {
+void awlenv_put_global(awlenv* e, awlval* k, awlval* v) {
     while (e->parent) {
         e = e->parent;
     }
-    awlenv_set(e, k->sym, v, locked);
+    awlenv_put(e, k, v);
 }
 
 awlenv* awlenv_copy(awlenv* e) {
@@ -858,20 +805,7 @@ awlenv* awlenv_copy(awlenv* e) {
     if (n->parent) {
         n->parent->references++;
     }
-    n->size = e->size;
-    n->count = e->count;
-    n->syms = safe_malloc(sizeof(char*) * e->size);
-    for (int i = 0; i < e->size; i++) {
-        n->syms[i] = NULL;
-    }
-    n->vals = safe_malloc(sizeof(awlval*) * e->size);
-    n->locked = safe_malloc(sizeof(bool) * e->size);
-
-    for (int i = 0; i < e->size; i++) {
-        if (e->syms[i]) {
-            awlenv_set(n, e->syms[i], e->vals[i], e->locked[i]);
-        }
-    }
+    n->internal_dict = dict_copy(e->internal_dict);
     n->top_level = e->top_level;
     n->references = 1;
 
@@ -881,7 +815,7 @@ awlenv* awlenv_copy(awlenv* e) {
 void awlenv_add_builtin(awlenv* e, char* name, awlbuiltin builtin) {
     awlval* k = awlval_sym(name);
     awlval* v = awlval_fun(builtin, name);
-    awlenv_put(e, k, v, true);
+    awlenv_put(e, k, v);
     awlval_del(k);
     awlval_del(v);
 }

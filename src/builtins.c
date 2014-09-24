@@ -559,17 +559,15 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
         AWLASSERT_ARGCOUNT(a, 2, op);
 
         int index = awlenv_index(e, a->cell[0]);
-        if (index != -1) {
-            AWLASSERT(a, !(e->locked[index]),
-                    "cannot redefine builtin function '%s'", e->syms[index]);
-        }
+        AWLASSERT(a, index == -1,
+                "cannot redefine '%s'", a->cell[0]->sym);
 
         EVAL_SINGLE_ARG(e, a, 1);
 
         if (global) {
-            awlenv_put_global(e, a->cell[0], a->cell[1], false);
+            awlenv_put_global(e, a->cell[0], a->cell[1]);
         } else {
-            awlenv_put(e, a->cell[0], a->cell[1], false);
+            awlenv_put(e, a->cell[0], a->cell[1]);
         }
         return awlval_take(a, 1);
     }
@@ -584,10 +582,8 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
 
     for (int i = 0; i < syms->count; i++) {
         int index = awlenv_index(e, syms->cell[i]);
-        if (index != -1) {
-            AWLASSERT(a, !(e->locked[index]),
-                    "cannot redefine builtin function '%s'", e->syms[index]);
-        }
+        AWLASSERT(a, index == -1,
+                "cannot redefine '%s'", syms->cell[i]->sym);
     }
 
     AWLASSERT(a, (syms->count == a->count - 1),
@@ -601,9 +597,9 @@ awlval* builtin_var(awlenv* e, awlval* a, bool global) {
 
     for (int i = 0; i < syms->count; i++) {
         if (global) {
-            awlenv_put_global(e, syms->cell[i], a->cell[i + 1], false);
+            awlenv_put_global(e, syms->cell[i], a->cell[i + 1]);
         } else {
-            awlenv_put(e, syms->cell[i], a->cell[i + 1], false);
+            awlenv_put(e, syms->cell[i], a->cell[i + 1]);
         }
     }
 
@@ -637,10 +633,8 @@ awlval* builtin_let(awlenv* e, awlval* a) {
 
     for (int i = 0; i < bindings->count; i++) {
         int index = awlenv_index(e, bindings->cell[i]->cell[0]);
-        if (index != -1) {
-            AWLASSERT(a, !(e->locked[index]),
-                    "cannot redefine builtin function '%s'", e->syms[index]);
-        }
+        AWLASSERT(a, index == -1,
+                "cannot redefine '%s'", bindings->cell[i]->cell[0]->sym);
     }
 
     // TODO: Because of reference cycles, this causes garbage to build up
@@ -664,7 +658,7 @@ awlval* builtin_let(awlenv* e, awlval* a) {
         awlval* sym = bindings->cell[i]->cell[0];
         awlval* val = bindings->cell[i]->cell[1];
 
-        awlenv_put(lenv, sym, val, false);
+        awlenv_put(lenv, sym, val);
     }
 
     awlval* v = awlval_eval(lenv, awlval_take(a, 1));
@@ -693,10 +687,8 @@ awlval* builtin_macro(awlenv* e, awlval* a) {
     AWLASSERT_ISEXPR(a, 1, "macro");
 
     int index = awlenv_index(e, a->cell[0]);
-    if (index != -1) {
-        AWLASSERT(a, !(e->locked[index]),
-                "cannot redefine builtin function '%s'", e->syms[index]);
-    }
+    AWLASSERT(a, index == -1,
+            "cannot redefine '%s'", a->cell[0]->sym);
 
     for (int i = 0; i < a->cell[1]->count; i++) {
         AWLASSERT(a, (a->cell[1]->cell[i]->type == AWLVAL_SYM),
@@ -709,7 +701,7 @@ awlval* builtin_macro(awlenv* e, awlval* a) {
 
     awlval* macro = awlval_macro(e, formals, body);
 
-    awlenv_put(e, name, macro, false);
+    awlenv_put(e, name, macro);
 
     awlval_del(name);
     awlval_del(macro);

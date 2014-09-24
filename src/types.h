@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+#include "dict.h"
+
 struct awlval;
 struct awlenv;
 typedef struct awlval awlval;
@@ -22,6 +24,7 @@ typedef enum {
     AWLVAL_BUILTIN,
     AWLVAL_FN,
     AWLVAL_MACRO,
+    AWLVAL_DICT,
 
     AWLVAL_SEXPR,
     AWLVAL_QEXPR,
@@ -30,7 +33,7 @@ typedef enum {
 } awlval_type_t;
 
 #define ISNUMERIC(t) (t == AWLVAL_INT || t == AWLVAL_FLOAT)
-#define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR || t == AWLVAL_QSYM)
+#define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR || t == AWLVAL_QSYM || t == AWLVAL_DICT)
 #define ISEXPR(t) (t == AWLVAL_QEXPR || t == AWLVAL_SEXPR)
 #define ISCALLABLE(t) (t == AWLVAL_BUILTIN || t == AWLVAL_FN || t == AWLVAL_MACRO)
 
@@ -74,14 +77,8 @@ struct awlval {
 
 struct awlenv {
     awlenv* parent;
-
-    int size;
-    int count;
-    char** syms;
-    awlval** vals;
-    bool* locked;
+    dict* internal_dict;
     bool top_level;
-
     int references;
 };
 
@@ -96,6 +93,7 @@ awlval* awlval_bool(bool b);
 awlval* awlval_fun(const awlbuiltin builtin, const char* builtin_name);
 awlval* awlval_lambda(awlenv* closure, awlval* formals, awlval* body);
 awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body);
+awlval* awlval_dict(void);
 awlval* awlval_sexpr(void);
 awlval* awlval_qexpr(void);
 awlval* awlval_eexpr(void);
@@ -105,6 +103,7 @@ awlval* awlval_cexpr(void);
 void awlval_del(awlval* v);
 awlval* awlval_add(awlval* v, awlval* x);
 awlval* awlval_add_front(awlval* v, awlval* x);
+awlval* awlval_add_dict(awlval* x, awlval* k, awlval* v);
 awlval* awlval_pop(awlval* v, int i);
 awlval* awlval_take(awlval* v, int i);
 awlval* awlval_join(awlval* x, awlval* y);
@@ -130,8 +129,8 @@ void awlenv_del(awlenv* e);
 void awlenv_del_top_level(awlenv* e);
 int awlenv_index(awlenv* e, awlval* k);
 awlval* awlenv_get(awlenv* e, awlval* k);
-void awlenv_put(awlenv* e, awlval* k, awlval* v, bool locked);
-void awlenv_put_global(awlenv* e, awlval* k, awlval* v, bool locked);
+void awlenv_put(awlenv* e, awlval* k, awlval* v);
+void awlenv_put_global(awlenv* e, awlval* k, awlval* v);
 awlenv* awlenv_copy(awlenv* e);
 
 void awlenv_add_builtin(awlenv* e, char* name, awlbuiltin func);

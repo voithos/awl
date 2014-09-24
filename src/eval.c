@@ -182,7 +182,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
                 return varargs;
             }
 
-            awlenv_put(f->env, nsym, varargs, false);
+            awlenv_put(f->env, nsym, varargs);
             awlval_del(sym);
             awlval_del(nsym);
             break;
@@ -195,7 +195,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
             return val;
         }
 
-        awlenv_put(f->env, sym, val, false);
+        awlenv_put(f->env, sym, val);
         awlval_del(sym);
         awlval_del(val);
     }
@@ -210,7 +210,7 @@ awlval* awlval_call(awlenv* e, awlval* f, awlval* a) {
         awlval* sym = awlval_pop(f->formals, 0);
         awlval* val = awlval_qexpr();
 
-        awlenv_put(f->env, sym, val, false);
+        awlenv_put(f->env, sym, val);
         awlval_del(sym);
         awlval_del(val);
     }

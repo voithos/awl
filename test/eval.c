@@ -19,6 +19,8 @@ void test_eval_qsym(void) {
 
     TEST_ASSERT_TYPE(e, ":x", AWLVAL_QSYM);
     TEST_ASSERT_TYPE(e, ":asdf", AWLVAL_QSYM);
+    TEST_ASSERT_TYPE(e, ":'test foo'", AWLVAL_QSYM);
+    TEST_ASSERT_TYPE(e, ":\"test foo\"", AWLVAL_QSYM);
 
     teardown_test(e);
 }

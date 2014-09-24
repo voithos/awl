@@ -1,6 +1,6 @@
-## Issues
+### Issues
 
-## Language features
+### Language features
 - dictionaries: possible syntax
 - string manipulation functions
     - index-of
@@ -14,12 +14,12 @@
 - memory pool allocation
 - closures that only add free variables?
 
-## Interpreter features
+### Interpreter features
 - coloring, completion, etc
 - test cases
 
-## Low level APIs
+### Low level APIs
 - file system interface
 
-## Standard library
+### Standard library
 - mathematical functions

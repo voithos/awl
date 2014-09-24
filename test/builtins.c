@@ -513,7 +513,7 @@ void test_builtin_var(void) {
     TEST_ASSERT_EQ(e, "foo", "'bar'");
 
     TEST_ASSERT_EQ(e, "(define ret-val 25)", "25");
-    TEST_ASSERT_EQ(e, "(define ret-val 'foo')", "'foo'");
+    TEST_ASSERT_TYPE(e, "(define ret-val 'foo')", AWLVAL_ERR);
 
     teardown_test(e);
 }
