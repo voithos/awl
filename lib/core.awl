@@ -19,11 +19,13 @@
 (func (qsym? x) (== (typeof x) :qsym))
 (func (bool? x) (== (typeof x) :bool))
 (func (qexpr? x) (== (typeof x) :qexpr))
+(func (dict? x) (== (typeof x) :dict))
 (global list? qexpr?)
 
 (func (nil? x) (== x nil))
 
 (func (to-str v) (convert :str v))
+(func (to-qsym v) (convert :qsym v))
 
 ; Basic control structures
 (func (do & l)
@@ -37,6 +39,8 @@
 
 (func (flip f x y)
       (f y x))
+
+(func (id x) x)
 
 (func (reduce f l acc)
     (if (nil? l)
@@ -58,6 +62,16 @@
                     (cons v acc)
                     acc)) l nil))
 
+(func (any f l)
+      (reduce (fn (acc v)
+                  (or acc (f v)))
+              l false))
+
+(func (all f l)
+      (reduce (fn (acc v)
+                  (and acc (f v)))
+              l true))
+
 (func (sum l)
       (reduce + l 0))
 
@@ -77,6 +91,12 @@
                 s
                 (head s))))
 
+(func (zip & ls)
+      (if (any nil? ls)
+        nil
+        (cons (map head ls)
+              (unpack zip (map tail ls)))))
+
 (func (take n l)
       (slice l 0 n))
 
@@ -94,6 +114,10 @@
       (if (>= s e)
           nil
           (cons s (range (+ s 1) e))))
+
+; Dict functions
+(func (dict-items d)
+      (zip (dict-keys d) (dict-vals d)))
 
 ; Math functions
 (func (random-between s e)
