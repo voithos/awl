@@ -1,9 +1,10 @@
 ### Issues
 
 ### Language features
-- dictionaries: possible syntax
+- dictionary manipulation functions
 - string manipulation functions
     - index-of
+    - concat
 - proper error handling? Propagation and try/catch
 - precision decimal (and fraction) types?
 - complex number type?

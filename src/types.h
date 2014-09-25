@@ -61,6 +61,9 @@ struct awlval {
         char* str;
         bool bln;
 
+        /* dict type */
+        dict* d;
+
         /* function types */
         struct {
             awlbuiltin builtin;

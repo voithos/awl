@@ -188,11 +188,20 @@ awlval* awlval_macro(awlenv* closure, awlval* formals, awlval* body) {
     return v;
 }
 
+static void* awlval_copy_proxy(const void* v) {
+    return awlval_copy(v);
+}
+
+static void awlval_del_proxy(void* v) {
+    awlval_del(v);
+}
+
 awlval* awlval_dict(void) {
     awlval* v = safe_malloc(sizeof(awlval));
     v->type = AWLVAL_DICT;
     v->count = 0;
     v->length = 0;
+    v->d = dict_new(awlval_copy_proxy, awlval_del_proxy);
     return v;
 }
 
@@ -268,6 +277,7 @@ void awlval_del(awlval* v) {
             break;
 
         case AWLVAL_DICT:
+            dict_del(v->d);
             break;
 
         case AWLVAL_EEXPR:
@@ -304,7 +314,8 @@ awlval* awlval_add_front(awlval* v, awlval* x) {
 }
 
 awlval* awlval_add_dict(awlval* x, awlval* k, awlval* v) {
-    /* TODO: Hash */
+    dict_put(x->d, k->sym, v);
+    x->count = x->length = dict_count(x->d);
     return x;
 }
 
@@ -528,7 +539,7 @@ awlval* awlval_copy(const awlval* v) {
         case AWLVAL_DICT:
             x->count = v->count;
             x->length = v->length;
-            /* TODO: Hash */
+            x->d = dict_copy(v->d);
             break;
 
         case AWLVAL_SEXPR:
@@ -694,10 +705,7 @@ bool awlval_eq(awlval* x, awlval* y) {
             break;
 
         case AWLVAL_DICT:
-            if (x->count != y->count) {
-                return false;
-            }
-            /* TODO: Hash */
+            return dict_equal(x->d, y->d);
             break;
 
         case AWLVAL_SEXPR:
@@ -720,14 +728,6 @@ bool awlval_eq(awlval* x, awlval* y) {
 
 bool is_awlval_empty_qexpr(awlval* x) {
     return x->type == AWLVAL_QEXPR && x->count == 0;
-}
-
-static void* awlval_copy_proxy(const void* v) {
-    return awlval_copy(v);
-}
-
-static void awlval_del_proxy(void* v) {
-    awlval_del(v);
 }
 
 awlenv* awlenv_new(void) {

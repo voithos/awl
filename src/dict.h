@@ -1,6 +1,8 @@
 #ifndef AWL_DICT_H
 #define AWL_DICT_H
 
+#include <stdbool.h>
+
 typedef void*(*copy_fn)(const void*);
 typedef void(*del_fn)(void*);
 
@@ -24,5 +26,6 @@ dict* dict_copy(const dict* d);
 int dict_count(const dict* d);
 char** dict_all_keys(const dict* d);
 void** dict_all_vals(const dict* d);
+bool dict_equal(const dict* d1, const dict* d2);
 
 #endif

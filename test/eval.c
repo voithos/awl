@@ -25,6 +25,21 @@ void test_eval_qsym(void) {
     teardown_test(e);
 }
 
+void test_eval_dict(void) {
+    awlenv* e = setup_test();
+
+    TEST_ASSERT_TYPE(e, "[foo]", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "[:foo]", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "[5]", AWLVAL_ERR);
+    TEST_ASSERT_TYPE(e, "[:foo 'bar' :q]", AWLVAL_ERR);
+
+    TEST_ASSERT_TYPE(e, "[]", AWLVAL_DICT);
+    TEST_ASSERT_TYPE(e, "[:x 'y']", AWLVAL_DICT);
+    TEST_ASSERT_TYPE(e, "[:x 'y' :z 'foo' :q 5]", AWLVAL_DICT);
+
+    teardown_test(e);
+}
+
 void test_eval_qexpr(void) {
     awlenv* e = setup_test();
 
@@ -88,6 +103,7 @@ void test_eval_cexpr(void) {
 void suite_eval(void) {
     pt_add_test(test_eval_env, "Test Env", "Suite Eval");
     pt_add_test(test_eval_qsym, "Test QSym", "Suite Eval");
+    pt_add_test(test_eval_dict, "Test Dict", "Suite Eval");
     pt_add_test(test_eval_qexpr, "Test QExpr", "Suite Eval");
     pt_add_test(test_eval_eexpr, "Test EExpr", "Suite Eval");
     pt_add_test(test_eval_cexpr, "Test CExpr", "Suite Eval");

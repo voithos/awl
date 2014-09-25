@@ -128,6 +128,7 @@ static awlval* awlval_read_dict(const mpc_ast_t* t) {
 
     bool new_dict_item = true;
     awlval* qsym;
+    awlval* val;
 
     for (int i = 0; i < t->children_num; i++) {
         if (streq(t->children[i]->contents, "[")) { continue; }
@@ -139,8 +140,12 @@ static awlval* awlval_read_dict(const mpc_ast_t* t) {
             qsym = awlval_read(t->children[i]);
             new_dict_item = false;
         } else {
-            x = awlval_add_dict(x, qsym, awlval_read(t->children[i]));
+            val = awlval_read(t->children[i]);
+            x = awlval_add_dict(x, qsym, val);
             new_dict_item = true;
+
+            awlval_del(qsym);
+            awlval_del(val);
         }
     }
 

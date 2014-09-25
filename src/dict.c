@@ -10,6 +10,20 @@
 #define DICT_LOAD_FACTOR 0.75
 #define DICT_GROWTH_FACTOR 2
 
+static void* maybe_copy(const dict* d, void* v) {
+    if (d->copier) {
+        return d->copier(v);
+    } else {
+        return v;
+    }
+}
+
+static void maybe_delete(const dict* d, void* v) {
+    if (d->deleter) {
+        d->deleter(v);
+    }
+}
+
 dict* dict_new(const copy_fn copier, const del_fn deleter) {
     dict* d = dict_new_no_bindings();
     d->copier = copier;
@@ -35,9 +49,7 @@ void dict_del(dict* d) {
     for (int i = 0; i < d->size; i++) {
         if (d->syms[i]) {
             free(d->syms[i]);
-            if (d->deleter) {
-                d->deleter(d->vals[i]);
-            }
+            maybe_delete(d, d->vals[i]);
         }
     }
     free(d->syms);
@@ -74,20 +86,14 @@ static void* dict_lookup(const dict* d, const char* k) {
     return NULL;
 }
 
-static void* maybe_copy(const dict* d, void* v) {
-    if (d->copier) {
-        return d->copier(v);
-    } else {
-        return v;
-    }
-}
-
 /* forward declaration */
 static void dict_resize(dict* d);
 
 static void dict_set(dict* d, const char* k, void* v) {
     int i = dict_findslot(d, k);
     if (d->syms[i]) {
+        v = maybe_copy(d, v);
+        maybe_delete(d, d->vals[i]);
         d->vals[i] = v;
         return;
     }
@@ -122,9 +128,7 @@ static void dict_resize(dict* d) {
             dict_set(d, syms[i], vals[i]);
 
             free(syms[i]);
-            if (d->deleter) {
-                d->deleter(vals[i]);
-            }
+            maybe_delete(d, vals[i]);
         }
     }
     free(syms);
@@ -198,4 +202,12 @@ void** dict_all_vals(const dict* d) {
         }
     }
     return vals;
+}
+
+bool dict_equal(const dict* d1, const dict* d2) {
+    if (d1->count != d2->count) {
+        return false;
+    }
+    /* TODO: Check keys/values, but order doesn't matter! */
+    return true;
 }

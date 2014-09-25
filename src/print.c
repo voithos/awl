@@ -43,7 +43,9 @@ void awlval_println(const awlval* v) {
 }
 
 void awlval_print(const awlval* v) {
-    print_fn(awlval_to_str(v));
+    char* str = awlval_to_str(v);
+    print_fn(str);
+    free(str);
 }
 
 static void awlval_write_sb(stringbuilder_t* sb, const awlval* v);
@@ -58,6 +60,29 @@ static void awlval_expr_print(stringbuilder_t* sb, const awlval* v, const char* 
         }
     }
     stringbuilder_write(sb, close);
+}
+
+static void awlval_dict_print(stringbuilder_t* sb, const dict* d) {
+    stringbuilder_write(sb, "[");
+
+    int count = dict_count(d);
+    char** keys = dict_all_keys(d);
+    awlval** vals = (awlval**)dict_all_vals(d);
+
+    for (int i = 0; i < count; i++) {
+        stringbuilder_write(sb, ":'%s'", keys[i]);
+        stringbuilder_write(sb, " ");
+        awlval_write_sb(sb, vals[i]);
+
+        if (i != (count - 1)) {
+            stringbuilder_write(sb, " ");
+        }
+    }
+
+    free(keys);
+    free(vals);
+
+    stringbuilder_write(sb, "]");
 }
 
 static void awlval_print_str(stringbuilder_t* sb, const awlval* v) {
@@ -125,8 +150,7 @@ static void awlval_write_sb(stringbuilder_t* sb, const awlval* v) {
             break;
 
         case AWLVAL_DICT:
-            awlval_expr_print(sb, v, "[", "]");
-            /* TODO: Hash */
+            awlval_dict_print(sb, v->d);
             break;
 
         case AWLVAL_SEXPR:
