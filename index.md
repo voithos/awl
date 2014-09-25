@@ -758,6 +758,12 @@ features, as well as provide some basic functional tools.
 </tr>
 
 <tr>
+<td><code>dict?</code></td>
+<td><code>(dict? [arg1])</code></td>
+<td>Checks that argument is a Dictionary</td>
+</tr>
+
+<tr>
 <td><code>list?</code></td>
 <td><code>(list? [arg1])</code></td>
 <td>Alias for <code>qexpr?</code></td>
@@ -795,6 +801,12 @@ argument</td>
 </tr>
 
 <tr>
+<td><code>id</code></td>
+<td><code>(id [x])</code></td>
+<td>The identity function, returns whatever is passed</td>
+</tr>
+
+<tr>
 <td><code>reduce</code></td>
 <td><code>(reduce [f] [l] [acc])</code></td>
 <td>Reduces a list to a single value using a reducer function</td>
@@ -816,6 +828,18 @@ argument</td>
 <td><code>filter</code></td>
 <td><code>(filter [f] [l])</code></td>
 <td>Uses a predicate function to filter out elements from a list</td>
+</tr>
+
+<tr>
+<td><code>any</code></td>
+<td><code>(any [f] [l])</code></td>
+<td>Checks whether any value in list <code>l</code> satisfies <code>f</code></td>
+</tr>
+
+<tr>
+<td><code>all</code></td>
+<td><code>(all [f] [l])</code></td>
+<td>Checks whether all values in list <code>l</code> satisfy <code>f</code></td>
 </tr>
 
 <tr>
@@ -850,6 +874,12 @@ argument</td>
 </tr>
 
 <tr>
+<td><code>zip</code></td>
+<td><code>(zip [lists...])</code></td>
+<td>Returns a list of lists, each containing the i-th element of the argument lists</td>
+</tr>
+
+<tr>
 <td><code>take</code></td>
 <td><code>(take [n] [l])</code></td>
 <td>Takes the first <code>n</code> elements of a list</td>
@@ -873,6 +903,12 @@ left</td>
 <td><code>(range [s] [e])</code></td>
 <td>Returns a list of integers starting with <code>s</code> and going up to
 <code>e</code></td>
+</tr>
+
+<tr>
+<td><code>dict-items</code></td>
+<td><code>(dict-items [dict])</code></td>
+<td>Returns a list of key-value pairs from the given dict</td>
 </tr>
 
 <tr>
