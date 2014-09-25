@@ -1,7 +1,6 @@
 ### Issues
 
 ### Language features
-- dictionary manipulation functions
 - string manipulation functions
     - index-of
     - concat

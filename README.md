@@ -151,7 +151,7 @@ it shares most of its features with Lisp and Scheme. These include:
   [closures](http://en.wikipedia.org/wiki/Closure_(computer_programming))
 - [Partial application](http://en.wikipedia.org/wiki/Partial_application)
 - [Tail-call optimization](http://en.wikipedia.org/wiki/Tail_recursion)
-- Data immutability (although variables can be redefined currently)
+- Data immutability
 - Lists as the primary data structure
 - [Homoiconicity](http://en.wikipedia.org/wiki/Homoiconicity) - that is,
   similar representations of code and data
@@ -230,14 +230,20 @@ Variables are created with `define` (which affects the local environment) and
 
 <tr>
 <td>Q-Symbol</td>
-<td><code>:like-in-ruby</code>, <code>:foo</code></td>
-<td>A quoted symbol (identifier), mostly used in macros</td>
+<td><code>:like-in-ruby</code>, <code>:'foo'</code></td>
+<td>A quoted symbol (identifier), can also be written similar to strings</td>
 </tr>
 
 <tr>
 <td>Q-Expr</td>
 <td><code>{1 'b' (+ 1 2) x y}</code></td>
 <td>A quoted expression. The basic data structure - acts like a list</td>
+</tr>
+
+<tr>
+<td>Dictionary</td>
+<td><code>[:x 23 :y 'hello' :z {a b c}]</code></td>
+<td>A key-value store. Keys are Q-Symbols, values can be anything</td>
 </tr>
 
 <tr>
@@ -328,6 +334,17 @@ directly in the outer list:
     {1 2 {3 4}}
     awl> {1 2 @{3 4}}
     {1 2 3 4}
+
+Finally, there is another collection type that is slightly more mundane than
+Q-Expressions and their ilk: Dictionaries. Dictionaries act as simple key-value
+stores, and are similar to the dictionaries in other languages. They are
+delimited with square brackets `[]`, use Q-Symbols as their keys, and can store
+any normal value:
+
+    awl> (dict-get [:foo 12 :bar 43] :foo)
+    12
+    awl> (dict-set [:x 1 :y 2] :z 3)
+    [:'x' 1 :'y' 2 :'z' 3]
 
 ### Builtins
 
@@ -508,6 +525,42 @@ builtins - they are simply named differently.
 <td><code>cons</code></td>
 <td><code>(cons [arg1] [arg2])</code></td>
 <td>Attaches a primitive type to the head of a list</td>
+</tr>
+
+<tr>
+<td><code>dict-get</code></td>
+<td><code>(dict-get [dict] [key])</code></td>
+<td>Retrieves a value from a dict using a key</td>
+</tr>
+
+<tr>
+<td><code>dict-set</code></td>
+<td><code>(dict-set [dict] [key] [val])</code></td>
+<td>Returns a new dict with a value set</td>
+</tr>
+
+<tr>
+<td><code>dict-del</code></td>
+<td><code>(dict-del [dict] [key])</code></td>
+<td>Returns a new dict with a value deleted</td>
+</tr>
+
+<tr>
+<td><code>dict-haskey?</code></td>
+<td><code>(dict-haskey? [dict] [key])</code></td>
+<td>Checks if a dict has a key set</td>
+</tr>
+
+<tr>
+<td><code>dict-keys</code></td>
+<td><code>(dict-keys [dict])</code></td>
+<td>Returns a list of keys in the dictionary</td>
+</tr>
+
+<tr>
+<td><code>dict-vals</code></td>
+<td><code>(dict-vals [dict])</code></td>
+<td>Returns a list of values in the dictionary</td>
 </tr>
 
 <tr>

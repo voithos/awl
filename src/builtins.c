@@ -449,6 +449,90 @@ awlval* builtin_cons(awlenv* e, awlval* a) {
     return x;
 }
 
+awlval* builtin_dictget(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 2, "dict-get");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_DICT, "dict-get");
+    AWLASSERT_TYPE(a, 1, AWLVAL_QSYM, "dict-get");
+
+    awlval* d = awlval_pop(a, 0);
+    awlval* k = awlval_take(a, 0);
+
+    awlval* v = awlval_get_dict(d, k);
+    awlval_del(d);
+    awlval_del(k);
+    return v;
+}
+
+awlval* builtin_dictset(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 3, "dict-set");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_DICT, "dict-set");
+    AWLASSERT_TYPE(a, 1, AWLVAL_QSYM, "dict-set");
+
+    awlval* d = awlval_pop(a, 0);
+    awlval* k = awlval_pop(a, 0);
+    awlval* v = awlval_take(a, 0);
+
+    d = awlval_add_dict(d, k, v);
+    awlval_del(k);
+    awlval_del(v);
+    return d;
+}
+
+awlval* builtin_dictdel(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 2, "dict-del");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_DICT, "dict-del");
+    AWLASSERT_TYPE(a, 1, AWLVAL_QSYM, "dict-del");
+
+    awlval* d = awlval_pop(a, 0);
+    awlval* k = awlval_take(a, 0);
+
+    awlval_rm_dict(d, k);
+    awlval_del(k);
+    return d;
+}
+
+awlval* builtin_dicthaskey(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 2, "dict-haskey?");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_DICT, "dict-haskey?");
+    AWLASSERT_TYPE(a, 1, AWLVAL_QSYM, "dict-haskey?");
+
+    awlval* d = awlval_pop(a, 0);
+    awlval* k = awlval_take(a, 0);
+
+    bool v = awlval_haskey_dict(d, k);
+    awlval_del(d);
+    awlval_del(k);
+    return awlval_bool(v);
+}
+
+awlval* builtin_dictkeys(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 1, "dict-keys");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_DICT, "dict-keys");
+
+    awlval* d = awlval_take(a, 0);
+
+    awlval* v = awlval_keys_dict(d);
+    awlval_del(d);
+    return v;
+}
+
+awlval* builtin_dictvals(awlenv* e, awlval* a) {
+    AWLASSERT_ARGCOUNT(a, 1, "dict-vals");
+    EVAL_ARGS(e, a);
+    AWLASSERT_TYPE(a, 0, AWLVAL_DICT, "dict-vals");
+
+    awlval* d = awlval_take(a, 0);
+
+    awlval* v = awlval_vals_dict(d);
+    awlval_del(d);
+    return v;
+}
+
 awlval* builtin_len(awlenv* e, awlval* a) {
     AWLASSERT_ARGCOUNT(a, 1, "len");
     EVAL_ARGS(e, a);
@@ -462,7 +546,7 @@ awlval* builtin_len(awlenv* e, awlval* a) {
 awlval* builtin_reverse(awlenv* e, awlval* a) {
     AWLASSERT_ARGCOUNT(a, 1, "reverse");
     EVAL_ARGS(e, a);
-    AWLASSERT_ISCOLLECTION(a, 0, "reverse");
+    AWLASSERT_ISORDEREDCOLLECTION(a, 0, "reverse");
 
     awlval* collection = awlval_take(a, 0);
 
@@ -472,7 +556,7 @@ awlval* builtin_reverse(awlenv* e, awlval* a) {
 awlval* builtin_slice(awlenv* e, awlval* a) {
     AWLASSERT_RANGEARGCOUNT(a, 2, 4, "slice");
     EVAL_ARGS(e, a);
-    AWLASSERT_ISCOLLECTION(a, 0, "slice");
+    AWLASSERT_ISORDEREDCOLLECTION(a, 0, "slice");
     AWLASSERT_TYPE(a, 1, AWLVAL_INT, "slice");
 
     bool end_arg_given = a->count > 2;

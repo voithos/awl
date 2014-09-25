@@ -22,6 +22,7 @@ int dict_index(const dict* d, const char* k);
 void* dict_get(const dict* d, const char* k);
 void* dict_get_at(const dict* d, int i);
 void dict_put(dict* d, const char* k, void* v);
+void dict_rm(dict* d, const char* k);
 dict* dict_copy(const dict* d);
 int dict_count(const dict* d);
 char** dict_all_keys(const dict* d);

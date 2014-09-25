@@ -18,6 +18,11 @@
             "function '%s' passed incorrect type for arg %i; got %s, expected numeric type", \
             fname, i, awlval_type_name(args->cell[i]->type));
 
+#define AWLASSERT_ISORDEREDCOLLECTION(args, i, fname) \
+    AWLASSERT(args, (ISORDEREDCOLLECTION(args->cell[i]->type)), \
+            "function '%s' passed incorrect type for arg %i; got %s, expected ordered collection type", \
+            fname, i, awlval_type_name(args->cell[i]->type));
+
 #define AWLASSERT_ISCOLLECTION(args, i, fname) \
     AWLASSERT(args, (ISCOLLECTION(args->cell[i]->type)), \
             "function '%s' passed incorrect type for arg %i; got %s, expected collection type", \

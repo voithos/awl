@@ -319,6 +319,46 @@ awlval* awlval_add_dict(awlval* x, awlval* k, awlval* v) {
     return x;
 }
 
+awlval* awlval_get_dict(awlval* x, awlval* k) {
+    return dict_get(x->d, k->sym);
+}
+
+awlval* awlval_rm_dict(awlval* x, awlval* k) {
+    dict_rm(x->d, k->sym);
+    x->count = x->length = dict_count(x->d);
+    return x;
+}
+
+bool awlval_haskey_dict(awlval* x, awlval* k) {
+    return dict_index(x->d, k->sym) != -1;
+}
+
+awlval* awlval_keys_dict(awlval* x) {
+    int count = dict_count(x->d);
+    char** keys = dict_all_keys(x->d);
+
+    awlval* v = awlval_qexpr();
+    for (int i = 0; i < count; i++) {
+        awlval_add(v, awlval_qsym(keys[i]));
+    }
+
+    free(keys);
+    return v;
+}
+
+awlval* awlval_vals_dict(awlval* x) {
+    int count = dict_count(x->d);
+    awlval** vals = (awlval**)dict_all_vals(x->d);
+
+    awlval* v = awlval_qexpr();
+    for (int i = 0; i < count; i++) {
+        awlval_add(v, awlval_copy(vals[i]));
+    }
+
+    free(vals);
+    return v;
+}
+
 awlval* awlval_pop(awlval* v, int i) {
     awlval* x = v->cell[i];
 
@@ -851,6 +891,12 @@ void awlenv_add_builtins(awlenv* e) {
     awlenv_add_builtin(e, "append", builtin_append);
     awlenv_add_builtin(e, "cons", builtin_cons);
     awlenv_add_builtin(e, "except-last", builtin_exceptlast);
+    awlenv_add_builtin(e, "dict-get", builtin_dictget);
+    awlenv_add_builtin(e, "dict-set", builtin_dictset);
+    awlenv_add_builtin(e, "dict-del", builtin_dictdel);
+    awlenv_add_builtin(e, "dict-haskey?", builtin_dicthaskey);
+    awlenv_add_builtin(e, "dict-keys", builtin_dictkeys);
+    awlenv_add_builtin(e, "dict-vals", builtin_dictvals);
 
     awlenv_add_builtin(e, "len", builtin_len);
     awlenv_add_builtin(e, "reverse", builtin_reverse);

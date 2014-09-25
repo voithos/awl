@@ -155,6 +155,16 @@ void dict_put(dict* d, const char* k, void* v) {
     dict_set(d, k, v);
 }
 
+void dict_rm(dict* d, const char* k) {
+    int i = dict_findslot(d, k);
+    if (d->syms[i]) {
+        d->count--;
+        maybe_delete(d, d->vals[i]);
+        free(d->syms[i]);
+        d->syms[i] = NULL;
+    }
+}
+
 dict* dict_copy(const dict* d) {
     dict* n = safe_malloc(sizeof(dict));
     n->size = d->size;

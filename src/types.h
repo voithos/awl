@@ -33,6 +33,7 @@ typedef enum {
 } awlval_type_t;
 
 #define ISNUMERIC(t) (t == AWLVAL_INT || t == AWLVAL_FLOAT)
+#define ISORDEREDCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR || t == AWLVAL_QSYM)
 #define ISCOLLECTION(t) (t == AWLVAL_QEXPR || t == AWLVAL_STR || t == AWLVAL_QSYM || t == AWLVAL_DICT)
 #define ISEXPR(t) (t == AWLVAL_QEXPR || t == AWLVAL_SEXPR)
 #define ISCALLABLE(t) (t == AWLVAL_BUILTIN || t == AWLVAL_FN || t == AWLVAL_MACRO)
@@ -106,7 +107,14 @@ awlval* awlval_cexpr(void);
 void awlval_del(awlval* v);
 awlval* awlval_add(awlval* v, awlval* x);
 awlval* awlval_add_front(awlval* v, awlval* x);
+
 awlval* awlval_add_dict(awlval* x, awlval* k, awlval* v);
+awlval* awlval_get_dict(awlval* x, awlval* k);
+awlval* awlval_rm_dict(awlval* x, awlval* k);
+bool awlval_haskey_dict(awlval* x, awlval* k);
+awlval* awlval_keys_dict(awlval* x);
+awlval* awlval_vals_dict(awlval* x);
+
 awlval* awlval_pop(awlval* v, int i);
 awlval* awlval_take(awlval* v, int i);
 awlval* awlval_join(awlval* x, awlval* y);

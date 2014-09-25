@@ -39,6 +39,12 @@ awlval* builtin_list(awlenv* e, awlval* a);
 awlval* builtin_eval(awlenv* e, awlval* a);
 awlval* builtin_append(awlenv* e, awlval* a);
 awlval* builtin_cons(awlenv* e, awlval* a);
+awlval* builtin_dictget(awlenv* e, awlval* a);
+awlval* builtin_dictset(awlenv* e, awlval* a);
+awlval* builtin_dictdel(awlenv* e, awlval* a);
+awlval* builtin_dicthaskey(awlenv* e, awlval* a);
+awlval* builtin_dictkeys(awlenv* e, awlval* a);
+awlval* builtin_dictvals(awlenv* e, awlval* a);
 
 awlval* builtin_len(awlenv* e, awlval* a);
 awlval* builtin_reverse(awlenv* e, awlval* a);
