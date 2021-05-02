@@ -242,7 +242,7 @@ Variables are created with `define` (which affects the local environment) and
 
 <tr>
 <td>Dictionary</td>
-<td><code>[:x 23 :y 'hello' :z {a b c}]</code></td>
+<td><code>[:x 42 :y 'yes' :z {c}]</code></td>
 <td>A key-value store. Keys are Q-Symbols, values can be anything</td>
 </tr>
 
@@ -775,6 +775,12 @@ features, as well as provide some basic functional tools.
 <td><code>to-str</code></td>
 <td><code>(to-str [arg1])</code></td>
 <td>Converts argument to a string</td>
+</tr>
+
+<tr>
+<td><code>to-qsym</code></td>
+<td><code>(to-qsym [arg1])</code></td>
+<td>Converts argument to a Q-Symbol</td>
 </tr>
 
 <tr>
