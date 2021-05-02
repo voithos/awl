@@ -1,2 +1,2 @@
-baseurl: "http://skepsi.me/awl"
+baseurl: "/awl"
 markdown: kramdown
